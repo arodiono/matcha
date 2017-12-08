@@ -5,14 +5,24 @@ namespace App\Middleware;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class CsrfViewMiddleware
+ * @package App\Middleware
+ */
 class CsrfViewMiddleware extends Middleware
 {
-    public function __invoke(Request $request, Response $response, $next)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param callable $next
+     * @return Response
+     */
+    public function __invoke(Request $request, Response $response, callable $next): Response
     {
-        $this->container->view->getEnvironment()->addGlobal('csrf', [
+        $this->view->getEnvironment()->addGlobal('csrf', [
             'field' => '
-                <input type="hidden" name="' . $this->container->csrf->getTokenNameKey() . '" value="' . $this->container->csrf->getTokenName() . '">
-                <input type="hidden" name="' . $this->container->csrf->getTokenValueKey() . '" value="' . $this->container->csrf->getTokenValue() . '">
+                <input type="hidden" name="' . $this->csrf->getTokenNameKey() . '" value="' . $this->csrf->getTokenName() . '">
+                <input type="hidden" name="' . $this->csrf->getTokenValueKey() . '" value="' . $this->csrf->getTokenValue() . '">
             ',
         ]);
         $response = $next($request, $response);

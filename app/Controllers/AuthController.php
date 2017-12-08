@@ -7,28 +7,70 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
 
+/**
+ * Class AuthController
+ * @package App\Controllers
+ */
 class AuthController extends Controller
 {
-    public function getSignIn(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function getSignOut(Request $request, Response $response): Response
+    {
+        $this->auth->logout();
+        return $response->withRedirect($this->router->pathFor('home'));
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function getSignIn(Request $request, Response $response): Response
     {
         return $this->view->render($response, 'signin.twig');
     }
 
-    public function postSignIn(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function postSignIn(Request $request, Response $response): Response
     {
-
+        $auth = $this->auth->attempt(
+            $request->getParam('email'),
+            $request->getParam('password')
+        );
+        if (!$auth) {
+            $this->flash->addMessage('error', 'Incorrect username or password.');
+            return $response->withRedirect($this->router->pathFor('signin'));
+        }
+        return $response->withRedirect($this->router->pathFor('home'));
     }
 
-    public function getSignUp(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function getSignUp(Request $request, Response $response): Response
     {
-
         return $this->view->render($response, 'signup.twig');
     }
 
-    public function postSignUp(Request $request, Response $response)
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function postSignUp(Request $request, Response $response): Response
     {
         $validation = $this->validator->validate($request, [
-            'email' => v::noWhitespace()->notEmpty()->email()->emailAvailable(),
+            'email' => v::email()->emailAvailable(),
             'firstname' => v::noWhitespace()->notEmpty()->alpha(),
             'password' => v::noWhitespace()->length(8, null),
 
@@ -38,11 +80,15 @@ class AuthController extends Controller
             return $response->withRedirect($this->router->pathFor('signup'));
         }
 
-        User::create([
+        $user = User::create([
             'firstname' => $request->getParam('firstname'),
             'email' => $request->getParam('email'),
             'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
         ]);
+
+        $this->flash->addMessage('success', 'You have been signed up!');
+        $this->auth->attempt($user->email, $request->getParam('password'));
+
         return $response->withRedirect($this->router->pathFor('home'));
     }
 }

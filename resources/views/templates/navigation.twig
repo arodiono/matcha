@@ -7,10 +7,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Matcha</a>
+            <a class="navbar-brand" href="{{ path_for('home') }}">Matcha</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+            {% if auth.check %}
                 <li>
                     <a href="#"><i class="material-icons">notifications</i> Notifications</a>
                 </li>
@@ -33,10 +34,18 @@
                             <a href="#"><i class="material-icons">settings</i> Settings</a>
                         </li>
                         <li>
-                            <a href="#"><i class="material-icons">exit_to_app</i> Log out</a>
+                            <a href="{{ path_for('signout') }}"><i class="material-icons">exit_to_app</i> Sign out</a>
                         </li>
                     </ul>
                 </li>
+            {% else %}
+                <li>
+                    <a href="{{ path_for('signin') }}"><i class="material-icons">person</i> Sign in</a>
+                </li>
+                <li>
+                    <a class="btn btn-primary" href="{{ path_for('signup') }}"><i class="material-icons">person_add</i> Sign up</a>
+                </li>
+            {% endif %}
             </ul>
         </div>
     </div>

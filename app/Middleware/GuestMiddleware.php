@@ -6,10 +6,10 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class ValidationErrorsMiddleware
+ * Class GuestMiddleware
  * @package App\Middleware
  */
-class ValidationErrorsMiddleware extends Middleware
+class GuestMiddleware extends Middleware
 {
     /**
      * @param Request $request
@@ -19,8 +19,9 @@ class ValidationErrorsMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, callable $next): Response
     {
-        $this->view->getEnvironment()->addGlobal('errors', $_SESSION['errors']);
-        unset($_SESSION['errors']);
+        if ($this->auth->check()) {
+            return $response->withRedirect($this->router->pathFor('home'));
+        }
         $response = $next($request, $response);
         return $response;
     }

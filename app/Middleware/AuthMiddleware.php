@@ -6,10 +6,10 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * Class ValidationErrorsMiddleware
+ * Class AuthMiddleware
  * @package App\Middleware
  */
-class ValidationErrorsMiddleware extends Middleware
+class AuthMiddleware extends Middleware
 {
     /**
      * @param Request $request
@@ -19,8 +19,10 @@ class ValidationErrorsMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, callable $next): Response
     {
-        $this->view->getEnvironment()->addGlobal('errors', $_SESSION['errors']);
-        unset($_SESSION['errors']);
+        if (!$this->auth->check()) {
+            $this->flash->addMessage('warning', 'Please sing in before doing that.');
+            return $response->withRedirect($this->router->pathFor('signin'));
+        }
         $response = $next($request, $response);
         return $response;
     }

@@ -7,11 +7,23 @@ use Respect\Validation\Validator as Respect;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class Validator
+ * @package App\Validation
+ */
 class Validator
 {
+    /**
+     * @var array
+     */
     protected $errors;
 
-    public function validate(Request $request, array $rules)
+    /**
+     * @param Request $request
+     * @param array $rules
+     * @return Validator
+     */
+    public function validate(Request $request, array $rules): Validator
     {
         foreach ($rules as $field => $rule) {
             try {
@@ -24,7 +36,11 @@ class Validator
         return $this;
     }
 
-    public function failed() {
+    /**
+     * @return bool
+     */
+    public function failed()
+    {
         return !empty($this->errors);
     }
 }

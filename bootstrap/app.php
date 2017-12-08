@@ -1,6 +1,8 @@
 <?php
 
 use Respect\Validation\Validator as v;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 session_start();
 
@@ -28,45 +30,66 @@ $capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-$container['db'] = function ($container) use ($capsule) {
+$container['db'] = function () use ($capsule) {
     return $capsule;
 };
-
+$container['auth'] = function () {
+    return new \App\Auth\Auth;
+};
+$container['flash'] = function () {
+    return new \Slim\Flash\Messages;
+};
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
         'cache' => false,
-        'debug' => true /////////////////delete
+        'debug' => true
     ]);
-
     $view->addExtension(new \Slim\Views\TwigExtension(
         $container->router,
         $container->request->getUri()
     ));
+    $view->getEnvironment()->addGlobal('auth', [
+        'check' => $container->auth->check(),
+        'user' => $container->auth->user(),
+    ]);
+    $view->getEnvironment()->addGlobal('flash', $container->flash);
+
     return $view;
 };
-
-$container['validator'] = function ($container) {
+$container['validator'] = function () {
     return new App\Validation\Validator;
 };
-
 $container['HomeController'] = function ($container) {
     return new \App\Controllers\HomeController($container);
 };
 $container['AuthController'] = function ($container) {
     return new \App\Controllers\AuthController($container);
 };
-
-$container['csrf'] = function ($container) {
+$container['PasswordController'] = function ($container) {
+    return new \App\Controllers\PasswordController($container);
+};
+$container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
 };
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
 $app->add(new \App\Middleware\CsrfViewMiddleware($container));
-
-$app->add($container->csrf);
+$app->add($container->get('csrf'));
+$app->add(function (Request $request, Response $response, callable $next) {
+    $uri = $request->getUri();
+    $path = $uri->getPath();
+    if ($path != '/' && substr($path, -1) == '/') {
+        $uri = $uri->withPath(substr($path, 0, -1));
+        if ($request->getMethod() == 'GET') {
+            return $response->withRedirect((string)$uri, 301);
+        } else {
+            return $next($request->withUri($uri), $response);
+        }
+    }
+    return $next($request, $response);
+});
 
 v::with('App\\Validation\\Rules\\');
-
 
 require __DIR__ . '/../app/routes.php';
