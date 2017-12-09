@@ -13,6 +13,36 @@ use Respect\Validation\Validator as v;
  */
 class AuthController extends Controller
 {
+    public function getSignUpFinish(Request $request, Response $response): Response
+    {
+        return $this->view->render($response, 'signup-finish.twig');
+    }
+
+    public function postSignUpFinish(Request $request, Response $response): Response
+    {
+//        $validation = $this->validator->validate($request, [
+//            'email' => v::email()->emailAvailable(),
+//            'first_name' => v::noWhitespace()->notEmpty()->alpha(),
+//            'password' => v::noWhitespace()->length(8, null),
+//
+//        ]);
+//
+//        if ($validation->failed()) {
+//            return $response->withRedirect($this->router->pathFor('signup'));
+//        }
+//
+//        $user = User::create([
+//            'first_name' => $request->getParam('first_name'),
+//            'email' => $request->getParam('email'),
+//            'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
+//        ]);
+//
+//        $this->flash->addMessage('success', 'You have been signed up!');
+//        $this->auth->attempt($user->email, $request->getParam('password'));
+//
+//        return $response->withRedirect($this->router->pathFor('home'));
+    }
+
     /**
      * @param Request $request
      * @param Response $response
@@ -71,7 +101,7 @@ class AuthController extends Controller
     {
         $validation = $this->validator->validate($request, [
             'email' => v::email()->emailAvailable(),
-            'firstname' => v::noWhitespace()->notEmpty()->alpha(),
+            'username' => v::noWhitespace()->notEmpty()->alpha(),
             'password' => v::noWhitespace()->length(8, null),
 
         ]);
@@ -81,7 +111,7 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'firstname' => $request->getParam('firstname'),
+            'username' => $request->getParam('username'),
             'email' => $request->getParam('email'),
             'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
         ]);
@@ -89,6 +119,6 @@ class AuthController extends Controller
         $this->flash->addMessage('success', 'You have been signed up!');
         $this->auth->attempt($user->email, $request->getParam('password'));
 
-        return $response->withRedirect($this->router->pathFor('home'));
+        return $response->withRedirect($this->router->pathFor('signup.finish'));
     }
 }

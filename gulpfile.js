@@ -37,7 +37,7 @@ gulp.task('js', ['common-js'], function() {
 		'public/libs/material-kit/bootstrap-tagsinput.js',
 		'public/libs/jasny-bootstrap/jasny-bootstrap.js',
 		'public/libs/material-kit/material-kit.js',
-		'public/js/common.min.js', // Всегда в конце
+		'public/js/common.min.js' // Всегда в конце
 		])
 	.pipe(concat('scripts.min.js'))
 	// .pipe(uglify()) // Минимизировать весь js (на выбор)
@@ -62,14 +62,14 @@ gulp.task('sass', function() {
 	.pipe(rename({suffix: '.min', prefix : ''}))
 	.pipe(autoprefixer(['last 15 versions']))
 	// .pipe(cleanCSS())
-	.pipe(gulp.dest('public/css'))
-	.pipe(browserSync.reload({stream: true}));
+	.pipe(gulp.dest('public/css'));
+	// .pipe(browserSync.reload({stream: true}));
 });
 
 gulp.task('watch', ['sass', 'js', 'browser-sync'], function() {
 	gulp.watch('public/sass/**/*.sass', ['sass']);
-	gulp.watch(['libs/**/*.js', 'public/js/common.js'], ['js']);
-	gulp.watch('public/*.html', browserSync.reload);
+	// gulp.watch(['libs/**/*.js', 'public/js/common.js'], ['js']);
+	// gulp.watch('public/*.html', browserSync.reload);
 });
 
 gulp.task('imagemin', function() {

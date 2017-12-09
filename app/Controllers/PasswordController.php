@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Views\Twig as View;
 use Respect\Validation\Validator as v;
 
 /**
@@ -16,9 +15,9 @@ class PasswordController extends Controller
     /**
      * @param Request $request
      * @param Response $response
-     * @return View
+     * @return Response
      */
-    public function getChangePassword(Request $request, Response $response): View
+    public function getChangePassword(Request $request, Response $response): Response
     {
         return $this->view->render($response, 'password.twig');
     }
@@ -31,8 +30,8 @@ class PasswordController extends Controller
     public function postChangePassword(Request $request, Response $response): Response
     {
         $validation = $this->validator->validate($request, [
-            'password_old' => v::noWhitespace()->notEmpty()->matchesPassword($this->auth->user()->password),
-            'password_new' => v::noWhitespace()->notEmpty(),
+            'current_password' => v::noWhitespace()->notEmpty()->matchesPassword($this->auth->user()->password),
+            'new_password' => v::noWhitespace()->notEmpty(),
         ]);
 
         if ($validation->failed()) {

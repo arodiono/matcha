@@ -112,6 +112,11 @@ footer {
   z-index: 99;
   width: 100%; }
 
+.navbar-brand {
+  font-family: "Roboto Slab", "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 700; }
+
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */
 @media only screen and (max-width: 1200px) {

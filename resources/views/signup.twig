@@ -1,66 +1,83 @@
+{% set title = 'Sign up' %}
+{% set body = 'signup-page' %}
 {% extends 'templates/core.twig' %}
 
 {% block content %}
-    <div class="page-header header-filter" style="background-image: url('{{ base_url() }}/img/index.png'); background-size: cover; background-position: top center;">
+    <div class="page-header header-filter"
+         style="background-image: url('{{ base_url() }}/img/index.png'); background-size: cover; background-position: top center;">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2 col-xs-10 col-xs-offset-1">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row">
                     <div class="card card-signup">
-                        <form class="form" method="post" action="{{ path_for('signup') }}" autocomplete="off">
-                            <div class="header header-primary text-center">
-                                <h4 class="card-title">Sign up</h4>
-                            </div>
-                            <div class="card-content">
-                                <div class="input-group">
-									<span class="input-group-addon">
-										<i class="material-icons">face</i>
-									</span>
-                                    <div class="form-group label-floating is-empty {{ errors.firstname ? 'has-error is-focused' : '' }} {{ oldInput.firstname ? 'is-focused' : ''}}" >
-                                        <label class="control-label">First name</label>
-                                        <input type="text" name="firstname" class="form-control" value="{{ oldInput.firstname }}">
-                                        <span class="material-input"></span>
-                                        {% if errors.firstname %}
-                                            <span class="material-icons form-control-feedback">clear</span>
-                                            <span class="help-block">{{ errors.firstname | first }}</span>
-                                        {% endif %}
+                        <h2 class="card-title text-center">Sign up</h2>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <form class="form" method="post" action="{{ path_for('signup') }}" autocomplete="off">
+                                    <div class="card-content">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">face</i>
+                                            </span>
+                                            <div class="form-group label-floating is-empty {{ errors.username ? 'has-error is-focused' : '' }} {{ oldInput.username ? 'is-focused' : '' }}">
+                                                <label class="control-label">Username</label>
+                                                <input type="text" name="username" class="form-control"
+                                                       value="{{ oldInput.username }}" title="Username">
+                                                <span class="material-input"></span>
+                                                {% if errors.username %}
+                                                    <span class="material-icons form-control-feedback">clear</span>
+                                                    <span class="help-block">{{ errors.username | first }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">email</i>
+                                            </span>
+                                            <div class="form-group label-floating is-empty {{ errors.email ? 'has-error is-focused' : '' }} {{ oldInput.email ? 'is-focused' : '' }}">
+                                                <label class="control-label">Email</label>
+                                                <input type="email" name="email" class="form-control"
+                                                       value="{{ oldInput.email }}" title="Email">
+                                                <span class="material-input"></span>
+                                                {% if errors.email %}
+                                                    <span class="material-icons form-control-feedback">clear</span>
+                                                    <span class="help-block">{{ errors.email | first }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="material-icons">lock_outline</i>
+                                            </span>
+                                            <div class="form-group label-floating is-empty {{ errors.password ? 'has-error is-focused' : '' }} {{ oldInput.password ? 'is-focused' : '' }}">
+                                                <label class="control-label">Password</label>
+                                                <input type="password" name="password" class="form-control"
+                                                       value="{{ oldInput.password }}" title="Password">
+                                                <span class="material-input"></span>
+                                                {% if errors.password %}
+                                                    <span class="material-icons form-control-feedback">clear</span>
+                                                    <span class="help-block">{{ errors.password | first }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="agree" checked>
+                                                I agree to the <a href="#">terms and conditions</a>.
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="input-group">
-									<span class="input-group-addon">
-										<i class="material-icons">email</i>
-									</span>
-                                    <div class="form-group label-floating is-empty {{ errors.email ? 'has-error is-focused' : '' }} {{ oldInput.email ? 'is-focused' : ''}}">
-                                        <label class="control-label">Email</label>
-                                        <input type="email" name="email" class="form-control" value="{{ oldInput.email }}">
-                                        <span class="material-input"></span>
-                                        {% if errors.email %}
-                                            <span class="material-icons form-control-feedback">clear</span>
-                                            <span class="help-block">{{ errors.email | first }}</span>
-                                        {% endif %}
+                                    <div class="footer text-center">
+                                        <button type="submit" href="#" class="btn btn-primary btn-round btn-wd btn-lg">
+                                            Sign up
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="input-group">
-									<span class="input-group-addon">
-										<i class="material-icons">lock_outline</i>
-									</span>
-                                    <div class="form-group label-floating is-empty {{ errors.password ? 'has-error is-focused' : '' }} {{ oldInput.password ? 'is-focused' : ''}}">
-                                        <label class="control-label">Password</label>
-                                        <input type="password" name="password" class="form-control" value="{{ oldInput.password }}">
-                                        <span class="material-input"></span>
-                                        {% if errors.password %}
-                                            <span class="material-icons form-control-feedback">clear</span>
-                                            <span class="help-block">{{ errors.password | first }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
+                                    {{ csrf.field | raw }}
+                                </form>
                             </div>
-                            <div class="footer text-center">
-                                <button type="submit" href="#" class="btn btn-primary btn-simple btn-wd btn-lg">Sign up</button>
-                            </div>
-                            {{ csrf.field | raw }}
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}
