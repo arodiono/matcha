@@ -68,7 +68,7 @@ gulp.task('sass', function() {
 
 gulp.task('watch', ['sass', 'js', 'browser-sync'], function() {
 	gulp.watch('public/sass/**/*.sass', ['sass']);
-	// gulp.watch(['libs/**/*.js', 'public/js/common.js'], ['js']);
+	gulp.watch(['libs/**/*.js', 'public/js/common.js'], ['js']);
 	// gulp.watch('public/*.html', browserSync.reload);
 });
 

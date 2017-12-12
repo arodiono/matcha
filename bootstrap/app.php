@@ -92,4 +92,5 @@ $app->add(function (Request $request, Response $response, callable $next) {
 
 v::with('App\\Validation\\Rules\\');
 
+
 require __DIR__ . '/../app/routes.php';

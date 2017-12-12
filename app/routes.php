@@ -2,6 +2,10 @@
 
 $app->get('/', 'HomeController:index')->setName('home');
 
+$app->get('/terms', function ($request, $response) use ($container) {
+    return $container->view->render($response, 'terms.twig');
+})->setName('terms');
+
 $app->group('', function () {
     $this->get('/signup', 'AuthController:getSignUp')->setName('signup');
     $this->post('/signup', 'AuthController:postSignUp');

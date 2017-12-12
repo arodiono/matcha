@@ -15,9 +15,7 @@
                                 <form class="form" method="post" action="{{ path_for('signup') }}" autocomplete="off">
                                     <div class="card-content">
                                         <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">face</i>
-                                            </span>
+                                            <span class="input-group-addon"><i class="material-icons">face</i></span>
                                             <div class="form-group label-floating is-empty {{ errors.username ? 'has-error is-focused' : '' }} {{ oldInput.username ? 'is-focused' : '' }}">
                                                 <label class="control-label">Username</label>
                                                 <input type="text" name="username" class="form-control"
@@ -30,9 +28,7 @@
                                             </div>
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">email</i>
-                                            </span>
+                                            <span class="input-group-addon"><i class="material-icons">email</i></span>
                                             <div class="form-group label-floating is-empty {{ errors.email ? 'has-error is-focused' : '' }} {{ oldInput.email ? 'is-focused' : '' }}">
                                                 <label class="control-label">Email</label>
                                                 <input type="email" name="email" class="form-control"
@@ -45,9 +41,8 @@
                                             </div>
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">lock_outline</i>
-                                            </span>
+                                            <span class="input-group-addon"><i
+                                                        class="material-icons">lock_outline</i></span>
                                             <div class="form-group label-floating is-empty {{ errors.password ? 'has-error is-focused' : '' }} {{ oldInput.password ? 'is-focused' : '' }}">
                                                 <label class="control-label">Password</label>
                                                 <input type="password" name="password" class="form-control"
