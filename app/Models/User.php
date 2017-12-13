@@ -19,8 +19,14 @@ class User extends Model
      */
     protected $fillable = [
         'email',
+        'password',
+        'username',
         'first_name',
-        'password'
+        'last_name',
+        'gender',
+        'sex_preference',
+        'bio',
+        'profile_image'
     ];
 
     /**

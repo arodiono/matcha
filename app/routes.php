@@ -17,6 +17,6 @@ $app->group('', function () {
     $this->get('/signout', 'AuthController:getSignOut')->setName('signout');
     $this->get('/password/change', 'PasswordController:getChangePassword')->setName('password.change');
     $this->post('/password/change', 'PasswordController:postChangePassword');
-    $this->get('/signup/finish', 'AuthController:getSignUpFinish')->setName('signup.finish');
-    $this->post('/signup/finish', 'AuthController:postSignUpFinish');
+    $this->get('/signup/info', 'AuthController:getSignUpInfo')->setName('signup.info');
+    $this->post('/signup/info', 'AuthController:postSignUpInfo');
 })->add(new \App\Middleware\AuthMiddleware($container));
