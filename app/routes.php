@@ -15,8 +15,17 @@ $app->group('', function () {
 
 $app->group('', function () {
     $this->get('/signout', 'AuthController:getSignOut')->setName('signout');
+
     $this->get('/password/change', 'PasswordController:getChangePassword')->setName('password.change');
     $this->post('/password/change', 'PasswordController:postChangePassword');
+
     $this->get('/signup/info', 'AuthController:getSignUpInfo')->setName('signup.info');
     $this->post('/signup/info', 'AuthController:postSignUpInfo');
+
+    $this->get('/signup/photos', 'AuthController:getSignUpPhotos')->setName('signup.photos');
+    $this->post('/signup/photos', 'AuthController:postSignUpPhotos');
+
+    $this->post('/photo/upload', 'PhotoController:upload')->setName('photo.upload');
+    $this->post('/photo/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
+
 })->add(new \App\Middleware\AuthMiddleware($container));

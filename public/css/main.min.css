@@ -1,5 +1,6 @@
 @import url(../libs/bootstrap/bootstrap.min.css);
 @import url(../libs/material-kit/material-kit.css);
+@import url(../libs/dropzone/dropzone.css);
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons";
 * {
   -webkit-box-sizing: border-box;
@@ -50,7 +51,8 @@ footer {
   margin-top: 84px;
   position: absolute;
   bottom: 0;
-  width: 100%; }
+  width: 100%;
+  z-index: 1; }
 
 .profile-info {
   display: -webkit-box;
@@ -124,6 +126,36 @@ footer {
 .bootstrap-tagsinput {
   background-image: none;
   padding: 0; }
+
+.dropzone {
+  position: relative;
+  margin-top: 40px;
+  border: 2px dashed #9c27b0;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  background: white; }
+
+.dropzone .dz-preview .dz-image {
+  max-width: 105px;
+  max-height: 105px; }
+
+.dropzone .dz-preview .dz-image img {
+  cursor: pointer; }
+
+.dropzone .dz-details {
+  display: none; }
+
+.dropzone .dz-message {
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+
+.choose {
+  opacity: 0.7; }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

@@ -30,6 +30,7 @@ $capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
+$container['uploads'] = __DIR__ . '/../public/uploads';
 $container['db'] = function () use ($capsule) {
     return $capsule;
 };
@@ -67,6 +68,9 @@ $container['AuthController'] = function ($container) {
 };
 $container['PasswordController'] = function ($container) {
     return new \App\Controllers\PasswordController($container);
+};
+$container['PhotoController'] = function ($container) {
+    return new \App\Controllers\PhotoController($container);
 };
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;

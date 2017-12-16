@@ -26,7 +26,7 @@ class User extends Model
         'gender',
         'sex_preference',
         'bio',
-        'profile_image'
+        'profile_photo'
     ];
 
     /**
@@ -36,6 +36,13 @@ class User extends Model
     {
         $this->update([
             'password' => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+    }
+
+    public function setPhoto(int $id)
+    {
+        $this->update([
+            'profile_photo' => $id
         ]);
     }
 }

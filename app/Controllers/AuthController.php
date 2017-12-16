@@ -13,6 +13,37 @@ use Respect\Validation\Validator as v;
  */
 class AuthController extends Controller
 {
+    public function getSignUpPhotos(Request $request, Response $response): Response
+    {
+        return $this->view->render($response, 'signup-photos.twig');
+    }
+
+    public function postSignUpPhotos(Request $request, Response $response): Response
+    {
+//        $validation = $this->validator->validate($request, [
+//            'first_name' => v::noWhitespace()->notEmpty()->alpha(),
+//            'last_name' => v::noWhitespace()->notEmpty()->alpha(),
+//            'gender' => v::notEmpty(),
+//            'sex_preference' => v::notEmpty(),
+//            'bio' => v::length(null, 150)
+//        ]);
+//        if ($validation->failed()) {
+//            return $response->withRedirect($this->router->pathFor('signup.info'));
+//        }
+//
+//        $this->auth->user()->update([
+//            'first_name' => $request->getParam('first_name'),
+//            'last_name' => $request->getParam('last_name'),
+//            'gender' => $request->getParam('gender'),
+//            'sex_preference' => $request->getParam('sex_preference'),
+//            'bio' => $request->getParam('bio')
+//        ]);
+//
+//        $this->flash->addMessage('success', 'You have been signed up!');
+//
+//        return $response->withRedirect($this->router->pathFor('home'));
+    }
+
     public function getSignUpInfo(Request $request, Response $response): Response
     {
         return $this->view->render($response, 'signup-info.twig');
@@ -28,7 +59,7 @@ class AuthController extends Controller
             'bio' => v::length(null, 150)
         ]);
         if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('signup.info'));
+            return $response->withRedirect($this->router->pathFor('signup.photos'));
         }
 
         $this->auth->user()->update([

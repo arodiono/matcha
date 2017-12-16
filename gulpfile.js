@@ -20,7 +20,7 @@ gulp.task('common-js', function() {
 		'public/js/common.js',
 		])
 	.pipe(concat('common.min.js'))
-	.pipe(uglify())
+	// .pipe(uglify())
 	.pipe(gulp.dest('public/js'));
 });
 
@@ -37,7 +37,8 @@ gulp.task('js', ['common-js'], function() {
 		'public/libs/material-kit/bootstrap-tagsinput.js',
 		'public/libs/jasny-bootstrap/jasny-bootstrap.js',
 		'public/libs/material-kit/material-kit.js',
-		'public/js/common.min.js' // Всегда в конце
+        'public/libs/dropzone/dropzone.js',
+        'public/js/common.min.js' // Всегда в конце
 		])
 	.pipe(concat('scripts.min.js'))
 	// .pipe(uglify()) // Минимизировать весь js (на выбор)
