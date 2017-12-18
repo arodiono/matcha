@@ -28,4 +28,6 @@ $app->group('', function () {
     $this->post('/photo/upload', 'PhotoController:upload')->setName('photo.upload');
     $this->post('/photo/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
 
+    $this->get('/user/{name}', 'UserController:getUserProfile')->setName('user.profile');
+
 })->add(new \App\Middleware\AuthMiddleware($container));

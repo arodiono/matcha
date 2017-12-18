@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\Tag;
 use App\Models\User;
+use App\Models\UsersTags;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
@@ -16,32 +18,6 @@ class AuthController extends Controller
     public function getSignUpPhotos(Request $request, Response $response): Response
     {
         return $this->view->render($response, 'signup-photos.twig');
-    }
-
-    public function postSignUpPhotos(Request $request, Response $response): Response
-    {
-//        $validation = $this->validator->validate($request, [
-//            'first_name' => v::noWhitespace()->notEmpty()->alpha(),
-//            'last_name' => v::noWhitespace()->notEmpty()->alpha(),
-//            'gender' => v::notEmpty(),
-//            'sex_preference' => v::notEmpty(),
-//            'bio' => v::length(null, 150)
-//        ]);
-//        if ($validation->failed()) {
-//            return $response->withRedirect($this->router->pathFor('signup.info'));
-//        }
-//
-//        $this->auth->user()->update([
-//            'first_name' => $request->getParam('first_name'),
-//            'last_name' => $request->getParam('last_name'),
-//            'gender' => $request->getParam('gender'),
-//            'sex_preference' => $request->getParam('sex_preference'),
-//            'bio' => $request->getParam('bio')
-//        ]);
-//
-//        $this->flash->addMessage('success', 'You have been signed up!');
-//
-//        return $response->withRedirect($this->router->pathFor('home'));
     }
 
     public function getSignUpInfo(Request $request, Response $response): Response
@@ -59,7 +35,7 @@ class AuthController extends Controller
             'bio' => v::length(null, 150)
         ]);
         if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('signup.photos'));
+            return $response->withRedirect($this->router->pathFor('signup.info'));
         }
 
         $this->auth->user()->update([
@@ -70,9 +46,20 @@ class AuthController extends Controller
             'bio' => $request->getParam('bio')
         ]);
 
+        $tags = explode(',', $request->getParam('tags'));
+        foreach ($tags as $tag) {
+            $tagId = Tag::updateOrCreate([
+                'tag' => $tag
+            ]);
+            UsersTags::updateOrCreate([
+                'user_id' => $_SESSION['user'],
+                'tag_id' => $tagId->id
+            ]);
+        }
+
         $this->flash->addMessage('success', 'You have been signed up!');
 
-        return $response->withRedirect($this->router->pathFor('home'));
+        return $response->withRedirect($this->router->pathFor('signup.photos'));
     }
 
     /**
@@ -135,7 +122,6 @@ class AuthController extends Controller
             'email' => v::email()->emailAvailable(),
             'username' => v::noWhitespace()->notEmpty()->alpha(),
             'password' => v::noWhitespace()->length(8, null),
-
         ]);
 
         if ($validation->failed()) {
@@ -148,9 +134,9 @@ class AuthController extends Controller
             'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
         ]);
 
-        $this->flash->addMessage('success', 'You have been signed up!');
+        $this->flash->addMessage('success', 'You have been signed up! Please tell about yourself');
         $this->auth->attempt($user->email, $request->getParam('password'));
 
-        return $response->withRedirect($this->router->pathFor('signup.finish'));
+        return $response->withRedirect($this->router->pathFor('signup.info'));
     }
 }

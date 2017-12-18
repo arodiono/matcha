@@ -72,6 +72,9 @@ $container['PasswordController'] = function ($container) {
 $container['PhotoController'] = function ($container) {
     return new \App\Controllers\PhotoController($container);
 };
+$container['UserController'] = function ($container) {
+    return new \App\Controllers\UserController($container);
+};
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
 };

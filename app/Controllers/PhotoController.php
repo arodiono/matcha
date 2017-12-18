@@ -3,8 +3,9 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
-use App\Models\User;
 use App\Models\Photo;
+use App\Models\User;
+use App\Models\Tag;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
@@ -39,7 +40,7 @@ class PhotoController extends Controller
                    'user_id' => $user->id
                 ]);
                 if ($file->getClientFilename() == $profilePhoto) {
-                    $this->auth->user()->setPhoto($id->id);
+                    $this->auth->user()->setPhoto($id->photo);
                 }
             }
         }

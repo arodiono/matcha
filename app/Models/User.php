@@ -39,10 +39,10 @@ class User extends Model
         ]);
     }
 
-    public function setPhoto(int $id)
+    public function setPhoto($photo)
     {
         $this->update([
-            'profile_photo' => $id
+            'profile_photo' => $photo
         ]);
     }
 }

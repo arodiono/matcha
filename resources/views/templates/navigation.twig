@@ -21,21 +21,44 @@
                 <li>
                     <a href="#"><i class="material-icons">search</i> Search</a>
                 </li>
+                {#<li class="dropdown">#}
+                    {#<a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+                        {#<i class="material-icons">account_box</i> Account#}
+                        {#<b class="caret"></b>#}
+                    {#</a>#}
+                    {#<ul class="dropdown-menu dropdown-with-icons">#}
+                        {#<li>#}
+                            {#<a href="{{ path_for('user.profile', { 'name': auth.user.username }) }}"><i class="material-icons">account_box</i> Profile</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#"><i class="material-icons">settings</i> Settings</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="{{ path_for('signout') }}"><i class="material-icons">exit_to_app</i> Sign out</a>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</li>#}
+                <li class="">
+                    <a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons">email</i>
+                        <div class="ripple-container"></div></a>
+                </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="material-icons">account_box</i> Account
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu dropdown-with-icons">
+                    <a href="#" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <div class="profile-photo-small">
+                            <img src="{{ base_url() }}/uploads/{{ auth.user.username }}/{{ auth.user.profile_photo }}" alt="Circle Image" class="img-circle img-responsive">
+                        </div>
+                        <div class="ripple-container"></div></a>
+                    <ul class="dropdown-menu">
+
                         <li>
-                            <a href="#"><i class="material-icons">account_box</i> Profile</a>
+                            <a href="{{ path_for('user.profile', { 'name': auth.user.username }) }}">Profile</a>
                         </li>
                         <li>
-                            <a href="#"><i class="material-icons">settings</i> Settings</a>
+                            <a href="#">Settings</a>
                         </li>
-                        <li>
-                            <a href="{{ path_for('signout') }}"><i class="material-icons">exit_to_app</i> Sign out</a>
-                        </li>
+                        <li class="divider"></li>
+                        <li><a href="{{ path_for('signout') }}">Sign out</a></li>
                     </ul>
                 </li>
             {% else %}
@@ -50,3 +73,59 @@
         </div>
     </div>
 </nav>
+
+{#<nav class="navbar navbar-inverse" role="navigation-demo">#}
+    {#<div class="container">#}
+        {#<!-- Brand and toggle get grouped for better mobile display -->#}
+        {#<div class="navbar-header">#}
+            {#<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation-example-2" aria-expanded="false">#}
+                {#<span class="sr-only">Toggle navigation</span>#}
+                {#<span class="icon-bar"></span>#}
+                {#<span class="icon-bar"></span>#}
+                {#<span class="icon-bar"></span>#}
+            {#</button>#}
+            {#<a class="navbar-brand" href="#pablo">Navbar with notification</a>#}
+        {#</div>#}
+
+        {#<!-- Collect the nav links, forms, and other content for toggling -->#}
+        {#<div class="navbar-collapse collapse" id="navigation-example-2" aria-expanded="false" style="height: 0px;">#}
+            {#<ul class="nav navbar-nav navbar-right">#}
+                {#<li>#}
+                    {#<a href="#pablo">#}
+                        {#Discover#}
+                    {#</a>#}
+                {#</li>#}
+                {#<li>#}
+                    {#<a href="#pablo">#}
+                        {#Wishlist#}
+                    {#</a>#}
+                {#</li>#}
+                {#<li class="">#}
+                    {#<a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">#}
+                        {#<i class="material-icons">email</i>#}
+                        {#<div class="ripple-container"></div></a>#}
+                {#</li>#}
+                {#<li class="dropdown">#}
+                    {#<a href="#pablo" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">#}
+                        {#<div class="profile-photo-small">#}
+                            {#<img src="assets/img/faces/avatar.jpg" alt="Circle Image" class="img-circle img-responsive">#}
+                        {#</div>#}
+                        {#<div class="ripple-container"></div></a>#}
+                    {#<ul class="dropdown-menu">#}
+                        {#<li class="dropdown-header">#}
+                            {#Dropdown header#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#pablo">Me</a>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#<a href="#pablo">Settings and other stuff</a>#}
+                        {#</li>#}
+                        {#<li class="divider"></li>#}
+                        {#<li><a href="#pablo">Sign out</a></li>#}
+                    {#</ul>#}
+                {#</li>#}
+            {#</ul>#}
+        {#</div><!-- /.navbar-collapse -->#}
+    {#</div><!-- /.container-->#}
+{#</nav>#}

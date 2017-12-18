@@ -1,0 +1,82 @@
+{% extends 'templates/core.twig' %}
+{% set title = username %}
+{% set body = 'profile-page' %}
+
+{% block content %}
+    <div class="page-header header-filter" data-parallax="true" style="background-image: url('{{ base_url() }}/img/index.png');"></div>
+
+    <div class="main main-raised">
+        <div class="profile-content">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <div class="profile">
+                            <div class="avatar">
+                                <img src="{{ base_url() ~ "/uploads/" ~ username ~ "/" ~ profile_photo }}" alt="" class="img-circle img-responsive img-raised">
+                            </div>
+                            <div class="name">
+                                <h3 class="title">{{ first_name|capitalize ~ ' ' ~ last_name|capitalize }}<i class="material-icons" data-toggle="tooltip"
+                                                                    data-placement="top" title="" data-container="body"
+                                                                    data-original-title="last online">fiber_manual_record</i>
+                                </h3>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="profile-info list-unstyled">
+                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
+                                data-original-title="rating">
+                                <i class="material-icons">whatshot</i>100
+                            </li>
+                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
+                                data-original-title="rating">
+                                <i class="material-icons">room</i>Kyiv
+                            </li>
+                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
+                                data-original-title="rating">
+                                <i class="material-icons">wc</i> {{ gender }}
+                            </li>
+                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
+                                data-original-title="rating">
+                                <i class="material-icons">people</i> {{ sex_preference }}
+                            </li>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="interests">
+                        {% for tag in tags%}
+                            <a href="#"><span class="label label-default">#{{ tag.tag }}</span></a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="description text-center">
+                            <p>{{ bio }}</p>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-rose btn-round">
+                                <i class="material-icons">favorite</i> Like
+                                <div class="ripple-container"></div>
+                            </button>
+                            <button class="btn btn-rose btn-round">
+                                <i class="material-icons">email</i> message
+                                <div class="ripple-container"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main main-raised main-raised-bottom">
+        <div class="container">
+            <div class="row gallery">
+                {% for photo in photos %}
+                    <img src="{{ base_url() }}/uploads/{{ username }}/{{ photo.photo }}" class="gallery-img"/>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
