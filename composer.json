@@ -6,7 +6,8 @@
         "illuminate/database": "^5.5",
         "respect/validation": "^1.1",
         "slim/csrf": "^0.8.2",
-        "slim/flash": "^0.4.0"
+        "slim/flash": "^0.4.0",
+        "robmorgan/phinx": "^0.9.1"
     },
     "autoload": {
         "psr-4": {

@@ -5,6 +5,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 session_start();
+date_default_timezone_set('Europe/Kiev');
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -14,12 +15,17 @@ $app = new \Slim\App([
         'addContentLengthHeader' => false,
         'db' => [
             'driver' => 'mysql',
-            'host' => 'localhost',
-            'username' => 'root',
-            'password' => 'XmmD3RKE',
+            'host' => '35.198.137.227',
+            'username' => 'test',
+            'password' => 'test',
             'database' => 'matcha',
             'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci'
+            'collation' => 'utf8_unicode_ci',
+//            'options'   => [
+//                PDO::MYSQL_ATTR_SSL_KEY => __DIR__ . '/../cert/client-key.pem',
+//                PDO::MYSQL_ATTR_SSL_CERT => __DIR__ . '/../cert/client-cert.pem',
+//                PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../cert/ca-cert.pem'
+//            ],
         ],
     ]
 ]);
