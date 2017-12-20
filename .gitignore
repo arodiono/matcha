@@ -3,6 +3,7 @@ vendor/*
 node_modules/*
 /cert/*
 /public/uploads/*
+/public/img/favicon/*
 /public/sass/*
 .DS_Store
 composer.lock

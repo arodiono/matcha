@@ -8,24 +8,20 @@ session_start();
 date_default_timezone_set('Europe/Kiev');
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__. '/../app/Database/config.php';
 
 $app = new \Slim\App([
     'settings' => [
         'displayErrorDetails' => true,
         'addContentLengthHeader' => false,
         'db' => [
-            'driver' => 'mysql',
-            'host' => '35.198.137.227',
-            'username' => 'test',
-            'password' => 'test',
-            'database' => 'matcha',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-//            'options'   => [
-//                PDO::MYSQL_ATTR_SSL_KEY => __DIR__ . '/../cert/client-key.pem',
-//                PDO::MYSQL_ATTR_SSL_CERT => __DIR__ . '/../cert/client-cert.pem',
-//                PDO::MYSQL_ATTR_SSL_CA => __DIR__ . '/../cert/ca-cert.pem'
-//            ],
+            'driver' => DB_DRIVER,
+            'host' => DB_HOST,
+            'username' => DB_USER,
+            'password' => DB_PASS,
+            'database' => DB_NAME,
+            'charset' => DB_CHARSET,
+            'collation' => DB_COLLATION
         ],
     ]
 ]);

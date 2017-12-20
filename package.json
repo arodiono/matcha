@@ -1,6 +1,6 @@
 {
   "name": "Matcha",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Matcha",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,6 @@
   },
   "author": "arodiono",
   "devDependencies": {
-    "browser-sync": "^2.18.13",
-    "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-cache": "^1.0.1",
@@ -18,11 +16,9 @@
     "gulp-imagemin": "^4.0.0",
     "gulp-notify": "^3.0.0",
     "gulp-rename": "^1.2.2",
-    "gulp-rsync": "0.0.8",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
-    "vinyl-ftp": "^0.6.0"
+    "gulp-util": "^3.0.8"
   },
   "dependencies": {
     "node-sass": "^4.7.2"
