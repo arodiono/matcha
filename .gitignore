@@ -1,0 +1,9 @@
+.idea/*
+vendor/*
+node_modules/*
+/cert/*
+/public/uploads/*
+/public/sass/*
+.DS_Store
+composer.lock
+package-lock.json
