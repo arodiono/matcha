@@ -4,8 +4,8 @@ require __DIR__. '/app/Database/config.php';
 
 return [
     "paths" => [
-        "migrations" => "/app/Database/migrations",
-        "seeds" => "/app/Database/seeds"
+        "migrations" => "app/Database/migrations",
+        "seeds" => "app/Database/seeds"
     ],
     "environments" => [
         "default_migration_table" => "phinxlog",

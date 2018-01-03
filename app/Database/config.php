@@ -7,4 +7,4 @@ define('DB_PASS', '');
 define('DB_NAME', '');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATION', 'utf8_unicode_ci');
-define('DB_PORT', '3306');
+define('DB_PORT', '');
