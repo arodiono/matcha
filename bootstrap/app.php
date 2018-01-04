@@ -23,6 +23,11 @@ $app = new \Slim\App([
             'charset' => DB_CHARSET,
             'collation' => DB_COLLATION
         ],
+        'logger' => [
+            'name' => 'matcha',
+            'level' => Monolog\Logger::DEBUG,
+            'path' => __DIR__ . '/../var/logs/app.log',
+        ],
     ]
 ]);
 
@@ -79,6 +84,24 @@ $container['UserController'] = function ($container) {
 };
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
+};
+$container['logger'] = function () {
+    return new \Monolog\Logger('matcha');
+};
+$container['logger']->pushHandler(new Monolog\Handler\StreamHandler('../var/logs/logs.log', \Monolog\Logger::WARNING));
+
+$container['mailer'] = function ($container) {
+    $mailer = new \PHPMailer\PHPMailer\PHPMailer();
+
+    $mailer->Host = 'localhost';  // your email host, to test I use localhost and check emails using test mail server application (catches all  sent mails)
+    $mailer->SMTPAuth = false;                 // I set false for localhost
+    $mailer->SMTPSecure = '';              // set blank for localhost
+    $mailer->Port = 25;                           // 25 for local host
+	$mailer->Username = 'klymenok.a@gmail.com';    // I set sender email in my mailer call
+	$mailer->Password = '';
+	$mailer->isHTML(true);
+
+	return new \App\Mail\Mailer($container->view, $mailer);
 };
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
