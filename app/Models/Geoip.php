@@ -12,6 +12,7 @@ class Geoip extends Model
 {
     protected $table = 'geoip';
     protected $container2;
+    protected $logger;
 
     private $_latConst = 111; //value of 1 Lat degree in kilometers
 
@@ -45,8 +46,23 @@ class Geoip extends Model
             $data = $this->getConnection()
                 ->select('select *, users.*, 6373*2*ASIN(SQRT(POWER(SIN((' . $currentCoords['lat'] . '-abs(lat))* pi()/180 / 2),2) + COS(' . $currentCoords['lat'] . '*pi()/180 )*COS(abs(lat)*pi()/180)*POWER(SIN((' . $currentCoords['lon'] . ' - lon)*pi()/180 / 2), 2))) as distance FROM geoip left join users on users.id = geoip.user_id having distance < ' . $radius . ' and lon between ' . $minLon . ' and ' . $maxLon . ' and lat between ' . $minLat . ' and ' . $maxLat);
             $res = (array)$data;
-            r(json_encode($res));
             die();
+            //TODO add JSON to return
+        }
+    }
+
+    public function setCoordinates($json)
+    {
+        if (array_key_exists('user', $_SESSION)) {
+            $data = json_decode($json, true);
+            if (!$this::where('user_id', $_SESSION['user'])
+                ->update(['lat' => $data['latitude'], 'lon' => $data['longitude']])) {
+
+                $this->user_id = $_SESSION['user'];
+                $this->lat = $data['latitude'];
+                $this->lon = $data['longitude'];
+                $this->save();
+            }
         }
     }
 }
