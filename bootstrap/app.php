@@ -4,11 +4,13 @@ use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+
 session_start();
 date_default_timezone_set('Europe/Kiev');
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__. '/../app/Database/config.php';
+require __DIR__. '/../app/Mail/config.php';
 
 $app = new \Slim\App([
     'settings' => [
@@ -22,6 +24,11 @@ $app = new \Slim\App([
             'database' => DB_NAME,
             'charset' => DB_CHARSET,
             'collation' => DB_COLLATION
+        ],
+        'logger' => [
+            'name' => 'matcha',
+            'level' => Monolog\Logger::DEBUG,
+            'path' => __DIR__ . '/../var/logs/app.log',
         ],
     ]
 ]);
@@ -79,6 +86,27 @@ $container['UserController'] = function ($container) {
 };
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
+};
+$container['logger'] = function () {
+    return new \Monolog\Logger('matcha');
+};
+$container['logger']->pushHandler(new Monolog\Handler\StreamHandler('../var/logs/logs.log', \Monolog\Logger::WARNING));
+
+$container['mailer'] = function ($container) {
+    $mailer = new \PHPMailer\PHPMailer\PHPMailer();
+
+    $mailer->isSMTP();
+    $mailer->setFrom('matcha.kyiv@gmail.com', 'Matcha');
+
+    $mailer->Host = 'smtp.gmail.com';
+    $mailer->SMTPAuth = true;
+    $mailer->SMTPSecure = 'tls';
+    $mailer->Port = 587;
+    $mailer->Username = 'matcha.kyiv@gmail.com';
+    $mailer->Password = MAIL_PASS;
+    $mailer->addCustomHeader('Content-Type', 'text/html');
+
+	return new \App\Mail\Mailer($container->view, $mailer);
 };
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));

@@ -8,3 +8,6 @@ node_modules/*
 .DS_Store
 composer.lock
 package-lock.json
+app/Database/config.php
+app/Mail/config.php
+phinx.php
