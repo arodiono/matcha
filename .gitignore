@@ -9,4 +9,5 @@ node_modules/*
 composer.lock
 package-lock.json
 app/Database/config.php
+app/Mail/config.php
 phinx.php

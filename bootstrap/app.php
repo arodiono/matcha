@@ -4,11 +4,13 @@ use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+
 session_start();
 date_default_timezone_set('Europe/Kiev');
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__. '/../app/Database/config.php';
+require __DIR__. '/../app/Mail/config.php';
 
 $app = new \Slim\App([
     'settings' => [
@@ -93,13 +95,16 @@ $container['logger']->pushHandler(new Monolog\Handler\StreamHandler('../var/logs
 $container['mailer'] = function ($container) {
     $mailer = new \PHPMailer\PHPMailer\PHPMailer();
 
-    $mailer->Host = 'localhost';  // your email host, to test I use localhost and check emails using test mail server application (catches all  sent mails)
-    $mailer->SMTPAuth = false;                 // I set false for localhost
-    $mailer->SMTPSecure = '';              // set blank for localhost
-    $mailer->Port = 25;                           // 25 for local host
-	$mailer->Username = 'klymenok.a@gmail.com';    // I set sender email in my mailer call
-	$mailer->Password = '';
-	$mailer->isHTML(true);
+    $mailer->isSMTP();
+    $mailer->setFrom('matcha.kyiv@gmail.com', 'Matcha');
+
+    $mailer->Host = 'smtp.gmail.com';
+    $mailer->SMTPAuth = true;
+    $mailer->SMTPSecure = 'tls';
+    $mailer->Port = 587;
+    $mailer->Username = 'matcha.kyiv@gmail.com';
+    $mailer->Password = MAIL_PASS;
+    $mailer->addCustomHeader('Content-Type', 'text/html');
 
 	return new \App\Mail\Mailer($container->view, $mailer);
 };
