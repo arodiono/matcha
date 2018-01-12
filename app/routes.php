@@ -11,6 +11,10 @@ $app->group('', function () {
     $this->post('/signup', 'AuthController:postSignUp');
     $this->get('/signin', 'AuthController:getSignIn')->setName('signin');
     $this->post('/signin', 'AuthController:postSignIn');
+    $this->get('/password/forgot', 'PasswordController:getForgotPassword')->setName('password.forgot');
+    $this->post('/password/forgot', 'PasswordController:postForgotPassword');
+    $this->get('/password/reset', 'PasswordController:getResetPassword')->setName('password.reset');
+    $this->post('/password/reset', 'PasswordController:postResetPassword');
 })->add(new \App\Middleware\GuestMiddleware($container));
 
 $app->group('', function () {
@@ -28,6 +32,9 @@ $app->group('', function () {
     $this->post('/photo/upload', 'PhotoController:upload')->setName('photo.upload');
     $this->post('/photo/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
 
+    $this->post('/user/location', 'UserController:setLocation')->setName('user.location');
     $this->get('/user/{name}', 'UserController:getUserProfile')->setName('user.profile');
+
+
 
 })->add(new \App\Middleware\AuthMiddleware($container));

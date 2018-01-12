@@ -146,7 +146,7 @@
             border: solid 1px #9c27b0;
             border-radius: 5px;
             box-sizing: border-box;
-            color: #3498db;
+            color: #9c27b0;
             cursor: pointer;
             display: inline-block;
             font-size: 14px;
@@ -281,7 +281,7 @@
         <td class="container">
             <div class="content">
 
-                
+                {% block content %}{% endblock %}
 
                 <!-- START FOOTER -->
                 <div class="footer">
@@ -294,7 +294,7 @@
                         {#</tr>#}
                         <tr>
                             <td class="content-block powered-by">
-                                <a href="#">Matcha</a>
+                                <a href="{{ path_for('home') }}">Matcha</a>
                             </td>
                         </tr>
                     </table>

@@ -6,10 +6,10 @@ use App\Models\User;
 use Respect\Validation\Rules\AbstractRule;
 
 /**
- * Class EmailAvailable
+ * Class EmailExist
  * @package App\Validation\Rules
  */
-class EmailAvailable extends AbstractRule
+class EmailExist extends AbstractRule
 {
     /**
      * @param string $input
@@ -17,6 +17,6 @@ class EmailAvailable extends AbstractRule
      */
     public function validate($input)
     {
-        return User::where('email', $input)->count() === 0;
+        return User::where('email', $input)->count() === 1;
     }
 }

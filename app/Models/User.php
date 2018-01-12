@@ -26,7 +26,8 @@ class User extends Model
         'gender',
         'sex_preference',
         'bio',
-        'profile_photo'
+        'profile_photo',
+        'hash'
     ];
 
     /**

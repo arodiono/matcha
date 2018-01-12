@@ -131,7 +131,8 @@ class AuthController extends Controller
         $user = User::create([
             'username' => $request->getParam('username'),
             'email' => $request->getParam('email'),
-            'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT)
+            'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT),
+            'hash' => hash('md5', uniqid(rand(), true))
         ]);
 
         $this->flash->addMessage('success', 'You have been signed up! Please tell about yourself');

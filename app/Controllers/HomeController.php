@@ -18,10 +18,10 @@ class HomeController extends Controller
      */
     public function index(Request $request, Response $response): Response
     {
-        $this->mailer->send('mail/template.twig', [], function($message){
-            $message->to('klymenok.a@gmail.com');
-            $message->subject('Email Subject');
-        });
+//        $this->mailer->send('mail/template.twig', [], function($message){
+//            $message->to('klymenok.a@gmail.com');
+//            $message->subject('Email Subject');
+//        });
         return $this->view->render($response, 'home.twig');
     }
 }

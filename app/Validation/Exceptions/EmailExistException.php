@@ -5,17 +5,17 @@ namespace App\Validation\Exceptions;
 use Respect\Validation\Exceptions\ValidationException;
 
 /**
- * Class EmailAvailableException
+ * Class EmailExistException
  * @package App\Validation\Exceptions
  */
-class EmailAvailableException extends ValidationException
+class EmailExistException extends ValidationException
 {
     /**
      * @var array
      */
     public static $defaultTemplates = [
         self::MODE_DEFAULT => [
-            self::STANDARD => 'Email is already taken.',
+            self::STANDARD => 'Can\'t find that email, sorry.',
         ],
     ];
 }

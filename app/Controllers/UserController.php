@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Geoip;
 use App\Models\Photo;
 use App\Models\User;
 use App\Models\Tag;
@@ -29,16 +30,18 @@ class UserController extends Controller
         $userdata = $user->getAttributes();
         $userdata['tags'] = Tag::where('user_id', $userdata['id'])->leftJoin('users-tags', 'tags.id', '=', 'users-tags.tag_id')->get()->toArray();
         $userdata['photos'] = Photo::where('user_id', $userdata['id'])->get()->toArray();
-//        r($userdata);
-//        die();
         return $this->view->render($response, 'profile.twig', $userdata);
     }
-}
 
-//
-//теги юзера
-//
-//SELECT `tags`.`tag`
-//FROM `tags`
-//LEFT JOIN `users-tags` ON `tags`.`id` = `users-tags`.`tag_id`
-//WHERE (( `user_id` = 3))
+    public function setLocation(Request $request, Response $response): Response
+    {
+        $data = $request->getParsedBody();
+        if (isset($data['latitude']) && isset($data['longitude'])) {
+            Geoip::updateOrInsert(
+                ['user_id' => $_SESSION['user']],
+                ['user_id' => $_SESSION['user'], 'lat' => $data['latitude'], 'lon' => $data['longitude']]
+            );
+        }
+        return $response->withStatus(200);
+    }
+}

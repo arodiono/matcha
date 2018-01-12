@@ -51,10 +51,9 @@ class Geoip extends Model
         }
     }
 
-    public function setCoordinates($json)
+    public function setCoordinates($data)
     {
         if (array_key_exists('user', $_SESSION)) {
-            $data = json_decode($json, true);
             if (!$this::where('user_id', $_SESSION['user'])
                 ->update(['lat' => $data['latitude'], 'lon' => $data['longitude']])) {
 

@@ -1,3 +1,5 @@
+"use strict";
+
 $(function() {
 
     // Limit number of characters in limited textarea
@@ -12,9 +14,41 @@ $(function() {
         }
     });
 
+    //Searching geolocation using browser or IP address
+    navigator.geolocation.getCurrentPosition(function(position) {
+        sendLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        });
+        // sendLocation(pos);
+    }, function() {
+        $.ajax({
+            url: 'http://freegeoip.net/json/',
+            method: 'GET',
+            dataType: 'json'
+        }).done(function (data) {
+            sendLocation({
+                latitude: data.latitude,
+                longitude: data.longitude
+            });
+        });
+    }, { enableHighAccuracy: true });
 
+    // Sending data to server
+    function sendLocation(pos) {
+        $.ajax({
+            url: '/user/location',
+            method: 'POST',
+            dataType: 'json',
+            data: pos
+        }).done(function () {
+            console.log(pos);
+            console.log('location send');
+        });
+    }
 
 });
+
 
 Dropzone.options.uploadWidget = {
     autoProcessQueue: false,
@@ -65,25 +99,3 @@ Dropzone.options.uploadWidget = {
         });
     }
 };
-
-
-
-
-
-//
-// function chooseProfilePhoto() {
-//     var profilePhoto;
-//     $('.card-title').text('Choose profile photo');
-//     $('.max').hide();
-//
-//     $('#btn').text('Choose').click(function () {
-//         $.ajax({
-//             method: 'post',
-//             url: '/photo/set',
-//             data: { profile_photo: profilePhoto }
-//         })
-//             .done( function () {
-//                 window.location.replace('');
-//             });
-//     });
-// }
