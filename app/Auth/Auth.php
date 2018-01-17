@@ -13,9 +13,11 @@ class Auth
     /**
      * @return User
      */
-    public function user() : ?User
+    public function user()
     {
-        return User::find($_SESSION['user']);
+        if (array_key_exists('user', $_SESSION)) {
+            return User::find($_SESSION['user']);
+        }
     }
 
     /**

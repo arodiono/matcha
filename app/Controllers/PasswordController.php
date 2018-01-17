@@ -81,9 +81,13 @@ class PasswordController extends Controller
     public function postResetPassword(Request $request, Response $response): Response
     {
         $validation = $this->validator->validate($request, [
-            'password' => v::noWhitespace()->notEmpty()->matchesPassword($request->getParsedBodyParam('password_repeat')),
+            'password' => v::noWhitespace()->notEmpty(),
             'password_repeat' => v::noWhitespace()->notEmpty(),
         ]);
+
+//        TODO  Создать правило для валидации паролей с эксепшенами
+
+
 
         if ($validation->failed()) {
             return $response->withRedirect($this->router->pathFor('password.reset'));
@@ -96,4 +100,5 @@ class PasswordController extends Controller
         return $response->withRedirect($this->router->pathFor('home'));
 
     }
+
 }
