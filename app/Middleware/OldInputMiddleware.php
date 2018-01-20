@@ -19,8 +19,11 @@ class OldInputMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, callable $next): Response
     {
-        $this->view->getEnvironment()->addGlobal('oldInput', $_SESSION['oldInput']);
-        $_SESSION['oldInput'] = $request->getParams();
+    	if(!array_key_exists('oldInput', $_SESSION)) {
+    		$_SESSION['oldInput'] = '';
+		}
+		$this->view->getEnvironment()->addGlobal('oldInput', $_SESSION['oldInput']);
+		$_SESSION['oldInput'] = $request->getParams();
         $response = $next($request, $response);
         return $response;
     }

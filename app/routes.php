@@ -13,8 +13,8 @@ $app->group('', function () {
     $this->post('/signin', 'AuthController:postSignIn');
     $this->get('/password/forgot', 'PasswordController:getForgotPassword')->setName('password.forgot');
     $this->post('/password/forgot', 'PasswordController:postForgotPassword');
-    $this->get('/password/reset', 'PasswordController:getResetPassword')->setName('password.reset');
-    $this->post('/password/reset', 'PasswordController:postResetPassword');
+    $this->get('/password/reset/{hash}', 'PasswordController:getResetPassword')->setName('password.reset');
+    $this->post('/password/reset/{hash}', 'PasswordController:postResetPassword');
 })->add(new \App\Middleware\GuestMiddleware($container));
 
 $app->group('', function () {

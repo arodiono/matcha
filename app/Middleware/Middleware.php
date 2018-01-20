@@ -26,7 +26,7 @@ class Middleware
      * @param string $name
      * @return object
      */
-    public function __get($name): object
+    public function __get($name)
     {
         if ($this->container->{$name}) {
             return $this->container->{$name};

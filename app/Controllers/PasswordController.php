@@ -73,27 +73,45 @@ class PasswordController extends Controller
         return $response->withRedirect($this->router->pathFor('password.forgot'));
     }
 
-    public function getResetPassword(Request $request, Response $response): Response
+    public function getResetPassword(Request $request, Response $response, $args): Response
     {
-        return $this->view->render($response, 'password-reset.twig');
+		$user = User::where('hash', $args['hash'])->get();
+		if (!$user->count()) {
+			return $response->withStatus(404);
+		}
+        return $this->view->render($response, 'password-reset.twig', $args);
     }
 
-    public function postResetPassword(Request $request, Response $response): Response
+    public function postResetPassword(Request $request, Response $response, $args): Response
     {
-        $validation = $this->validator->validate($request, [
-            'password' => v::noWhitespace()->notEmpty()->matchesPassword($request->getParsedBodyParam('password_repeat')),
-            'password_repeat' => v::noWhitespace()->notEmpty(),
+	
+		$user = User::where('hash', $args['hash'])->first();
+	
+		if (!$user->count()) {
+			return $response->withStatus(404);
+		}
+	
+		$validation = $this->validator->validate($request, [
+            'password' => v::noWhitespace()->notEmpty()
+				->matchesOldPassword($user->password),
+            'password_repeat' => v::noWhitespace()->notEmpty()
+				->matchesNewPassword($request->getParsedBodyParam('password')),
         ]);
 
         if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('password.reset'));
+            return $response->withRedirect($this->router->pathFor('password.reset', $args));
         }
-
-        $user = User::where('email', $request->getParsedBodyParam('email'));
-        $user->password = password_hash($request->getParsedBodyParam('password_repeat'), PASSWORD_DEFAULT);
-
-        $_SESSION['user'] = $user->id;
+	
+		$user->setPassword($request->getParsedBodyParam('password_repeat'));
+		$user->update([
+			'hash' => hash('md5', uniqid(rand(), true))
+		]);
+		
+		$_SESSION['user'] = $user->id;
+		
+		$this->flash->addMessage('success', 'Your password has been changed successfully.');
         return $response->withRedirect($this->router->pathFor('home'));
 
     }
+
 }
