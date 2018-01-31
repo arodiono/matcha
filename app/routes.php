@@ -31,10 +31,13 @@ $app->group('', function () {
 
     $this->post('/photo/upload', 'PhotoController:upload')->setName('photo.upload');
     $this->post('/photo/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
-
+	
+	$this->get('/user/edit', 'UserController:getUserEdit')->setName('user.edit');
+	$this->post('/user/edit', 'UserController:postUserEdit');
+	
     $this->post('/user/location', 'UserController:setLocation')->setName('user.location');
     $this->get('/user/{name}', 'UserController:getUserProfile')->setName('user.profile');
-
-
-
+	
+	$this->get('/search/nearby', 'SearchController:getNearbyUsers')->setName('search.nearby');
+	
 })->add(new \App\Middleware\AuthMiddleware($container));

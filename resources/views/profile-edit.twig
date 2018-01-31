@@ -1,0 +1,160 @@
+{% extends 'templates/core.twig' %}
+{% set title = username %}
+{% set body = 'profile-page' %}
+
+{% block content %}
+
+    <div class="page-header header-filter" data-parallax="true" style="background-image: url('{{ base_url() }}/img/index.png');"></div>
+
+    <div class="main main-raised">
+        <div class="profile-content">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <div class="profile">
+                            <div class="avatar">
+                                <img src="{{ base_url() ~ "/uploads/" ~ username ~ "/" ~ profile_photo }}" alt="" class="img-circle img-responsive img-raised">
+                            </div>
+                            <div class="profile-edit-form ">
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <ul class="nav nav-pills nav-pills-rose nav-stacked">
+                                            <li class="active"><a href="#profile" data-toggle="tab" aria-expanded="false">Profile</a></li>
+                                            <li class=""><a href="#security" data-toggle="tab" aria-expanded="false">Security</a></li>
+                                            <li class=""><a href="#options" data-toggle="tab" aria-expanded="true">Options</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="profile">
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
+                                                    <div class="form-group label-floating is-empty {{ email ? 'is-focused' : '' }}">
+                                                        <label class="control-label">Email</label>
+                                                        <input type="email" name="email" class="form-control"
+                                                               value="{{ email }}" title="Email">
+                                                        <span class="material-input"></span>
+                                                        {% if errors.email %}
+                                                            <span class="material-icons form-control-feedback">clear</span>
+                                                            <span class="help-block">{{ errors.email | first }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
+                                                    <div class="form-group label-floating is-empty {{ first_name ? 'is-focused' : '' }}">
+                                                        <label class="control-label">First Name</label>
+                                                        <input type="text" name="first_name" class="form-control"
+                                                               value="{{ first_name }}" title="First name">
+                                                        <span class="material-input"></span>
+                                                        {% if errors.first_name %}
+                                                            <span class="material-icons form-control-feedback">clear</span>
+                                                            <span class="help-block">{{ errors.first_name | first }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
+                                                    <div class="form-group label-floating is-empty {{ last_name ? 'is-focused' : '' }}">
+                                                        <label class="control-label">Last Name</label>
+                                                        <input type="text" name="last_name" class="form-control"
+                                                               value="{{ last_name }}" title="Last name">
+                                                        <span class="material-input"></span>
+                                                        {% if errors.last_name %}
+                                                            <span class="material-icons form-control-feedback">clear</span>
+                                                            <span class="help-block">{{ errors.last_name | first }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
+                                                    <div class="form-group label-floating is-empty {{ last_name ? 'is-focused' : '' }}">
+                                                        <label class="control-label">Last Name</label>
+                                                        <input type="text" name="last_name" class="form-control"
+                                                               value="{{ last_name }}" title="Last name">
+                                                        <span class="material-input"></span>
+                                                        {% if errors.last_name %}
+                                                            <span class="material-icons form-control-feedback">clear</span>
+                                                            <span class="help-block">{{ errors.last_name | first }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <select name="gender" class="selectpicker"
+                                                                data-style="btn btn-primary btn-round" title="Gender" data-size="3">
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                        </select>
+                                                        {% if errors.gender %}
+                                                            <span class="help-block">{{ errors.gender | first }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <select name="sex_preference" class="selectpicker"
+                                                                data-style="btn btn-primary btn-round" title="Sex preference"
+                                                                data-size="4">
+                                                            <option value="same">Same</option>
+                                                            <option value="opposite">Opposite</option>
+                                                            <option value="either">Either</option>
+                                                        </select>
+                                                        {% if errors.sex_preference %}
+                                                            <span class="help-block">{{ errors.sex_preference | first }}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group label-floating is-empty" id="tagsinput">
+                                                    <label class="control-label">Write your interests, separated by
+                                                        commas</label>
+                                                    <input name="tags" type="text" value="" class="tagsinput" data-role="tagsinput"
+                                                           data-color="rose" style="display: none;">
+                                                    <span class="material-input"></span>
+                                                </div>
+                                                <div class="form-group label-floating is-empty">
+                                                    <label class="control-label"> Biography</label>
+                                                    <textarea name="bio" class="form-control textarea-limited" rows="3"
+                                                              maxlength="150"></textarea>
+                                                    <span class="material-input"></span>
+                                                    <h5>
+                                                        <small><span id="textarea-limited-message" class="pull-right">150 characters left</span>
+                                                        </small>
+                                                    </h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane" id="security">
+                                                2
+                                            </div>
+                                            <div class="tab-pane" id="options">
+                                                3
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="interests">
+                        {% for tag in tags%}
+                            <a href="#"><span class="label label-default">#{{ tag.tag }}</span></a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+        </div>
+
+{% endblock %}

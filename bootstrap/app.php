@@ -84,6 +84,9 @@ $container['PhotoController'] = function ($container) {
 $container['UserController'] = function ($container) {
     return new \App\Controllers\UserController($container);
 };
+$container['SearchController'] = function ($container) {
+	return new \App\Controllers\SearchController($container);
+};
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
 };

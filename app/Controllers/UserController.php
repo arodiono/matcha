@@ -44,4 +44,17 @@ class UserController extends Controller
         }
         return $response->withStatus(200);
     }
+    
+    public function getUserEdit(Request $request, Response $response): Response
+	{
+		$userdata = $this->auth->user()->toArray();
+//		r($userdata);
+		return $this->view->render($response, 'profile-edit.twig', $userdata);
+	}
+	
+	public function postUserEdit(Request $request, Response $response): Response
+	{
+	
+	}
+	
 }

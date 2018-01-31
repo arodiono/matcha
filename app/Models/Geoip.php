@@ -46,8 +46,7 @@ class Geoip extends Model
             $data = $this->getConnection()
                 ->select('select *, users.*, 6373*2*ASIN(SQRT(POWER(SIN((' . $currentCoords['lat'] . '-abs(lat))* pi()/180 / 2),2) + COS(' . $currentCoords['lat'] . '*pi()/180 )*COS(abs(lat)*pi()/180)*POWER(SIN((' . $currentCoords['lon'] . ' - lon)*pi()/180 / 2), 2))) as distance FROM geoip left join users on users.id = geoip.user_id having distance < ' . $radius . ' and lon between ' . $minLon . ' and ' . $maxLon . ' and lat between ' . $minLat . ' and ' . $maxLat);
             $res = (array)$data;
-            die();
-            //TODO add JSON to return
+            return $res;
         }
     }
 

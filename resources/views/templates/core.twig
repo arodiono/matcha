@@ -44,10 +44,12 @@
 <body class="{{ body }}">
 {% include '/templates/flash.twig' %}
 {% include '/templates/navigation.twig' %}
+<div class="content">
 {% block content %} {% endblock %}
+</div>
 {% include '/templates/footer.twig' %}
 <link rel="stylesheet" href="{{ base_url() }}/css/main.min.css">
-<script src="{{ base_url() }}/js/scripts.min.js"></script>
+<script async src="{{ base_url() }}/js/scripts.min.js"></script>
 
 </body>
 </html>
