@@ -34,17 +34,14 @@ class Location extends Model
         }
     }
 
-    public function setCoordinates($data)
+    public function setCoordinates($data=['latitude' => 0, 'longitude' => 0])
     {
-        if (array_key_exists('user', $_SESSION)) {
-            if (!$this::where('user_id', $_SESSION['user'])
-                ->update(['lat' => $data['latitude'], 'lon' => $data['longitude']])) {
-
-                $this->user_id = $_SESSION['user'];
-                $this->lat = $data['latitude'];
-                $this->lon = $data['longitude'];
-                $this->save();
-            }
-        }
+        $this::updateOrCreate(
+            ['user_id' => $_SESSION['user']],
+                [
+                    'latitude' => $data['latitude'],
+                    'longitude' => $data['longitude']
+                ]
+        );
     }
 }
