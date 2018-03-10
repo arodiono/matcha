@@ -1,0 +1,35 @@
+{% extends 'templates/core.twig' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="search-nearby">
+        {% for user in users %}
+            <div class="card card-profile" style="max-width: 49%">
+                <a href="/user/{{ user.username }}">
+                    <div class="card-image">
+                        {% if user.profile_photo %}
+                            <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                        {% else %}
+                            <img class="img" src="/img/placeholder.jpg">
+                        {% endif %}
+                    </div>
+                </a>
+                <div class="card-content">
+                    <a href="/user/{{ user.username }}">
+                        <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+                    </a>
+                    <h6 class="category text-gray">{{ user.bio }}</h6>
+                </div>
+                <div class="footer">
+                    <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons">favorite</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\UsersTags;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
@@ -17,12 +16,12 @@ class AuthController extends Controller
 {
     public function getSignUpPhotos(Request $request, Response $response): Response
     {
-        return $this->view->render($response, 'signup-photos.twig');
+        return $this->view->render($response, 'signup/signup.photos.twig');
     }
 
     public function getSignUpInfo(Request $request, Response $response): Response
     {
-        return $this->view->render($response, 'signup-info.twig');
+        return $this->view->render($response, 'signup/signup.info.twig');
     }
 
     public function postSignUpInfo(Request $request, Response $response): Response
@@ -35,7 +34,7 @@ class AuthController extends Controller
             'bio' => v::length(null, 150)
         ]);
         if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('signup.info'));
+            return $response->withRedirect($this->router->pathFor('signup/signup.info'));
         }
 
         $this->auth->user()->update([
@@ -59,7 +58,7 @@ class AuthController extends Controller
 
         $this->flash->addMessage('success', 'You have been signed up!');
 
-        return $response->withRedirect($this->router->pathFor('signup.photos'));
+        return $response->withRedirect($this->router->pathFor('signup/signup.photos'));
     }
 
     /**
@@ -80,7 +79,7 @@ class AuthController extends Controller
      */
     public function getSignIn(Request $request, Response $response): Response
     {
-        return $this->view->render($response, 'signin.twig');
+        return $this->view->render($response, 'signup/signin.twig');
     }
 
     /**
@@ -108,7 +107,7 @@ class AuthController extends Controller
      */
     public function getSignUp(Request $request, Response $response): Response
     {
-        return $this->view->render($response, 'signup.twig');
+        return $this->view->render($response, 'signup/signup.twig');
     }
 
     /**
@@ -120,7 +119,7 @@ class AuthController extends Controller
     {
         $validation = $this->validator->validate($request, [
             'email' => v::email()->emailAvailable(),
-            'username' => v::noWhitespace()->notEmpty()->alpha(),
+            'username' => v::noWhitespace()->notEmpty()->alpha()->usernameAvailable(),
             'password' => v::noWhitespace()->length(8, null),
         ]);
 

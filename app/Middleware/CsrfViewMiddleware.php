@@ -24,6 +24,10 @@ class CsrfViewMiddleware extends Middleware
                 <input type="hidden" name="' . $this->csrf->getTokenNameKey() . '" value="' . $this->csrf->getTokenName() . '">
                 <input type="hidden" name="' . $this->csrf->getTokenValueKey() . '" value="' . $this->csrf->getTokenValue() . '">
             ',
+            'meta' => '
+                <meta name="' . $this->csrf->getTokenNameKey() . '" content="' . $this->csrf->getTokenName() . '">
+                <meta name="' . $this->csrf->getTokenValueKey() . '" content="' . $this->csrf->getTokenValue() . '">
+            ',
         ]);
         $response = $next($request, $response);
         return $response;

@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
 
-    <title>{{title}}</title>
+    <title>{{title}} | Matcha</title>
+
+    {{ csrf.meta | raw }}
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -44,10 +46,12 @@
 <body class="{{ body }}">
 {% include '/templates/flash.twig' %}
 {% include '/templates/navigation.twig' %}
+<div class="content">
 {% block content %} {% endblock %}
+</div>
 {% include '/templates/footer.twig' %}
 <link rel="stylesheet" href="{{ base_url() }}/css/main.min.css">
-<script src="{{ base_url() }}/js/scripts.min.js"></script>
+<script async src="{{ base_url() }}/js/scripts.min.js"></script>
 
 </body>
 </html>

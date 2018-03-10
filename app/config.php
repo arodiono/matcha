@@ -8,3 +8,5 @@ define('DB_NAME', 'matcha');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATION', 'utf8_unicode_ci');
 define('DB_PORT', '3306');
+
+define('MAIL_PASS', 'arodiono-oklymeno-matcha');

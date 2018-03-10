@@ -13,7 +13,7 @@ class Auth
     /**
      * @return User
      */
-    public function user()
+    public static function user()
     {
         if (array_key_exists('user', $_SESSION)) {
             return User::find($_SESSION['user']);
@@ -23,7 +23,7 @@ class Auth
     /**
      * @return bool
      */
-    public function check()
+    public static function check()
     {
         return isset($_SESSION['user']);
     }

@@ -22,5 +22,8 @@ class Photo extends Model
         'user_id'
     ];
 
-
+    public function getUser()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

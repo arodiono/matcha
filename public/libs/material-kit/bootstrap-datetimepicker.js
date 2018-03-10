@@ -1131,7 +1131,7 @@
                         if (expanded.collapse) { // if collapse plugin is available through bootstrap.js then use it
                             expanded.collapse('hide');
                             closed.collapse('show');
-                        } else { // otherwise just toggle in class on the two views
+                        } else { // otherwise just toggle in class on the two Views
                             expanded.removeClass('in');
                             closed.addClass('in');
                         }

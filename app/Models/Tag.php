@@ -25,4 +25,9 @@ class Tag extends Model
     {
         return self::where('tag', $tag)->count() === 1;
     }
+	
+	public function users()
+	{
+		return $this->belongsToMany('App\Models\User')->using('App\Pivots\TagUserPivot');
+	}
 }
