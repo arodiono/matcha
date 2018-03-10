@@ -22,25 +22,28 @@ window.onload = function () {
 	navigator.geolocation.getCurrentPosition(function (position) {
 		sendLocation({
 			latitude: position.coords.latitude,
-			longitude: position.coords.longitude
+			longitude: position.coords.longitude,
+            csrf_name: $('meta[name="csrf_name"]').attr("content"),
+            csrf_value: $('meta[name="csrf_value"]').attr("content")
 		});
-		// sendLocation(pos);
 	}, function () {
 		$.ajax({
 			url: 'http://freegeoip.net/json/',
 			method: 'GET',
 			dataType: 'json'
 		}).done(function (data) {
-			sendLocation({
+            sendLocation({
 				latitude: data.latitude,
-				longitude: data.longitude
+				longitude: data.longitude,
+                csrf_name: $('meta[name="csrf_name"]').attr("content"),
+                csrf_value: $('meta[name="csrf_value"]').attr("content")
 			});
 		});
 	}, {enableHighAccuracy: true});
 
 	// Sending data to server
 	function sendLocation(pos) {
-		$.ajax({
+        $.ajax({
 			url: '/user/location',
 			method: 'POST',
 			dataType: 'json',

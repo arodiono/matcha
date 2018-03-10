@@ -1,5 +1,5 @@
 <?php
 
-require __DIR__ . '/../bootstrap/app.php';
+require __DIR__ . '/../app/app.php';
 
 $app->run();

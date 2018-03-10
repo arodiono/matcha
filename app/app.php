@@ -4,13 +4,11 @@ use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-
 session_start();
 date_default_timezone_set('Europe/Kiev');
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__. '/../app/Database/config.php';
-require __DIR__. '/../app/Mail/config.php';
+require __DIR__ . '/config.php';
 
 $app = new \Slim\App([
     'settings' => [
@@ -34,6 +32,7 @@ $app = new \Slim\App([
 ]);
 
 $container = $app->getContainer();
+
 $capsule = new \Illuminate\Database\Capsule\Manager;
 $capsule->addConnection($container['settings']['db']);
 $capsule->setAsGlobal();
@@ -50,7 +49,7 @@ $container['flash'] = function () {
     return new \Slim\Flash\Messages;
 };
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
+    $view = new \Slim\Views\Twig(__DIR__ . '/Views', [
         'cache' => false,
         'debug' => true
     ]);
@@ -114,8 +113,8 @@ $container['mailer'] = function ($container) {
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
-//$app->add(new \App\Middleware\CsrfViewMiddleware($container));
-//$app->add($container->get('csrf'));
+$app->add(new \App\Middleware\CsrfViewMiddleware($container));
+$app->add($container->get('csrf'));
 $app->add(function (Request $request, Response $response, callable $next) {
     $uri = $request->getUri();
     $path = $uri->getPath();
@@ -132,5 +131,4 @@ $app->add(function (Request $request, Response $response, callable $next) {
 
 v::with('App\\Validation\\Rules\\');
 
-
-require __DIR__ . '/../app/routes.php';
+require __DIR__ . '/routes.php';

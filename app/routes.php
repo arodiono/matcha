@@ -11,33 +11,43 @@ $app->group('', function () {
     $this->post('/signup', 'AuthController:postSignUp');
     $this->get('/signin', 'AuthController:getSignIn')->setName('signin');
     $this->post('/signin', 'AuthController:postSignIn');
-    $this->get('/password/forgot', 'PasswordController:getForgotPassword')->setName('password.forgot');
-    $this->post('/password/forgot', 'PasswordController:postForgotPassword');
-    $this->get('/password/reset/{hash}', 'PasswordController:getResetPassword')->setName('password.reset');
-    $this->post('/password/reset/{hash}', 'PasswordController:postResetPassword');
+
+    $this->group('/user', function () {
+        $this->get('/password/forgot', 'UserController:getForgotPassword')->setName('user.password.forgot');
+        $this->post('/password/forgot', 'UserController:postForgotPassword');
+        $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
+        $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
+    });
 })->add(new \App\Middleware\GuestMiddleware($container));
 
 $app->group('', function () {
+
     $this->get('/signout', 'AuthController:getSignOut')->setName('signout');
 
-    $this->get('/password/change', 'PasswordController:getChangePassword')->setName('password.change');
-    $this->post('/password/change', 'PasswordController:postChangePassword');
+    $this->group('/user', function () {
+        $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
+        $this->post('/edit', 'UserController:postUserEdit');
+        $this->any('/location', 'UserController:setLocation')->setName('user.location');
+        $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
+        $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
+        $this->post('/password/change', 'UserController:postChangePassword');
+    });
 
-    $this->get('/signup/info', 'AuthController:getSignUpInfo')->setName('signup.info');
-    $this->post('/signup/info', 'AuthController:postSignUpInfo');
+    $this->group('/signup', function () {
+        $this->get('/info', 'AuthController:getSignUpInfo')->setName('signup.info');
+        $this->post('/info', 'AuthController:postSignUpInfo');
+        $this->get('/photos', 'AuthController:getSignUpPhotos')->setName('signup.photos');
+        $this->post('/photos', 'AuthController:postSignUpPhotos');
+    });
 
-    $this->get('/signup/photos', 'AuthController:getSignUpPhotos')->setName('signup.photos');
-    $this->post('/signup/photos', 'AuthController:postSignUpPhotos');
+    $this->group('/photo', function () {
+        $this->post('/upload', 'PhotoController:upload')->setName('photo.upload');
+        $this->post('/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
+    });
 
-    $this->post('/photo/upload', 'PhotoController:upload')->setName('photo.upload');
-    $this->post('/photo/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
-	
-	$this->get('/user/edit', 'UserController:getUserEdit')->setName('user.edit');
-	$this->post('/user/edit', 'UserController:postUserEdit');
-	
-    $this->post('/user/location', 'UserController:setLocation')->setName('user.location');
-    $this->get('/user/{name}', 'UserController:getUserProfile')->setName('user.profile');
-	
-	$this->get('/search/nearby', 'SearchController:getNearbyUsers')->setName('search.nearby');
-	
+	$this->group('/search', function () {
+        $this->get('/nearby', 'SearchController:getNearbyUsers')->setName('search.nearby');
+        $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
+    });
+
 })->add(new \App\Middleware\AuthMiddleware($container));

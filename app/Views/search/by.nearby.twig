@@ -8,7 +8,11 @@
             <div class="card card-profile" style="max-width: 49%">
                 <a href="/user/{{ user.username }}">
                     <div class="card-image">
-                        <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                        {% if user.profile_photo %}
+                            <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                        {% else %}
+                            <img class="img" src="/img/placeholder.jpg">
+                        {% endif %}
                     </div>
                 </a>
                 <div class="card-content">

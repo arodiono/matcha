@@ -1,4 +1,4 @@
-{% set title = 'Forgot your password?' %}
+{% set title = 'Sign in' %}
 {% set body = 'signup-page' %}
 {% extends 'templates/core.twig' %}
 
@@ -9,12 +9,11 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="row">
                     <div class="card card-signup">
-                        <h2 class="card-title text-center">Reset your password</h2>
+                        <h2 class="card-title text-center">Sign in</h2>
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
-                                <form class="form" method="post" action="{{ path_for('password.forgot') }}">
+                                <form class="form" method="post" action="{{ path_for('signin') }}">
                                     <div class="card-content">
-                                        <p class="description text-center">Enter your email address and we will send you a link to reset your password.</p>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="material-icons">email</i></span>
                                             <div class="form-group label-floating is-empty {{ errors.email ? 'has-error is-focused' : '' }} {{ oldInput.email ? 'is-focused' : '' }}">
@@ -28,11 +27,29 @@
                                                 {% endif %}
                                             </div>
                                         </div>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i
+                                                        class="material-icons">lock_outline</i></span>
+                                            <div class="form-group label-floating is-empty {{ errors.password ? 'has-error is-focused' : '' }} {{ oldInput.password ? 'is-focused' : '' }}">
+                                                <label class="control-label">Password</label>
+                                                <input type="password" name="password" class="form-control"
+                                                       value="{{ oldInput.password }}" title="Password">
+                                                <span class="material-input"></span>
+                                                {% if errors.password %}
+                                                    <span class="material-icons form-control-feedback">clear</span>
+                                                    <span class="help-block">{{ errors.password | first }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row text-right">
+                                            <a href="{{ path_for('user.password.forgot') }}">Forgot password?</a>
+                                        </div>
                                     </div>
                                     <div class="footer text-center">
                                         <button type="submit" href="#" class="btn btn-primary btn-round btn-wd btn-lg">
-                                            Send reset password email
+                                            Sign in
                                         </button>
+
                                     </div>
                                     {{ csrf.field | raw }}
                                 </form>

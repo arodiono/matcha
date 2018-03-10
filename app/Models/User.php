@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class User extends Model
 {
+    public const GENDER_MALE = 'male';
+    public const GENDER_FEMALE = 'female';
+
+    public const SEX_HETEROSEXUAL = 'heterosexual';
+    public const SEX_HOMOSEXUAL = 'homosexual';
+    public const SEX_BISEXUAL = 'bisexual';
+
     /**
      * @var string
      */
@@ -45,5 +52,20 @@ class User extends Model
         $this->update([
             'profile_photo' => $photo
         ]);
+    }
+
+    public function location()
+    {
+        return $this->hasOne('App\Models\Location');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag')->using('App\Pivots\TagUserPivot');
+    }
+
+    public function photos()
+    {
+        return $this->hasMany('App\Models\Photo');
     }
 }

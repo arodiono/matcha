@@ -112,6 +112,9 @@ footer {
 .profile-page .description {
   margin: 30px 0; }
 
+.profile-content {
+  padding-bottom: 30px; }
+
 .alert {
   position: absolute;
   left: 0;
@@ -183,6 +186,18 @@ footer {
   padding-top: 70px;
   padding-bottom: 84px;
   margin-bottom: -84px; }
+
+.modal-backdrop {
+  z-index: 1040; }
+
+.modal {
+  z-index: 1050; }
+
+.follow {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

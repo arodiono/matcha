@@ -2,7 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\Geoip;
+use App\Auth\Auth;
+use App\Models\Location;
+use App\Models\Tag;
+use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -19,12 +22,12 @@ class HomeController extends Controller
      */
     public function index(Request $request, Response $response): Response
     {
-//        $this->mailer->send('mail/template.twig', [], function($message){
-//            $message->to('klymenok.a@gmail.com');
-//            $message->subject('Email Subject');
-//        });
-		$geo = new Geoip();
-		$geo->getUsers(999);
-        return $this->view->render($response, 'home.twig');
+
+        if (!Auth::check()) {
+            return $this->view->render($response, 'landing.twig');
+        }
+        else {
+            return $this->SearchController->getSuggestions($request, $response);
+        }
     }
 }

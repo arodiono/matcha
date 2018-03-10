@@ -1,11 +1,11 @@
 <?php
 
-require __DIR__. '/app/Database/config.php';
+require __DIR__ . '/app/config.php';
 
 return [
     "paths" => [
-        "migrations" => "app/Database/migrations",
-        "seeds" => "app/Database/seeds"
+        "migrations" => "database/migrations",
+        "seeds" => "database/seeds"
     ],
     "environments" => [
         "default_migration_table" => "phinxlog",
