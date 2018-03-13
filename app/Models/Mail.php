@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Mail;
+namespace App\Models;
+use App\Services\EmailService;
 
 
-class Mailer
+class Mail
 {
     protected $view;
 
@@ -17,7 +18,7 @@ class Mailer
 
     public function send($template, $data, $callback)
     {
-        $message = new Message($this->mailer);
+        $message = new EmailService($this->mailer);
 
         $message->body($this->view->fetch($template, $data));
 
