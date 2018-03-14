@@ -8,13 +8,18 @@
 
 namespace App\Services;
 
-
 use Ratchet\Server\IoServer;
+use Ratchet\Http\HttpServer;
+use Ratchet\WebSocket\WsServer;
 
 require '/Users/oklymeno/matcha-api/vendor/autoload.php';
 
 $server = IoServer::factory(
-    new MessageService(),
+    new HttpServer(
+        new WsServer(
+            new MessageService()
+        )
+    ),
     8000
 );
 
