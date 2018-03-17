@@ -5,7 +5,9 @@
 {% block content %}
    <div>
       <div class="messagefield">
-         <span>Message1</span><br>
+          {% for item in data %}
+              <span>{{ item.message }}</span><br>
+          {% endfor %}
       </div>
       <div class="textfield">
          <form class="message-field">
