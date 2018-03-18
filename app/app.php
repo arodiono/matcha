@@ -86,6 +86,9 @@ $container['UserController'] = function ($container) {
 $container['SearchController'] = function ($container) {
 	return new \App\Controllers\SearchController($container);
 };
+$container['MessageController'] = function ($container) {
+    return new \App\Controllers\MessageController($container);
+};
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
 };
@@ -108,8 +111,9 @@ $container['mailer'] = function ($container) {
     $mailer->Password = MAIL_PASS;
     $mailer->addCustomHeader('Content-Type', 'text/html');
 
-	return new \App\Mail\Mailer($container->view, $mailer);
+	return new \App\Models\Mail($container->view, $mailer);
 };
+
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));

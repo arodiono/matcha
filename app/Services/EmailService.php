@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Mail;
+namespace App\Services;
 
 
-class Message
+class EmailService
 {
     protected $mailer;
 

@@ -68,4 +68,35 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Photo');
     }
+
+    /**
+     * @param $user
+     * @return bool
+     *
+     */
+
+    public function isUserExist($user): Bool
+    {
+        $data = $this::select('id')
+        ->where('username', '=', $user)
+        ->get()
+        ->first();
+        if (!empty($data)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getId($username) : int
+    {
+        $data = $this::select('id')
+            ->where('username', '=', $username)
+            ->get()
+            ->first();
+        if (!empty($data)) {
+            return $data->toArray()['id'];
+        } else {
+            return 0;
+        }
+    }
 }

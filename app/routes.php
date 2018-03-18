@@ -30,6 +30,7 @@ $app->group('', function () {
     $this->group('/user', function () {
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
         $this->post('/edit', 'UserController:postUserEdit');
+        $this->any('/location', 'UserController:setLocation')->setName('user.location');
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
@@ -52,6 +53,13 @@ $app->group('', function () {
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
 
-})
-    ->add(new \App\Middleware\AuthMiddleware($container))
-    ->add(new \App\Middleware\CsrfViewMiddleware($container));
+})->add(new \App\Middleware\AuthMiddleware($container));
+
+$app->group('', function () {
+    $this->group('/messages', function() {
+        $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
+
+        $this->post('/{name}', 'MessageController:postMessage');
+    });
+
+})->add(new \App\Middleware\MessageMiddleware($container));
