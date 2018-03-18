@@ -108,8 +108,9 @@ $container['mailer'] = function ($container) {
     $mailer->Password = MAIL_PASS;
     $mailer->addCustomHeader('Content-Type', 'text/html');
 
-	return new \App\Mail\Mailer($container->view, $mailer);
+	return new \App\Models\Mail($container->view, $mailer);
 };
+
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
