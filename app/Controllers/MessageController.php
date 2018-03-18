@@ -24,7 +24,6 @@ class MessageController extends Controller
     public function getMessage(Request $request, Response $response, $args): Response
     {
         $user = new User();
-
         if (!array_key_exists('name', $args) || !array_key_exists('user', $_SESSION) || !$user->isUserExist($args['name'])) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
@@ -40,8 +39,14 @@ class MessageController extends Controller
      * @return Response
      */
 
-    public function postMessage(Request $request, Response $response): Response
+    public function postMessage(Request $request, Response $response, $args): Response
     {
+        $body = $request->getParsedBody();
+        if (array_key_exists('text', $body)) {
+            
+        }
+        $request->getParsedBody()['text'];
+
         return $response->withRedirect($this->router->pathFor('signup/signup.info'));
     }
 }

@@ -62,7 +62,6 @@ $app->group('', function () {
 $app->group('', function () {
     $this->group('/messages', function() {
         $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
-
         $this->post('/{name}', 'MessageController:postMessage');
     });
 
