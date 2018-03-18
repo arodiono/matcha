@@ -51,3 +51,12 @@ $app->group('', function () {
     });
 
 })->add(new \App\Middleware\AuthMiddleware($container));
+
+$app->group('', function () {
+    $this->group('/messages', function() {
+        $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
+
+        $this->post('/{name}', 'MessageController:postMessage');
+    });
+
+})->add(new \App\Middleware\MessageMiddleware($container));
