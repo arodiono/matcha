@@ -40,6 +40,10 @@
 
         function addNewOutcomeMessage(message) {
             var newMessage = document.createElement('span');
+            $.post(window.location.href,
+                {
+                    text: message
+                });
             conn.send(message);
             newMessage.textContent = message;
             document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
