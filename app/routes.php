@@ -1,6 +1,7 @@
 <?php
 
 $app->get('/', 'HomeController:index')->setName('home');
+$app->any('/user/location', 'UserController:setLocation')->setName('user.location');
 
 $app->get('/terms', function ($request, $response) use ($container) {
     return $container->view->render($response, 'terms.twig');
@@ -18,7 +19,9 @@ $app->group('', function () {
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
     });
-})->add(new \App\Middleware\GuestMiddleware($container));
+})
+    ->add(new \App\Middleware\GuestMiddleware($container))
+    ->add(new \App\Middleware\CsrfViewMiddleware($container));
 
 $app->group('', function () {
 
@@ -27,7 +30,6 @@ $app->group('', function () {
     $this->group('/user', function () {
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
         $this->post('/edit', 'UserController:postUserEdit');
-        $this->any('/location', 'UserController:setLocation')->setName('user.location');
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
@@ -50,4 +52,6 @@ $app->group('', function () {
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
 
-})->add(new \App\Middleware\AuthMiddleware($container));
+})
+    ->add(new \App\Middleware\AuthMiddleware($container))
+    ->add(new \App\Middleware\CsrfViewMiddleware($container));

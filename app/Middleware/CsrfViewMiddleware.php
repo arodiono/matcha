@@ -19,14 +19,20 @@ class CsrfViewMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, callable $next): Response
     {
+
+        $name = $this->csrf->getTokenName();
+        $namekey = $this->csrf->getTokenNameKey();
+        $value = $this->csrf->getTokenValue();
+        $valuekey = $this->csrf->getTokenValueKey();
+
         $this->view->getEnvironment()->addGlobal('csrf', [
             'field' => '
-                <input type="hidden" name="' . $this->csrf->getTokenNameKey() . '" value="' . $this->csrf->getTokenName() . '">
-                <input type="hidden" name="' . $this->csrf->getTokenValueKey() . '" value="' . $this->csrf->getTokenValue() . '">
+                <input type="hidden" name="' . $namekey . '" value="' . $name . '">
+                <input type="hidden" name="' . $valuekey . '" value="' . $value . '">
             ',
             'meta' => '
-                <meta name="' . $this->csrf->getTokenNameKey() . '" content="' . $this->csrf->getTokenName() . '">
-                <meta name="' . $this->csrf->getTokenValueKey() . '" content="' . $this->csrf->getTokenValue() . '">
+                <meta name="' . $namekey . '" content="' . $name . '">
+                <meta name="' . $valuekey . '" content="' . $value . '">
             ',
         ]);
         $response = $next($request, $response);
