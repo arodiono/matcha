@@ -2,106 +2,120 @@
 {% set title = 'Settings' %}
 {% set body = 'profile-page' %}
 
+
+
 {% block content %}
     <div class="page-header header-filter" data-parallax="true"
          style="background-image: url('{{ base_url() }}/img/index.png');"></div>
     <div class="main main-raised">
-    <div class="profile-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-10 col-xs-offset-1">
-                    <div class="profile">
-                        <div class="avatar">
-                            <img src="{{ base_url() ~ "/uploads/" ~ username ~ "/" ~ profile_photo }}" alt=""
-                                 class="img-circle img-responsive img-raised">
-                        </div>
-                        <div class="profile-edit-form ">
-                            <div class="row">
-                                <div class="header header-primary">
-                                    <h4 class="card-title">Change profile info</h4>
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
-                                    <div class="form-group is-empty">
-                                        <input type="text" value="{{ email }}" placeholder="Email" class="form-control">
-                                        <span class="material-input"></span>
-                                        {% if errors.email %}
-                                            <span class="material-icons form-control-feedback">clear</span>
-                                            <span class="help-block">{{ errors.email | first }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
-                                    <div class="form-group is-empty">
-                                        <input type="text" value="{{ first_name }}" placeholder="First name"
-                                               class="form-control">
-                                        <span class="material-input"></span>
-                                        {% if errors.first_name %}
-                                            <span class="material-icons form-control-feedback">clear</span>
-                                            <span class="help-block">{{ errors.first_name | first }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="material-icons">email</i></span>
-                                    <div class="form-group is-empty">
-                                        <input type="text" value="{{ last_name }}" placeholder="Last name"
-                                               class="form-control">
-                                        <span class="material-input"></span>
-                                        {% if errors.last_name %}
-                                            <span class="material-icons form-control-feedback">clear</span>
-                                            <span class="help-block">{{ errors.last_name | first }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <select name="gender" class="selectpicker"
-                                                data-style="btn btn-primary btn-round btn-rose" title="Gender"
-                                                data-size="3">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                        {% if errors.gender %}
-                                            <span class="help-block">{{ errors.gender | first }}</span>
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <select name="sex_preference" class="selectpicker"
-                                                data-style="btn btn-primary btn-round btn-rose"
-                                                title="Sex preference"
-                                                data-size="4">
-                                            <option value="same">Same</option>
-                                            <option value="opposite">Opposite</option>
-                                            <option value="either">Either</option>
-                                        </select>
-                                        {% if errors.sex_preference %}
-                                            <span class="help-block">{{ errors.sex_preference | first }}</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group label-floating is-empty {{ bio ? 'is-focused' : '' }}">
-                                        <label class="control-label"> Biography</label>
-                                        <textarea name="bio" class="form-control textarea-limited" rows="3" maxlength="150">{{ bio }}</textarea>
-                                        <span class="material-input"></span>
-                                        <h5><small><span id="textarea-limited-message" class="pull-right">150 characters left</span></small></h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <button class="btn btn-round btn-rose">Update</button>
-                                </div>
-                                <div class="row">
-                                    <button data-toggle="modal" data-target="#ChangePasswordModal" class="btn btn-primary btn-simple btn-rose">Change password</button>
-                                    <button type="submit" href="#" class="btn btn-primary btn-simple btn-rose">Delete account</button>
-                                </div>
+        <div class="profile-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <div class="profile">
+                            <div class="avatar">
+                                <img src="{{ base_url() ~ "/uploads/" ~ user.username ~ "/" ~ user.profile_photo }}"
+                                     alt=""
+                                     class="img-circle img-responsive img-raised">
                             </div>
+                            <form action="{{ path_for('user.edit') }}" method="post">
+                                <div class="profile-edit-form ">
+                                    <div class="header header-primary">
+                                        <h4 class="card-title text-center">Change profile info</h4>
+                                    </div>
+                                    <div>
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Email</label>
+                                            <input name="email" type="email" class="form-control"
+                                                   value="{{ user.email }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">First name</label>
+                                        <input name="first_name" type="text" class="form-control"
+                                               value="{{ user.first_name }}">
+                                    </div>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label">Last name</label>
+                                        <input name="last_name" type="text" class="form-control"
+                                               value="{{ user.last_name }}">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label name="gender" class="control-label">Gender</label>
+                                                <select name="gender" class="selectpicker"
+                                                        data-style="select-with-transition"
+                                                        title="Gender">
+                                                    <option {{ user.gender == constant('App\\Models\\User::GENDER_MALE') ? 'selected' : '' }}
+                                                            value="{{ constant('App\\Models\\User::GENDER_MALE') }}">
+                                                        {{ constant('App\\Models\\User::GENDER_MALE') | capitalize }}</option>
+                                                    <option {{ user.gender == constant('App\\Models\\User::GENDER_FEMALE') ? 'selected' : '' }}
+                                                            value="{{ constant('App\\Models\\User::GENDER_FEMALE') }}">
+                                                        {{ constant('App\\Models\\User::GENDER_FEMALE') | capitalize }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Sex preference</label>
+                                                <select name="sex_preference" class="selectpicker"
+                                                        data-style="select-with-transition"
+                                                        title="Sex preference">
+                                                    <option {{ user.sex_preference == constant('App\\Models\\User::SEX_HETEROSEXUAL') ? 'selected' : '' }}
+                                                            value="{{ constant('App\\Models\\User::SEX_HETEROSEXUAL') }}">{{ constant('App\\Models\\User::SEX_HETEROSEXUAL') | capitalize }}</option>
+                                                    <option {{ user.sex_preference == constant('App\\Models\\User::SEX_HOMOSEXUAL') ? 'selected' : '' }}
+                                                            value="{{ constant('App\\Models\\User::SEX_HOMOSEXUAL') }}">{{ constant('App\\Models\\User::SEX_HOMOSEXUAL') | capitalize }}</option>
+                                                    <option {{ user.sex_preference == constant('App\\Models\\User::SEX_BISEXUAL') ? 'selected' : '' }}
+                                                            value="{{ constant('App\\Models\\User::SEX_BISEXUAL') }}">{{ constant('App\\Models\\User::SEX_BISEXUAL') | capitalize }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group label-floating">
+                                        <label class="control-label"> Biography</label>
+                                        <textarea name="bio" class="form-control textarea-limited" rows="3"
+                                                  maxlength="150">{{ user.bio }}</textarea>
+                                        <span class="material-input"></span>
+                                        <h5>
+                                            <small><span id="textarea-limited-message" class="pull-right">150 characters left</span>
+                                            </small>
+                                        </h5>
+                                    </div>
+
+                                    <div class="row">
+                                        <button type="submit" class="btn btn-round btn-rose">Update</button>
+                                        <a href="{{ base_url() }}{{ path_for('user.password.change') }}" class="btn btn-xs btn-simple btn-rose">Change password</a>
+                                        <button type="button" data-toggle="modal" data-target="#deleteAccountModal"
+                                                class="btn btn-xs btn-simple btn-rose">Delete account
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-small ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                class="material-icons">clear</i></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h5>Are you sure you want to delete your profile? </h5>
+                </div>
+                <form action="{{ path_for('user.delete') }}" method="post">
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-simple" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-simple">Delete</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

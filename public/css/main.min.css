@@ -109,6 +109,9 @@ footer {
       -ms-flex-pack: center;
           justify-content: center; }
 
+.profile-page .profile {
+  text-align: start; }
+
 .profile-page .description {
   margin: 30px 0; }
 
@@ -117,6 +120,7 @@ footer {
 
 .alert {
   position: absolute;
+  top: 70px;
   left: 0;
   margin-bottom: 0;
   z-index: 99;

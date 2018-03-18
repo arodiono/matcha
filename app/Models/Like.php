@@ -15,4 +15,13 @@ class Like extends Model
     ];
 
 
+    public function who()
+    {
+        return $this->hasOne('App\Model\User', 'who_id');
+    }
+
+    public function whom()
+    {
+        return $this->hasOne('App\Model\User', 'whom_id');
+    }
 }

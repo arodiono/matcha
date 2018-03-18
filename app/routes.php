@@ -1,7 +1,6 @@
 <?php
 
 $app->get('/', 'HomeController:index')->setName('home');
-$app->any('/user/location', 'UserController:setLocation')->setName('user.location');
 
 $app->get('/terms', function ($request, $response) use ($container) {
     return $container->view->render($response, 'terms.twig');
@@ -20,8 +19,8 @@ $app->group('', function () {
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
     });
 })
-    ->add(new \App\Middleware\GuestMiddleware($container))
-    ->add(new \App\Middleware\CsrfViewMiddleware($container));
+    ->add(new \App\Middleware\GuestMiddleware($container));
+//    ->add(new \App\Middleware\CsrfViewMiddleware($container));
 
 $app->group('', function () {
 
@@ -34,6 +33,11 @@ $app->group('', function () {
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
+        $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
+    });
+
+    $this->group('/like', function () {
+        $this->post('/toggle/{id}', 'LikeController:toggleLike')->setName('like.toggle');
     });
 
     $this->group('/signup', function () {
@@ -62,4 +66,5 @@ $app->group('', function () {
         $this->post('/{name}', 'MessageController:postMessage');
     });
 
-})->add(new \App\Middleware\MessageMiddleware($container));
+});
+//->add(new \App\Middleware\MessageMiddleware($container));
