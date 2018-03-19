@@ -19,10 +19,14 @@
     <script type="text/javascript">
         var conn = new WebSocket('ws://localhost:8000');
         conn.onopen = function(e) {
-            console.log("Connection established!");
+            conn.send(JSON.stringify({auth: '{{ user }}'}));
         };
         conn.onmessage = function(e) {
             addNewIncomeMessage(e.data);
+            $.post(window.location.href + '/smhbr',
+                {
+                    text: message
+                });
         };
         var form = document.querySelector('.message-field');
         form.addEventListener("submit", function(e) {
@@ -31,6 +35,12 @@
             document.getElementById('new-message').value = '';
         }, false);
 
+        function test() {
+            $.post('/connection/get',
+                {
+                    id: '1'
+                });
+        }
         function addNewIncomeMessage(message) {
             var newMessage = document.createElement('span');
             newMessage.textContent = message;
@@ -44,6 +54,7 @@
                 {
                     text: message
                 });
+            conn.send(JSON.stringify({auth: '{{ user }}'}));
             conn.send(message);
             newMessage.textContent = message;
             document.getElementsByClassName('messagefield')[0].appendChild(newMessage);

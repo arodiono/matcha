@@ -10,11 +10,16 @@ namespace App\Services;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use App\Models\Message;
+use App\Models\Connections;
+use App\Services\Session;
 
 
 class MessageService implements MessageComponentInterface
 {
     protected $clients;
+
+    private $users = [];
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
@@ -30,19 +35,32 @@ class MessageService implements MessageComponentInterface
     public function onMessage(ConnectionInterface $from, $msg) {
         echo sprintf('Connection %d sending message "%s" to other connections' . "\n"
             , $from->resourceId, $msg);
+        $data = json_decode($msg);
+        if (property_exists($data, 'auth')) {
+            $this->users[] = [$data->auth => $from];
+            echo "Auth {$data->auth} connected\n";
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
+        } else {
+            if (property_exists($data, 'to') && property_exists($data, 'msg')){
+                foreach ($this->users as $user) {
+                    if (array_key_exists($data->to, $user)) {
+                        $user[$data->to]->send($data->msg);
+                    }
+                }
             }
         }
     }
 
     public function onClose(ConnectionInterface $conn) {
-        // The connection is closed, remove it, as we can no longer send it messages
+        foreach ($this->users as $key => $user)
+        {
+            if (array_values($user)[0] == $conn) {
+                unset($this->users[$key]);
+                $ts = array_keys($user)[0];
+                echo "Deleted {$ts} has disconnected\n";
+            }
+        }
         $this->clients->detach($conn);
-
         echo "Connection {$conn->resourceId} has disconnected\n";
     }
 

@@ -63,6 +63,13 @@ $app->group('', function () {
     $this->group('/messages', function() {
         $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
         $this->post('/{name}', 'MessageController:postMessage');
+        $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');
+    });
+
+    $this->group('/connection', function() {
+        $this->post('/get', 'ConnectionController:getConnection');
+        $this->post('/set', 'ConnectionController:setConnection');
+        $this->post('/delete', 'ConnectionController:deleteConnection');
     });
 
 });

@@ -28,11 +28,18 @@ class Message extends Model
 
     public function getMessageHistory(int $user1, int $user2, $limit=50) : array
     {
-        $data = $this::select('sender', 'receiver', 'message', 'created_at')
+        $data = $this::select('*')
             ->whereIn('sender', [$user1, $user2])
             ->whereIn('receiver', [$user1, $user2])
             ->limit($limit)
             ->get();
+        $ids = [];
+        foreach ($data as $message) {
+            if ($message['has_been_read'] == false) {
+                $ids[] = $message['id'];
+            }
+        }
+        $this->setMessagesAsHasBeenRead($ids);
         if (!empty($data)) {
             return $data->toArray();
         } else {
@@ -42,10 +49,17 @@ class Message extends Model
 
     public function setMessage(int $sender, int $receiver, string $message)
     {
-        $this::insert(
-            ['sender' => $sender],
-            ['reeiver' => $receiver],
-            ['message' => $message]
+        return $this::insert(
+            [
+                'sender' => $sender,
+                'receiver' => $receiver,
+                'message' => $message
+            ]
         );
+    }
+
+    private function setMessagesAsHasBeenRead($messageIds) {
+        $this::whereIn('id', $messageIds)
+            ->update(['has_been_read' => true]);
     }
 }

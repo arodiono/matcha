@@ -10,6 +10,7 @@ namespace App\Services;
 
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
+use Ratchet\Session\SessionProvider;
 use Ratchet\WebSocket\WsServer;
 
 require '/Users/oklymeno/matcha-api/vendor/autoload.php';
