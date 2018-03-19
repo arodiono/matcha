@@ -30,7 +30,7 @@ class MessageController extends Controller
         $user_id = $user->getId($args['name']);
         $messageBase = new Message();
         $messages = $messageBase->getMessageHistory($_SESSION['user'], $user_id);
-        return $this->view->render($response, 'messages/message.twig', ['data' => $messages]);
+        return $this->view->render($response, 'messages/message.twig', ['data' => $messages, 'user' => $_SESSION['user']]);
     }
 
     /**
@@ -42,11 +42,31 @@ class MessageController extends Controller
     public function postMessage(Request $request, Response $response, $args): Response
     {
         $body = $request->getParsedBody();
-        if (array_key_exists('text', $body)) {
-            
+        if (!array_key_exists('text', $body)) {
+            return $response->withStatus(401);
         }
-        $request->getParsedBody()['text'];
+        $user = new User();
+        $message = new Message();
+        $receiver = $user->getId(explode('/', $request->getUri()->getPath())[2]);
+        $sender = $_SESSION['user'];
+        $text = $request->getParsedBody()['text'];
+        if ($message->setMessage($sender, $receiver, $text)) {
+            return $response->withStatus(200);
+        } else {
+            return $response->withStatus(504);
+        }
+    }
 
-        return $response->withRedirect($this->router->pathFor('signup/signup.info'));
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return Response
+     */
+
+    public function setMessageHasBeenRead(Request $request, Response $response, $args): Response
+    {
+        $body = $request->getParsedBody();
+
     }
 }
