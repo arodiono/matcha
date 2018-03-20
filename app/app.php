@@ -62,6 +62,10 @@ $container['view'] = function ($container) {
         'user' => $container->auth->user(),
     ]);
     $view->getEnvironment()->addGlobal('flash', $container->flash);
+    $fun = new Twig_Function('isLiked', function ($whom) {
+        return \App\Models\Like::where('who_id', $_SESSION['user'])->where('whom_id', $whom->id)->first() !== null;
+    });
+    $view->getEnvironment()->addFunction($fun);
 
     return $view;
 };
@@ -74,8 +78,8 @@ $container['HomeController'] = function ($container) {
 $container['AuthController'] = function ($container) {
     return new \App\Controllers\AuthController($container);
 };
-$container['PasswordController'] = function ($container) {
-    return new \App\Controllers\PasswordController($container);
+$container['LikeController'] = function ($container) {
+    return new \App\Controllers\LikeController($container);
 };
 $container['PhotoController'] = function ($container) {
     return new \App\Controllers\PhotoController($container);

@@ -31,6 +31,11 @@ $app->group('', function () {
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
+        $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
+    });
+
+    $this->group('/like', function () {
+        $this->post('/toggle/{id}', 'LikeController:toggleLike')->setName('like.toggle');
     });
 
     $this->group('/signup', function () {
@@ -62,7 +67,5 @@ $app->group('', function () {
         $this->post('/set', 'ConnectionController:setConnection');
         $this->post('/delete', 'ConnectionController:deleteConnection');
     });
-
-
 
 })->add(new \App\Middleware\AuthMiddleware($container));
