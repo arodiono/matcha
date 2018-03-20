@@ -62,10 +62,6 @@ $container['view'] = function ($container) {
         'user' => $container->auth->user(),
     ]);
     $view->getEnvironment()->addGlobal('flash', $container->flash);
-    $fun = new Twig_Function('isLiked', function ($whom) {
-        return \App\Models\Like::where('who_id', $_SESSION['user'])->where('whom_id', $whom->id)->first() !== null;
-    });
-    $view->getEnvironment()->addFunction($fun);
 
     return $view;
 };

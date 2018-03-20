@@ -24,4 +24,15 @@ class Like extends Model
     {
         return $this->hasOne('App\Model\User', 'whom_id');
     }
+
+    public static function isExist($who, $whom)
+    {
+        return self::where('who_id', $who)->where('whom_id', $whom)->first() !== null;
+
+    }
+
+    public static function isMutually($who, $whom)
+    {
+        return self::where('who_id', $who)->where('whom_id', $whom)->first() !== null && self::where('who_id', $whom)->where('whom_id', $who)->first() !== null;
+    }
 }

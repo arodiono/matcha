@@ -13,7 +13,7 @@ use Ratchet\Http\HttpServer;
 use Ratchet\Session\SessionProvider;
 use Ratchet\WebSocket\WsServer;
 
-require '/Users/oklymeno/matcha-api/vendor/autoload.php';
+require __DIR__.'/../../vendor/autoload.php';
 
 $server = IoServer::factory(
     new HttpServer(

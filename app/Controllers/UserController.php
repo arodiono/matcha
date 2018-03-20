@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
+use App\Models\Like;
 use App\Models\Location;
 use App\Models\Photo;
 use App\Models\User;
@@ -29,7 +30,12 @@ class UserController extends Controller
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
 
-        return $this->view->render($response, 'user/profile.twig', ['user' => $user]);
+        $data = [
+            'user' => $user,
+            'isLiked' => Like::isExist(Auth::user()->id, $user->id),
+            'isMutually' => Like::isMutually(Auth::user()->id, $user->id)
+        ];
+        return $this->view->render($response, 'user/profile.twig', $data);
     }
 
     public function setLocation(Request $request, Response $response): Response
