@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Respect\Validation\Exceptions\MaxException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Models\User;
@@ -30,7 +31,7 @@ class MessageController extends Controller
         $user_id = $user->getId($args['name']);
         $messageBase = new Message();
         $messages = $messageBase->getMessageHistory($_SESSION['user'], $user_id);
-        return $this->view->render($response, 'messages/message.twig', ['data' => $messages, 'user' => $_SESSION['user']]);
+        return $this->view->render($response, 'messages/message.twig', ['data' => $messages, 'user' => $user->getUsernameById($_SESSION['user'])]);
     }
 
     /**
@@ -47,7 +48,8 @@ class MessageController extends Controller
         }
         $user = new User();
         $message = new Message();
-        $receiver = $user->getId(explode('/', $request->getUri()->getPath())[2]);
+        $pathArray  = explode('/', $request->getUri()->getPath());
+        $receiver = $user->getId(array_last($pathArray));
         $sender = $_SESSION['user'];
         $text = $request->getParsedBody()['text'];
         if ($message->setMessage($sender, $receiver, $text)) {
@@ -66,7 +68,17 @@ class MessageController extends Controller
 
     public function setMessageHasBeenRead(Request $request, Response $response, $args): Response
     {
-        $body = $request->getParsedBody();
-
+        $user = new User();
+        $message = new Message();
+        $pathArray  = explode('/', $request->getUri()->getPath());
+        $senderId = $user->getId($pathArray[count($pathArray) - 2]);
+        $parsedBody = $request->getParsedBody();
+        if (array_key_exists('user', $parsedBody)) {
+            $receiverName = $parsedBody['user'];
+            if ($message->setMessagesAsHasBeenRead($senderId, $user->getId($receiverName))) {
+                return $response->withStatus(200);
+            }
+        }
+        return $response->withStatus(504);
     }
 }
