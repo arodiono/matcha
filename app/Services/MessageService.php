@@ -10,16 +10,17 @@ namespace App\Services;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use App\Models\Message;
-use App\Models\Connections;
-use App\Services\Session;
 
 
 class MessageService implements MessageComponentInterface
 {
     protected $clients;
 
-    private $users = [];
+    private $directMessageConnections = [];
+
+    private $notificationConnections = [];
+
+    private $done = 0;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
@@ -36,15 +37,25 @@ class MessageService implements MessageComponentInterface
         echo sprintf('Connection %d sending message "%s" to other connections' . "\n"
             , $from->resourceId, $msg);
         $data = json_decode($msg);
-        if (property_exists($data, 'auth')) {
-            $this->users[] = [$data->auth => $from];
-            echo "Auth {$data->auth} connected\n";
-
+        if (property_exists($data, 'auth') && property_exists($data, 'type')) {
+            if ($data->type == 'msg') {
+                $this->directMessageConnections[] = [$data->auth => $from];
+            } elseif ($data->type == 'ntf') {
+                $this->notificationConnections[] = [$data->auth => $from];
+            }
         } else {
             if (property_exists($data, 'to') && property_exists($data, 'msg')){
-                foreach ($this->users as $user) {
+                foreach ($this->directMessageConnections as $user) {
                     if (array_key_exists($data->to, $user)) {
                         $user[$data->to]->send($data->msg);
+                        $this->done = 1;
+                    }
+                }
+                if ($this->done === 0) {
+                    foreach ($this->notificationConnections as $user) {
+                        if (array_key_exists($data->to, $user)) {
+                            $user[$data->to]->send($data->msg);
+                        }
                     }
                 }
             }
@@ -52,10 +63,18 @@ class MessageService implements MessageComponentInterface
     }
 
     public function onClose(ConnectionInterface $conn) {
-        foreach ($this->users as $key => $user)
+        foreach ($this->notificationConnections as $key => $user)
         {
             if (array_values($user)[0] == $conn) {
-                unset($this->users[$key]);
+                unset($this->notificationConnections[$key]);
+                $ts = array_keys($user)[0];
+                echo "Deleted {$ts} has disconnected\n";
+            }
+        }
+        foreach ($this->directMessageConnections as $key => $user)
+        {
+            if (array_values($user)[0] == $conn) {
+                unset($this->directMessageConnections[$key]);
                 $ts = array_keys($user)[0];
                 echo "Deleted {$ts} has disconnected\n";
             }

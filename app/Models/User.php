@@ -101,4 +101,17 @@ class User extends Model
             return 0;
         }
     }
+
+    public function getUsernameById($id)
+    {
+        $data = $this::select('username')
+            ->where('id', '=', $id)
+            ->get()
+            ->first();
+        if (!empty($data)) {
+            return $data->toArray()['username'];
+        } else {
+            return false;
+        }
+    }
 }
