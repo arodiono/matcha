@@ -26,7 +26,13 @@ class Message extends Model
      * @return array
      */
 
-    protected $fillable = ['has_been_read'];
+    protected $conversations;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->conversations = new Conversation();
+    }
 
     public function getMessageHistory(int $user1, int $user2, $limit=50) : array
     {
@@ -50,23 +56,41 @@ class Message extends Model
         }
     }
 
+    /**
+     * @param int $sender
+     * @param int $receiver
+     * @param string $message
+     * @return mixed
+     */
     public function setMessage(int $sender, int $receiver, string $message)
     {
+        if (!$this->conversations->isConversationExist($sender, $receiver)) {
+            $this->conversations->createConversation($sender, $receiver);
+        }
         return $this::insert(
             [
                 'sender' => $sender,
                 'receiver' => $receiver,
-                'message' => $message
+                'message' => $message,
+                'conversation_id' => $this->conversations->getConversationId($sender, $receiver)
             ]
         );
     }
 
+    /**
+     * @param $messageIds
+     */
     private function setMessagesAsHasBeenReadByMessageIds($messageIds)
     {
         $this::whereIn('id', $messageIds)
             ->update(['has_been_read' => true]);
     }
 
+    /**
+     * @param $sender
+     * @param $receiver
+     * @return bool
+     */
     public function setMessagesAsHasBeenRead($sender, $receiver) : bool
     {
         return $this::where('sender', '=', $sender)
@@ -76,4 +100,22 @@ class Message extends Model
             ->first()
             ->update(['has_been_read' => true]);
     }
+
+//        public function conversation()
+//        {
+//            return $this->hasOne('App\\Models\\Conversation', 'conversation_id');
+//        }
+
+
+    public function getAllConversationsWithMassages($userId) : array
+    {
+        $conversations = $this->conversations->getAllConversations($userId);
+        $conversationsWithMessages = [];
+        foreach ($conversations as $conversation) {
+            var_dump($conversation);
+
+        }
+        die();
+    }
+
 }

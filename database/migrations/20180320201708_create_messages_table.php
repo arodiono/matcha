@@ -34,12 +34,15 @@ class CreateMessagesTable extends AbstractMigration
             ->addColumn('receiver', 'integer', ['limit' => 11])
             ->addColumn('message', 'string')
             ->addColumn('has_been_read', 'boolean', ['default' => false])
+            ->addColumn('conversation_id', 'integer')
             ->addColumn('created_at', 'timestamp')
             ->addColumn('updated_at', 'timestamp', [
                 'default' => 'CURRENT_TIMESTAMP',
                 'update' => 'CURRENT_TIMESTAMP',
                 'null' => TRUE
             ])
+            ->addForeignKey('conversation_id', 'conversations', 'id',
+                array('delete' => 'cascade', 'update' => 'no action' ))
             ->create();
     }
 }
