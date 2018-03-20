@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Auth\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class User
+ * @property mixed id
  * @package App\Models
  */
 class User extends Model

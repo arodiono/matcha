@@ -18,7 +18,9 @@ $app->group('', function () {
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
     });
-})->add(new \App\Middleware\GuestMiddleware($container));
+})
+    ->add(new \App\Middleware\GuestMiddleware($container));
+//    ->add(new \App\Middleware\CsrfViewMiddleware($container));
 
 $app->group('', function () {
 
@@ -31,6 +33,11 @@ $app->group('', function () {
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
+        $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
+    });
+
+    $this->group('/like', function () {
+        $this->post('/toggle/{id}', 'LikeController:toggleLike')->setName('like.toggle');
     });
 
     $this->group('/signup', function () {
@@ -65,4 +72,5 @@ $app->group('', function () {
         $this->post('/delete', 'ConnectionController:deleteConnection');
     });
 
-})->add(new \App\Middleware\MessageMiddleware($container));
+});
+//->add(new \App\Middleware\MessageMiddleware($container));

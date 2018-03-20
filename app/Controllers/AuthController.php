@@ -34,10 +34,11 @@ class AuthController extends Controller
             'bio' => v::length(null, 150)
         ]);
         if ($validation->failed()) {
-            return $response->withRedirect($this->router->pathFor('signup/signup.info'));
+            return $response->withRedirect($this->router->pathFor('signup.info'));
         }
 
-        $this->auth->user()->update([
+        $user = $this->auth->user();
+        $user->update([
             'first_name' => $request->getParam('first_name'),
             'last_name' => $request->getParam('last_name'),
             'gender' => $request->getParam('gender'),
@@ -46,19 +47,17 @@ class AuthController extends Controller
         ]);
 
         $tags = explode(',', $request->getParam('tags'));
+
         foreach ($tags as $tag) {
             $tagId = Tag::updateOrCreate([
                 'tag' => $tag
             ]);
-            UsersTags::updateOrCreate([
-                'user_id' => $_SESSION['user'],
-                'tag_id' => $tagId->id
-            ]);
+            $user->tags()->attach($tagId->id);
         }
 
         $this->flash->addMessage('success', 'You have been signed up!');
 
-        return $response->withRedirect($this->router->pathFor('signup/signup.photos'));
+        return $response->withRedirect($this->router->pathFor('signup.photos'));
     }
 
     /**

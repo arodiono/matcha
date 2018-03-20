@@ -24,12 +24,12 @@ class UserController extends Controller
      */
     public function getUserProfile(Request $request, Response $response, $args): Response
     {
-        $user = User::where('username', $args['name'])->with('photos', 'tags')->first()->toArray();
+        $user = User::where('username', $args['name'])->with('photos', 'tags')->first();
         if ($user === null) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
 
-        return $this->view->render($response, 'user/profile.twig', $user);
+        return $this->view->render($response, 'user/profile.twig', ['user' => $user]);
     }
 
     public function setLocation(Request $request, Response $response): Response
@@ -49,14 +49,28 @@ class UserController extends Controller
     
     public function getUserEdit(Request $request, Response $response): Response
 	{
-		$userdata = User::find($_SESSION['user'])::with('tags')->first()->toArray();
-		return $this->view->render($response, 'user/profile.edit.twig', $userdata);
+		return $this->view->render($response, 'user/profile.edit.twig', ['user' => Auth::user()]);
 	}
 	
 	public function postUserEdit(Request $request, Response $response): Response
 	{
-	
-	}
+        $data = $request->getParsedBody();
+
+        $user = User::find($_SESSION['user'])->first();
+
+        $user->update([
+            'email' => htmlspecialchars($data['email']),
+            'first_name' => htmlspecialchars($data['first_name']),
+            'last_name' => htmlspecialchars($data['last_name']),
+            'gender' => htmlspecialchars($data['gender']),
+            'sex_preference' => htmlspecialchars($data['sex_preference']),
+            'bio' => htmlspecialchars($data['bio'])
+        ]);
+
+        $this->flash->addMessage('success', 'Information successfully updated.');
+        return $response->withRedirect($this->router->pathFor('user.edit'));
+
+    }
 
     /**
      * @param Request $request
@@ -76,17 +90,15 @@ class UserController extends Controller
     public function postChangePassword(Request $request, Response $response): Response
     {
         $validation = $this->validator->validate($request, [
-            'current_password' => v::noWhitespace()->notEmpty()
-                ->matchesPassword($this->auth->user()->password)
-                ->matchesOldPassword($this->auth->user()->password),
-            'new_password' => v::noWhitespace()->notEmpty(),
+            'current_password' => v::noWhitespace()->notEmpty(),
+            'new_password' => v::noWhitespace()->notEmpty()->matchesOldPassword($this->auth->user()->password),
         ]);
 
         if ($validation->failed()) {
             return $response->withRedirect($this->router->pathFor('user.password.change'));
         }
 
-        $this->auth->user()->setPassword($request->getParam('password_new'));
+        $this->auth->user()->setPassword($request->getParam('new_password'));
         $this->flash->addMessage('info', 'Password was changed.');
 
         return $response->withRedirect($this->router->pathFor('home'));
@@ -159,5 +171,12 @@ class UserController extends Controller
         $this->flash->addMessage('success', 'Your password has been changed successfully.');
         return $response->withRedirect($this->router->pathFor('home'));
 
+    }
+
+    public function postDeleteUser(Request $request, Response $response): Response
+    {
+        Auth::user()->delete();
+        session_destroy();
+        return $response->withRedirect($this->router->pathFor('home'));
     }
 }
