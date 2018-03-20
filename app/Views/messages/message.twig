@@ -19,13 +19,13 @@
     <script type="text/javascript">
         var conn = new WebSocket('ws://localhost:8000');
         conn.onopen = function(e) {
-            conn.send(JSON.stringify({auth: '{{ user }}'}));
+            conn.send(JSON.stringify({auth: '{{ user }}', type: 'msg'}));
         };
         conn.onmessage = function(e) {
             addNewIncomeMessage(e.data);
             $.post(window.location.href + '/smhbr',
                 {
-                    text: message
+                    user: '{{ user }}'
                 });
         };
         var form = document.querySelector('.message-field');
@@ -35,12 +35,6 @@
             document.getElementById('new-message').value = '';
         }, false);
 
-        function test() {
-            $.post('/connection/get',
-                {
-                    id: '1'
-                });
-        }
         function addNewIncomeMessage(message) {
             var newMessage = document.createElement('span');
             newMessage.textContent = message;
@@ -50,12 +44,14 @@
 
         function addNewOutcomeMessage(message) {
             var newMessage = document.createElement('span');
-            $.post(window.location.href,
+            var url = window.location.href;
+            var receiver = url.split('/')[url.split('/').length - 1];
+            $.post(url,
                 {
                     text: message
                 });
-            conn.send(JSON.stringify({auth: '{{ user }}'}));
-            conn.send(message);
+
+            conn.send(JSON.stringify({to: receiver, msg: message}));
             newMessage.textContent = message;
             document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
             document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));

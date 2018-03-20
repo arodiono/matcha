@@ -26,22 +26,25 @@ class Message extends Model
      * @return array
      */
 
+    protected $fillable = ['has_been_read'];
+
     public function getMessageHistory(int $user1, int $user2, $limit=50) : array
     {
         $data = $this::select('*')
             ->whereIn('sender', [$user1, $user2])
             ->whereIn('receiver', [$user1, $user2])
             ->limit($limit)
+            ->latest()
             ->get();
         $ids = [];
-        foreach ($data as $message) {
+        foreach ($data->toArray() as $message) {
             if ($message['has_been_read'] == false) {
                 $ids[] = $message['id'];
             }
         }
-        $this->setMessagesAsHasBeenRead($ids);
+        $this->setMessagesAsHasBeenReadByMessageIds($ids);
         if (!empty($data)) {
-            return $data->toArray();
+            return array_reverse($data->toArray());
         } else {
             return [];
         }
@@ -58,8 +61,19 @@ class Message extends Model
         );
     }
 
-    private function setMessagesAsHasBeenRead($messageIds) {
+    private function setMessagesAsHasBeenReadByMessageIds($messageIds)
+    {
         $this::whereIn('id', $messageIds)
+            ->update(['has_been_read' => true]);
+    }
+
+    public function setMessagesAsHasBeenRead($sender, $receiver) : bool
+    {
+        return $this::where('sender', '=', $sender)
+            ->where('receiver', '=', $receiver)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->first()
             ->update(['has_been_read' => true]);
     }
 }
