@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UserSocketConnections extends AbstractMigration
+class AddLastMessageColumnToConversationTable extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,10 +28,7 @@ class UserSocketConnections extends AbstractMigration
      */
     public function change()
     {
-        $connections = $this->table('connections');
-        $connections
-            ->addColumn('connection_id', 'integer', ['limit' => 11])
-            ->addColumn('user_id', 'integer', ['limit' => 11])
-            ->create();
+        $conversations = $this->table('conversations');
+        $conversations->addColumn('last_message', 'string', ['default' => ''])->save();
     }
 }

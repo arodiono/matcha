@@ -114,4 +114,11 @@ class User extends Model
             return false;
         }
     }
+
+    public function getAllUsernamesAndIds() : array
+    {
+        return $this::select('id', 'username')
+            ->get()
+            ->toArray();
+    }
 }

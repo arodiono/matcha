@@ -18,9 +18,7 @@ $app->group('', function () {
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
     });
-})
-    ->add(new \App\Middleware\GuestMiddleware($container));
-//    ->add(new \App\Middleware\CsrfViewMiddleware($container));
+})->add(new \App\Middleware\GuestMiddleware($container));
 
 $app->group('', function () {
 
@@ -57,10 +55,8 @@ $app->group('', function () {
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
 
-})->add(new \App\Middleware\AuthMiddleware($container));
-
-$app->group('', function () {
     $this->group('/messages', function() {
+        $this->get('', 'MessageController:getAllConversations');
         $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
         $this->post('/{name}', 'MessageController:postMessage');
         $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');
@@ -72,5 +68,4 @@ $app->group('', function () {
         $this->post('/delete', 'ConnectionController:deleteConnection');
     });
 
-});
-//->add(new \App\Middleware\MessageMiddleware($container));
+})->add(new \App\Middleware\AuthMiddleware($container));

@@ -1,0 +1,20 @@
+{% set title = 'All messages'%}
+{% set body = 'messages' %}
+{% extends 'templates/core.twig' %}
+
+{% block content %}
+   <div>
+      <div class="messagefield">
+          {% for item in conversations %}
+             <span style="font-style: italic">{{ item.username }}:</span><br>
+             <span>{{ item.msg }}</span><br>
+          {% endfor %}
+      </div>
+      <div class="textfield">
+         <form class="message-field">
+            <input id="new-message" type="text" value="" placeholder="New message...">
+            <input type="submit" value="Submit">
+         </form>
+      </div>
+   </div>
+{% endblock %}
