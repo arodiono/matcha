@@ -9,7 +9,6 @@
 namespace App\Models;
 
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -67,6 +66,7 @@ class Message extends Model
         if (!$this->conversations->isConversationExist($sender, $receiver)) {
             $this->conversations->createConversation($sender, $receiver);
         }
+        $this->conversations->setLastMessage($sender, $receiver, $message);
         return $this::insert(
             [
                 'sender' => $sender,
@@ -105,17 +105,5 @@ class Message extends Model
 //        {
 //            return $this->hasOne('App\\Models\\Conversation', 'conversation_id');
 //        }
-
-
-    public function getAllConversationsWithMassages($userId) : array
-    {
-        $conversations = $this->conversations->getAllConversations($userId);
-        $conversationsWithMessages = [];
-        foreach ($conversations as $conversation) {
-            var_dump($conversation);
-
-        }
-        die();
-    }
 
 }

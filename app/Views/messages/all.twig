@@ -5,8 +5,9 @@
 {% block content %}
    <div>
       <div class="messagefield">
-          {% for item in data %}
-              <span>{{ item.message }}</span><br>
+          {% for item in conversations %}
+             <span style="font-style: italic">{{ item.username }}:</span><br>
+             <span>{{ item.msg }}</span><br>
           {% endfor %}
       </div>
       <div class="textfield">
@@ -16,45 +17,4 @@
          </form>
       </div>
    </div>
-    {#<script type="text/javascript">#}
-        {#var conn = new WebSocket('ws://localhost:8000');#}
-        {#conn.onopen = function(e) {#}
-            {#conn.send(JSON.stringify({auth: '{{ user }}', type: 'msg'}));#}
-        {#};#}
-        {#conn.onmessage = function(e) {#}
-            {#addNewIncomeMessage(e.data);#}
-            {#$.post(window.location.href + '/smhbr',#}
-                {#{#}
-                    {#user: '{{ user }}'#}
-                {#});#}
-        {#};#}
-        {#var form = document.querySelector('.message-field');#}
-        {#form.addEventListener("submit", function(e) {#}
-            {#e.preventDefault();#}
-            {#addNewOutcomeMessage(document.getElementById('new-message').value);#}
-            {#document.getElementById('new-message').value = '';#}
-        {#}, false);#}
-
-        {#function addNewIncomeMessage(message) {#}
-            {#var newMessage = document.createElement('span');#}
-            {#newMessage.textContent = message;#}
-            {#document.getElementsByClassName('messagefield')[0].appendChild(newMessage);#}
-            {#document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));#}
-        {#}#}
-
-        {#function addNewOutcomeMessage(message) {#}
-            {#var newMessage = document.createElement('span');#}
-            {#var url = window.location.href;#}
-            {#var receiver = url.split('/')[url.split('/').length - 1];#}
-            {#$.post(url,#}
-                {#{#}
-                    {#text: message#}
-                {#});#}
-
-            {#conn.send(JSON.stringify({to: receiver, msg: message}));#}
-            {#newMessage.textContent = message;#}
-            {#document.getElementsByClassName('messagefield')[0].appendChild(newMessage);#}
-            {#document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));#}
-        {#}#}
-    {#</script>#}
 {% endblock %}

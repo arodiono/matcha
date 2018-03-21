@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Conversation;
-use Respect\Validation\Exceptions\MaxException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Models\User;
@@ -20,6 +19,8 @@ class MessageController extends Controller
 
     private $userModel;
 
+    private $conversationsModel;
+
     /**
      * @param Request $request
      * @param Response $response
@@ -32,6 +33,7 @@ class MessageController extends Controller
         parent::__construct($container);
         $this->messageModel = new Message();
         $this->userModel = new User();
+        $this->conversationsModel = new Conversation();
     }
 
     public function getAllConversations(Request $request, Response $response, $args): Response
@@ -39,10 +41,23 @@ class MessageController extends Controller
         if (!array_key_exists('user', $_SESSION)) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
-        $conversations = $this->messageModel->getAllConversationsWithMassages($_SESSION['user']);
-
-
-        return $this->view->render($response, 'messages/all.twig');
+        $convRawData = $this->conversationsModel->getAllConversations($_SESSION['user']);
+        $usersRawData = $this->userModel->getAllUsernamesAndIds();
+        $users = [];
+        foreach ($usersRawData as $item)
+        {
+            $users[$item['id']] = $item['username'];
+        }
+        $conversations = [];
+        foreach ($convRawData as $item)
+        {
+            $username = $item['user_id_1'] == $_SESSION['user'] ? $users[$item['user_id_2']] : $users[$item['user_id_1']];
+            $conversations[] = ['username' =>$username, 'msg' => $item['last_message']];
+        }
+        return $this->view->render(
+            $response, 'messages/all.twig',
+            ['conversations' => $conversations]
+        );
     }
 
     /**
@@ -61,8 +76,14 @@ class MessageController extends Controller
         if ($user_id === $_SESSION['user']){
             return $response->withStatus(404);
         }
-        $messages = $this->messageModel->getMessageHistory($_SESSION['user'], $user_id);
-        return $this->view->render($response, 'messages/message.twig', ['data' => $messages, 'user' => $this->userModel->getUsernameById($_SESSION['user'])]);
+        return $this->view->render(
+            $response,
+            'messages/message.twig',
+            [
+                'data' => $this->messageModel->getMessageHistory($_SESSION['user'], $user_id),
+                'user' => $this->userModel->getUsernameById($_SESSION['user'])
+            ]
+        );
     }
 
     /**

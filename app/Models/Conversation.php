@@ -9,7 +9,6 @@
 namespace App\Models;
 
 
-use function FastRoute\TestFixtures\empty_options_cached;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -63,16 +62,33 @@ class Conversation extends Model
             ->id;
     }
 
+    /**
+     * @param int $userId
+     * @return array
+     */
     public function getAllConversations(int $userId) : array
     {
-        $data = $this::select('id')
+        $data = $this::select('user_id_1', 'user_id_2', 'last_message')
             ->where('user_id_1', '=', $userId)
             ->orWhere('user_id_2', '=', $userId)
+            ->latest()
             ->get();
         if ($data !== null) {
             return $data->toArray();
         } else {
             return [];
         }
+    }
+
+    /**
+     * @param int $sender
+     * @param int $receiver
+     * @param string $message
+     */
+    public function setLastMessage(int $sender, int $receiver, string $message)
+    {
+        $this::whereIn('user_id_1', [$sender, $receiver])
+            ->whereIn('user_id_2', [$sender, $receiver])
+            ->update(['last_message' => $message]);
     }
 }
