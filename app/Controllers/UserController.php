@@ -185,4 +185,14 @@ class UserController extends Controller
         session_destroy();
         return $response->withRedirect($this->router->pathFor('home'));
     }
+
+    public function postOnline(Request $request, Response $response) : Response
+    {
+        $user = new User();
+        $username = $request->getParam('username');
+        $status = $request->getParam('status');
+        $user->setOnline($user->getId($username), $status);
+        return $response->withStatus(200);
+    }
+
 }

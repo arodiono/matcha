@@ -121,4 +121,18 @@ class User extends Model
             ->get()
             ->toArray();
     }
+
+    public function setOnline(int $userId, bool $status)
+    {
+        $this::where('id', '=', $userId)
+            ->update(['online' => $status]);
+    }
+
+    public function getOnline(int $userId) : bool
+    {
+        return $this::select('online')
+            ->where('user_id', '=', $userId)
+            ->get()
+            ->online;
+    }
 }

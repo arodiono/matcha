@@ -17,6 +17,7 @@ $app->group('', function () {
         $this->post('/password/forgot', 'UserController:postForgotPassword');
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
+        $this->post('/online', 'UserController:postOnline');
     });
 })->add(new \App\Middleware\GuestMiddleware($container));
 
