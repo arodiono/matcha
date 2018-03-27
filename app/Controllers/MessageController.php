@@ -81,7 +81,7 @@ class MessageController extends Controller
             'messages/message.twig',
             [
                 'messages' => $this->messageModel->getMessageHistory($_SESSION['user'], $interlocutor),
-                'current_user' => $this->userModel->getUsernameById($_SESSION['user']),
+                'current_user' => User::where('username', $_SESSION['user'])->first(),
                 'interlocutor' => User::find($interlocutor)
             ]
         );
