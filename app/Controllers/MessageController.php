@@ -67,21 +67,22 @@ class MessageController extends Controller
      * @return Response
      */
 
-    public function getMessage(Request $request, Response $response, $args): Response
+    public function getMessages(Request $request, Response $response, $args): Response
     {
         if (!array_key_exists('name', $args) || !array_key_exists('user', $_SESSION) || !$this->userModel->isUserExist($args['name'])) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
-        $user_id = $this->userModel->getId($args['name']);
-        if ($user_id === $_SESSION['user']){
+        $interlocutor = $this->userModel->getId($args['name']);
+        if ($interlocutor === $_SESSION['user']){
             return $response->withStatus(404);
         }
         return $this->view->render(
             $response,
             'messages/message.twig',
             [
-                'data' => $this->messageModel->getMessageHistory($_SESSION['user'], $user_id),
-                'user' => $this->userModel->getUsernameById($_SESSION['user'])
+                'messages' => $this->messageModel->getMessageHistory($_SESSION['user'], $interlocutor),
+                'current_user' => $this->userModel->getUsernameById($_SESSION['user']),
+                'interlocutor' => User::find($interlocutor)
             ]
         );
     }

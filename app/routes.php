@@ -58,7 +58,7 @@ $app->group('', function () {
 
     $this->group('/messages', function() {
         $this->get('', 'MessageController:getAllConversations');
-        $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
+        $this->get('/{name}', 'MessageController:getMessages')->setName('messages');
         $this->post('/{name}', 'MessageController:postMessage');
         $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');
     });
