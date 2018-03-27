@@ -31,7 +31,7 @@ class MessageController extends Controller
         $user_id = $user->getId($args['name']);
         $messageBase = new Message();
         $messages = $messageBase->getMessageHistory($_SESSION['user'], $user_id);
-        return $this->view->render($response, 'messages/message.twig', ['data' => $messages, 'user' => $user->getUsernameById($_SESSION['user'])]);
+        return $this->view->render($response, 'messages/message.twig', ['messages' => $messages, 'user' => $user->getUsernameById($_SESSION['user'])]);
     }
 
     /**
