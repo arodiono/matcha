@@ -22,6 +22,12 @@ class MessageService implements MessageComponentInterface
 
     private $done = 0;
 
+    private $onlineUrl = '';
+
+    const ONLINE = 1;
+
+    const OFFLINE = 0;
+
     public function __construct() {
         $this->clients = new \SplObjectStorage;
     }
@@ -54,7 +60,6 @@ class MessageService implements MessageComponentInterface
     private function setOnlineStatus(bool $status, string $username)
     {
         if (!$this->isConnectionExist($username)) {
-            $url = 'http://localhost:8080/user/online';
             $data = ['username' => $username, 'status' => $status];
             $options = [
                 'http' => [
@@ -64,7 +69,7 @@ class MessageService implements MessageComponentInterface
                 ]
             ];
             $context  = stream_context_create($options);
-            file_get_contents($url, false, $context);
+            file_get_contents($this->onlineUrl, false, $context);
         }
     }
 
@@ -86,8 +91,9 @@ class MessageService implements MessageComponentInterface
         echo sprintf('Connection %d sending message "%s" to other connections' . "\n"
             , $from->resourceId, $msg);
         $data = json_decode($msg);
-        if (property_exists($data, 'auth') && property_exists($data, 'type')) {
-            $this->setOnlineStatus(true, $data->auth);
+        if (property_exists($data, 'auth') && property_exists($data, 'type') && property_exists($data, 'host')) {
+            $this->onlineUrl = $data->host;
+            $this->setOnlineStatus(self::ONLINE, $data->auth);
             if ($data->type == 'msg') {
                 $this->directMessageConnections[] = [$data->auth => $from];
             } elseif ($data->type == 'ntf') {
@@ -120,7 +126,7 @@ class MessageService implements MessageComponentInterface
         {
             if (array_values($user)[0] == $conn) {
                 unset($this->notificationConnections[$key]);
-                $this->setOnlineStatus(false, $key);
+                $this->setOnlineStatus(self::OFFLINE, $key);
                 $ts = array_keys($user)[0];
                 echo "Deleted {$ts} has disconnected\n";
             }
@@ -130,7 +136,7 @@ class MessageService implements MessageComponentInterface
             if (array_values($user)[0] == $conn) {
                 unset($this->directMessageConnections[$key]);
                 $username = array_keys($user)[0];
-                $this->setOnlineStatus(false, $username);
+                $this->setOnlineStatus(self::OFFLINE, $username);
                 echo "Deleted {$username} has disconnected\n";
             }
         }

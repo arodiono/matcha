@@ -17,9 +17,9 @@
       </div>
    </div>
     <script type="text/javascript">
-        var conn = new WebSocket('ws://localhost:8000');
+        var conn = new WebSocket('ws://' + window.location.hostname + ':8000');
         conn.onopen = function(e) {
-            conn.send(JSON.stringify({auth: '{{ user }}', type: 'msg'}));
+            conn.send(JSON.stringify({auth: '{{ user }}', type: 'msg', host: window.location.protocol + '//' + window.location.host + '/user/online'}));
         };
         conn.onmessage = function(e) {
             addNewIncomeMessage(e.data);
