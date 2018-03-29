@@ -77,7 +77,6 @@ class MessageController extends Controller
         if ($interlocutor === $_SESSION['user']){
             return $response->withStatus(404);
         }
-//        ~r($this->messageModel->getMessageHistory($_SESSION['user'], $interlocutor));
         return $this->view->render(
             $response,
             'messages/message.twig',
@@ -104,11 +103,10 @@ class MessageController extends Controller
         $pathArray  = explode('/', $request->getUri()->getPath());
         $receiver = $this->userModel->getId(array_last($pathArray));
         $sender = $_SESSION['user'];
-        $text = $request->getParsedBody()['text'];
-        if ($receiver === $sender || $text == '') {
+        if ($receiver === $sender || $body['text'] == '') {
             return $response->withStatus(504);
         }
-        if ($this->messageModel->setMessage($sender, $receiver, $text)) {
+        if ($this->messageModel->setMessage($sender, $receiver, $body['text'])) {
             return $response->withStatus(200);
         } else {
             return $response->withStatus(504);

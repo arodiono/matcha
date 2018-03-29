@@ -33,6 +33,7 @@ $app->group('', function () {
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
         $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
+        $this->post('/block', 'BlockController::blockUser');
     });
 
     $this->group('/like', function () {
