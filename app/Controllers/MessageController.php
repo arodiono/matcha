@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Auth\Auth;
 use App\Models\Conversation;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -76,12 +77,13 @@ class MessageController extends Controller
         if ($interlocutor === $_SESSION['user']){
             return $response->withStatus(404);
         }
+//        ~r($this->messageModel->getMessageHistory($_SESSION['user'], $interlocutor));
         return $this->view->render(
             $response,
             'messages/message.twig',
             [
                 'messages' => $this->messageModel->getMessageHistory($_SESSION['user'], $interlocutor),
-                'current_user' => $this->userModel->getUsernameById($_SESSION['user']),
+                'current_user' => Auth::user(),
                 'interlocutor' => User::find($interlocutor)
             ]
         );

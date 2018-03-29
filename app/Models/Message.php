@@ -49,7 +49,8 @@ class Message extends Model
         }
         $this->setMessagesAsHasBeenReadByMessageIds($ids);
         if (!empty($data)) {
-            return array_reverse($data->toArray());
+//            return array_reverse($data->toArray());
+            return $data->toArray();
         } else {
             return [];
         }

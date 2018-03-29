@@ -14,6 +14,11 @@ $(function () {
 		}
 	});
 
+    $(".chat-body").niceScroll();
+
+    $('[data-time]').each(function () {
+		$(this).html(moment($(this).data().time, "YYYY-MM-DD HH:mm:ss").fromNow())
+    })
 
 });
 

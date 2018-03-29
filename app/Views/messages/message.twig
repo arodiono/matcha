@@ -1,27 +1,113 @@
-{% set title = 'Private messages'%}
+{% set title = 'Private messages' %}
 {% set body = 'messages' %}
+{% set sender = current_user %}
+{% set receiver = interlocutor %}
+{% set sender_photo = sender.profile_photo == null ? '/img/placeholder.jpg' : '/uploads/' ~ sender.username ~ '/' ~ sender.profile_photo %}
+{% set receiver_photo = receiver.profile_photo == null ?'/img/placeholder.jpg' : '/uploads/' ~ receiver.username ~ '/' ~ receiver.profile_photo %}
 {% extends 'templates/core.twig' %}
 
 {% block content %}
-   <div>
-      <div class="messagefield">
-          {% for item in data %}
-              <span>{{ item.message }}</span><br>
-          {% endfor %}
-      </div>
-      <div class="textfield">
-         <form class="message-field">
-            <input id="new-message" type="text" value="" placeholder="New message...">
-            <input type="submit" value="Submit">
-         </form>
-      </div>
-   </div>
+    <div class="container">
+        {#<h6>{{ receiver.first_name }}  {{ receiver.last_name }}</h6>#}
+        <div class="chat">
+                <div class="chat-body col-inside-lg" style="overflow: hidden; outline: none;" tabindex="5001">
+                    <div class="answer left hide">
+                        <a href="/user/{{ receiver.username }}">
+                            <div class="avatar">
+                                <img src="{{ base_url() }}{{ receiver_photo }}"
+                                     alt="{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}">
+                                <div class="status offline"></div>
+                            </div>
+                        </a>
+                        <a href="/user/{{ receiver.username }}">
+                            <div class="name">{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}</div>
+                        </a>
+                        <div class="text"></div>
+                        <div class="time"></div>
+                    </div>
+                    <div class="answer right hide">
+                        <a href="/user/{{ sender.username }}">
+                            <div class="avatar">
+                                <img src="{{ base_url() }}{{ sender_photo }}"
+                                     alt="{{ current_user.first_name ~ ' ' ~ current_user.last_name }}">
+                                <div class="status offline"></div>
+                            </div>
+                        </a>
+                        <a href="/user/{{ sender.username }}">
+                            <div class="name">{{ current_user.first_name ~ ' ' ~ current_user.last_name }}</div>
+                        </a>
+                        <div class="text"></div>
+                        <div class="time"></div>
+                    </div>
+                    {% for message in messages %}
+                        {% if message.sender == interlocutor.id %}
+                            <div class="answer left">
+                                <a href="/user/{{ receiver.username }}">
+                                    <div class="avatar">
+                                        <img src="{{ base_url() }}{{ receiver_photo }}"
+                                             alt="{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}">
+                                        <div class="status offline"></div>
+                                    </div>
+                                </a>
+                                <a href="/user/{{ receiver.username }}">
+                                    <div class="name">{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}</div>
+                                </a>
+                                <div class="text">{{ message.message }}</div>
+                                <div class="time" data-time="{{ message.updated_at }}"></div>
+                            </div>
+                            {% else %}
+                        {#{% endif %}#}
+                        {#{% if message.sender == current_user.id %}#}
+                            <div class="answer right">
+                                <a href="/user/{{ sender.username }}">
+                                    <div class="avatar">
+                                        <img src="{{ base_url() }}{{ sender_photo }}"
+                                             alt="{{ current_user.first_name ~ ' ' ~ current_user.last_name }}">
+                                        <div class="status offline"></div>
+                                    </div>
+                                </a>
+                                <a href="/user/{{ sender.username }}">
+                                    <div class="name">{{ current_user.first_name ~ ' ' ~ current_user.last_name }}</div>
+                                </a>
+                                <div class="text">{{ message.message }}</div>
+                                <div class="time" data-time="{{ message.updated_at }}"></div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <form class="message-field">
+                    <div class="answer-add">
+                        <input id="new-message" type="text" placeholder="Write a message">
+                        <button type="submit" value="" class="answer-btn answer-btn-2"><i class="material-icons">send</i></button>
+                    </div>
+                </form>
+        </div>
+    </div>
+
+    {#<div>#}
+        {#<div class="messagefield">#}
+            {#{% for item in data %}#}
+                {#<span>{{ item.message }}</span><br>#}
+            {#{% endfor %}#}
+        {#</div>#}
+        {#<div class="textfield">#}
+            {#<form class="message-field">#}
+                {#<input id="new-message" type="text" value="" placeholder="New message...">#}
+                {#<input type="submit" value="Submit">#}
+            {#</form>#}
+        {#</div>#}
+    {#</div>#}
     <script type="text/javascript">
         var conn = new WebSocket('ws://' + window.location.hostname + ':8000');
-        conn.onopen = function(e) {
-            conn.send(JSON.stringify({auth: '{{ user }}', type: 'msg', host: window.location.protocol + '//' + window.location.host + '/user/online'}));
+        conn.onopen = function (e) {
+            conn.send(JSON.stringify({
+                auth: '{{ user }}',
+                type: 'msg',
+                host: window.location.protocol + '//' + window.location.host + '/user/online'
+            }));
         };
-        conn.onmessage = function(e) {
+        conn.onmessage = function (e) {
+            console.log(e.data)
             addNewIncomeMessage(e.data);
             $.post(window.location.href + '/smhbr',
                 {
@@ -29,32 +115,33 @@
                 });
         };
         var form = document.querySelector('.message-field');
-        form.addEventListener("submit", function(e) {
+        form.addEventListener("submit", function (e) {
             e.preventDefault();
             addNewOutcomeMessage(document.getElementById('new-message').value);
             document.getElementById('new-message').value = '';
         }, false);
 
         function addNewIncomeMessage(message) {
-            var newMessage = document.createElement('span');
-            newMessage.textContent = message;
-            document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
-            document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));
+            console.log(message)
+            var newMessage = $('.left').first().clone().removeClass('hide');
+            newMessage.find('.text').html(message)
+            newMessage.find('.time').html(moment().fromNow())
+            $('.chat-body').append(newMessage)
         }
 
         function addNewOutcomeMessage(message) {
-            var newMessage = document.createElement('span');
+            console.log(message)
+            var newMessage = $('.right').first().clone().removeClass('hide');
             var url = window.location.href;
             var receiver = url.split('/')[url.split('/').length - 1];
+            conn.send(JSON.stringify({to: receiver, msg: message}))
+            newMessage.find('.text').html(message)
+            newMessage.find('.time').html(moment().fromNow())
+            $('.chat-body').append(newMessage)
             $.post(url,
                 {
                     text: message
                 });
-
-            conn.send(JSON.stringify({to: receiver, msg: message}));
-            newMessage.textContent = message;
-            document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
-            document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));
         }
     </script>
 {% endblock %}
