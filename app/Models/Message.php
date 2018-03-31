@@ -37,11 +37,10 @@ class Message extends Model
 
     public function getMessageHistory(int $user1, int $user2, $limit=50) : array
     {
-        $data = $this::select('*')
-            ->whereIn('sender', [$user1, $user2])
+        $data = $this::whereIn('sender', [$user1, $user2])
             ->whereIn('receiver', [$user1, $user2])
+            ->orderBy('id', 'DESC')
             ->limit($limit)
-            ->latest()
             ->get();
         $ids = [];
         foreach ($data->toArray() as $message) {
@@ -51,8 +50,7 @@ class Message extends Model
         }
         $this->setMessagesAsHasBeenReadByMessageIds($ids);
         if (!empty($data)) {
-//            return array_reverse($data->toArray());
-            return $data->toArray();
+            return array_reverse($data->toArray());
         } else {
             return [];
         }
