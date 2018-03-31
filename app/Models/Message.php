@@ -27,6 +27,8 @@ class Message extends Model
 
     protected $conversations;
 
+    protected $fillable = ['has_been_read'];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
