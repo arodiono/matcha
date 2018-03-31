@@ -43,11 +43,12 @@
     </style>
 </head>
 
-<body class="{{ body }}">
+<body class="{{ body }}" data-user="{{ auth.user.username }}">
 {% include '/templates/navigation.twig' %}
 {% include '/templates/flash.twig' %}
 <div class="content">
-{% block content %} {% endblock %}
+{% block content %}
+{% endblock %}
 </div>
 {% include '/templates/footer.twig' %}
 <link rel="stylesheet" href="{{ base_url() }}/css/main.min.css">

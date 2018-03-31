@@ -1,2 +1,3 @@
-DIRECTORY=`dirname $0`
-php $DIRECTORY/../app/Services/ChatEngine.php
+#!usr/bin/env
+
+php app/Services/ChatEngine.php
