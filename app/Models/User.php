@@ -135,4 +135,32 @@ class User extends Model
             ->get()
             ->online;
     }
+
+    public function setActivity(string $name, int $user_id, int $activity_user_id)
+    {
+        $this::from('activity')->insert(
+            [
+                'user_id' => $user_id,
+                'activity_user_id' => $activity_user_id,
+                'activity_type' => $this::from('activity_type')
+                    ->select('id')
+                    ->where('activity_name', $name)
+                    ->get()
+                    ->first()['id']
+            ]
+        );
+    }
+
+    public function getUserActivity(string $name, int $user_id, int $limit=50): array
+    {
+        return $this::from('activity')
+            ->select('activity_user_id', 'activity.created_at')
+            ->leftJoin('activity_type', 'activity.activity_type', '=', 'activity_type.id')
+            ->where('activity_type.activity_name', $name)
+            ->where('activity.user_id', $user_id)
+            ->orderBy('activity.id', 'DESC')
+            ->limit($limit)
+            ->get()
+            ->toArray();
+    }
 }

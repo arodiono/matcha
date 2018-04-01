@@ -35,6 +35,10 @@ class UserController extends Controller
             'isLiked' => Like::isExist(Auth::user()->id, $user->id),
             'isMutually' => Like::isMutually(Auth::user()->id, $user->id)
         ];
+        if (Auth::user()->id !== $user->id) {
+            $user_model = new User();
+            $user_model->setActivity('visit', Auth::user()->id, $user->id);
+        }
         return $this->view->render($response, 'user/profile.twig', $data);
     }
 
