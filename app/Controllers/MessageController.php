@@ -42,22 +42,9 @@ class MessageController extends Controller
         if (!array_key_exists('user', $_SESSION)) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
-        $convRawData = $this->conversationsModel->getAllConversations($_SESSION['user']);
-        $usersRawData = $this->userModel->getAllUsernamesAndIds();
-        $users = [];
-        foreach ($usersRawData as $item)
-        {
-            $users[$item['id']] = $item['username'];
-        }
-        $conversations = [];
-        foreach ($convRawData as $item)
-        {
-            $username = $item['user_id_1'] == $_SESSION['user'] ? $users[$item['user_id_2']] : $users[$item['user_id_1']];
-            $conversations[] = ['username' =>$username, 'msg' => $item['last_message']];
-        }
         return $this->view->render(
             $response, 'messages/all.twig',
-            ['conversations' => $conversations]
+            ['conversations' => $this->conversationsModel->getAllConversations($_SESSION['user'])]
         );
     }
 
