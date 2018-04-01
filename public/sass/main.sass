@@ -187,16 +187,29 @@ footer
 	font-size: 20px
 	margin: 0 0 20px
 
+.placeholder
+	clear: both
+	display: flex
+	align-items: center
+	justify-content: space-around
+
 .chat-users .user 
 	position: relative
-	padding: 0 0 0 50px
+	padding: 10px 0 10px 50px
 	display: block
 	cursor: pointer
-	margin: 0 0 20px
+	border-bottom: 1px solid #ebebeb
+
+.chat-users a .user
+	color: #3C4858
 
 .chat-users .user .avatar 
-	top: 0
 	left: 0
+
+.chat .user .time
+	font-size: 13px
+	position: absolute
+	right: 0
 
 .chat .avatar 
 	width: 40px
@@ -231,7 +244,8 @@ footer
 	border-radius: 5px
 	position: absolute
 
-.chat-users .user .name 
+.chat-users .user .name
+	width: 80%
 	font-size: 14px
 	font-weight: bold
 	line-height: 20px
@@ -239,7 +253,8 @@ footer
 	overflow: hidden
 	text-overflow: ellipsis
 
-.chat-users .user .mood 
+.chat-users .user .mood
+	width: 80%
 	font: 200 14px/20px "Raleway", sans-serif
 	white-space: nowrap
 	overflow: hidden

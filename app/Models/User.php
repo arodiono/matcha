@@ -71,6 +71,13 @@ class User extends Model
         return $this->hasMany('App\Models\Photo');
     }
 
+    public function conversations()
+    {
+        return $this->hasMany('App\Models\Conversation', 'user_id_1')
+            ->where('user_id_1', '=', $this->id)
+            ->orWhere('user_id_2', '=', $this->id);
+    }
+
     /**
      * @param $user
      * @return bool

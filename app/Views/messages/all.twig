@@ -1,20 +1,60 @@
-{% set title = 'All messages'%}
+{% set title = 'All messages' %}
 {% set body = 'messages' %}
 {% extends 'templates/core.twig' %}
 
 {% block content %}
-   <div>
-      <div class="messagefield">
-          {% for item in conversations %}
-             <span style="font-style: italic">{{ item.username }}:</span><br>
-             <span>{{ item.msg }}</span><br>
-          {% endfor %}
-      </div>
-      <div class="textfield">
-         <form class="message-field">
-            <input id="new-message" type="text" value="" placeholder="New message...">
-            <input type="submit" value="Submit">
-         </form>
-      </div>
-   </div>
+    <div class="container">
+        <div class="chat col-inside-lg" style="overflow: hidden; outline: none;" tabindex="5000">
+            <div class="chat-users">
+                {% for item in conversations %}
+                    {% if auth.user.id == item.user_2.id %}
+                        <a href="{{ path_for('messages.chat', {name: item.user_1.username}) }}">
+                            <div class="user">
+                                <div class="avatar">
+                                    {% set photo = item.user_1.profile_photo == null ? '/img/placeholder.jpg' : '/uploads/' ~ item.user_1.username ~ '/' ~ item.user_1.profile_photo %}
+                                    <img src="{{ base_url() }}{{ photo }}" alt="{{ item.user_1.username }}">
+                                    <div class="status {{ item.user_1.online == 1 ? 'online' : 'offline'}}"></div>
+                                </div>
+                                <div class="time" data-time="{{ item.updated_at }}"></div>
+                                <div class="name">{{ item.user_1.username }}</div>
+                                <div class="mood">{{ item.last_message }}</div>
+                            </div>
+                        </a>
+                    {% elseif auth.user.id == item.user_1.id %}
+                        <a href="{{ path_for('messages.chat', {name: item.user_2.username}) }}">
+                            <div class="user">
+                                <div class="avatar">
+                                    {% set photo = item.user_2.profile_photo == null ? '/img/placeholder.jpg' : '/uploads/' ~ item.user_2.username ~ '/' ~ item.user_2.profile_photo %}
+                                    <img src="{{ base_url() }}{{ photo }}" alt="{{ item.user_2.username }}">
+                                    <div class="status {{ item.user_2.online == 1 ? 'online' : 'offline'}}"></div>
+                                </div>
+                                <div class="time" data-time="{{ item.updated_at }}"></div>
+                                <div class="name">{{ item.user_2.username }}</div>
+                                <div class="mood">{{ item.last_message }}</div>
+
+                            </div>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <div class="placeholder">
+                        <div>You do not have any messages</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {#<div>#}
+        {#<div class="messagefield">#}
+            {#{% for item in conversations %}#}
+                {#<span style="font-style: italic">{{ item.username }}:</span><br>#}
+                {#<span>{{ item.msg }}</span><br>#}
+            {#{% endfor %}#}
+        {#</div>#}
+        {#<div class="textfield">#}
+            {#<form class="message-field">#}
+                {#<input id="new-message" type="text" value="" placeholder="New message...">#}
+                {#<input type="submit" value="Submit">#}
+            {#</form>#}
+        {#</div>#}
+    {#</div>#}
 {% endblock %}
