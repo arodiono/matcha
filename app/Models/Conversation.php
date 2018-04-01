@@ -68,16 +68,12 @@ class Conversation extends Model
      */
     public function getAllConversations(int $userId) : array
     {
-        $data = $this::select('user_id_1', 'user_id_2', 'last_message')
+        return $this::select('user_id_1', 'user_id_2', 'last_message')
             ->where('user_id_1', '=', $userId)
             ->orWhere('user_id_2', '=', $userId)
+            ->with('user_1', 'user_2')
             ->latest()
             ->get();
-        if ($data !== null) {
-            return $data->toArray();
-        } else {
-            return [];
-        }
     }
 
     /**
@@ -90,5 +86,15 @@ class Conversation extends Model
         $this::whereIn('user_id_1', [$sender, $receiver])
             ->whereIn('user_id_2', [$sender, $receiver])
             ->update(['last_message' => $message]);
+    }
+
+    public function user_1()
+    {
+        return $this->hasOne('App\Model\User', 'user_id_1');
+    }
+
+    public function user_2()
+    {
+        return $this->hasOne('App\Model\User', 'user_id_2');
     }
 }
