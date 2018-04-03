@@ -8,7 +8,6 @@
 
 namespace App\Controllers;
 
-
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Slim\Http\Request;
