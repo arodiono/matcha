@@ -50,6 +50,9 @@ class User extends Model
         ]);
     }
 
+    /**
+     * @param $photo
+     */
     public function setPhoto($photo)
     {
         $this->update([
@@ -57,16 +60,25 @@ class User extends Model
         ]);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function location()
     {
         return $this->hasOne('App\Models\Location');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag')->using('App\Pivots\TagUserPivot');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function photos()
     {
         return $this->hasMany('App\Models\Photo');
@@ -97,6 +109,10 @@ class User extends Model
         return false;
     }
 
+    /**
+     * @param $username
+     * @return int
+     */
     public function getId($username) : int
     {
         $data = $this::select('id')
@@ -110,6 +126,10 @@ class User extends Model
         }
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     public function getUsernameById($id)
     {
         $data = $this::select('username')
@@ -123,6 +143,9 @@ class User extends Model
         }
     }
 
+    /**
+     * @return array
+     */
     public function getAllUsernamesAndIds() : array
     {
         return $this::select('id', 'username')
@@ -130,12 +153,20 @@ class User extends Model
             ->toArray();
     }
 
+    /**
+     * @param int $userId
+     * @param bool $status
+     */
     public function setOnline(int $userId, bool $status)
     {
         $this::where('id', '=', $userId)
             ->update(['online' => $status]);
     }
 
+    /**
+     * @param int $userId
+     * @return bool
+     */
     public function getOnline(int $userId) : bool
     {
         return $this::select('online')
@@ -144,29 +175,50 @@ class User extends Model
             ->online;
     }
 
-    public function setActivity(string $name, int $user_id, int $activity_user_id)
+    /**
+     * @param int $who_id
+     * @param int $whom_id
+     */
+    public function setVisit(int $who_id, int $whom_id)
     {
-        $this::from('activity')->insert(
-            [
-                'user_id' => $user_id,
-                'activity_user_id' => $activity_user_id,
-                'activity_type' => $this::from('activity_type')
-                    ->select('id')
-                    ->where('activity_name', $name)
-                    ->get()
-                    ->first()['id']
-            ]
-        );
+        $exist = $this::from('visits')->where('who_id', $who_id)
+            ->where('whom_id', $whom_id)
+            ->first();
+        if (!$exist) {
+            $this::from('visits')->insert(
+                [
+                    'who_id' => $who_id,
+                    'whom_id' => $whom_id
+                ]
+            );
+        } else {
+            $this::from('visits')
+                ->where('who_id', $who_id)
+                ->where('whom_id', $whom_id)
+                ->update(
+                [
+                    'who_id' => $who_id,
+                    'whom_id' => $whom_id
+                ]
+            );
+        }
     }
 
-    public function getUserActivity(string $name, int $user_id, int $limit=50): array
+    /**
+     * @param int $user_id
+     * @param int $limit
+     * @param string $type - can be 'me' or 'my', default - my
+     * @return array
+     */
+    public function getUserVisits(int $user_id, string $type='my', int $limit=50): array
     {
-        return $this::from('activity')
-            ->select('activity_user_id', 'activity.created_at')
-            ->leftJoin('activity_type', 'activity.activity_type', '=', 'activity_type.id')
-            ->where('activity_type.activity_name', $name)
-            ->where('activity.user_id', $user_id)
-            ->orderBy('activity.id', 'DESC')
+        if ($type != 'my' && $type != 'me') {
+            return [];
+        }
+        return $this::from('visits')
+            ->select($type == 'my' ? 'whom_id' : 'who_id', 'updated_at')
+            ->where($type == 'my' ? 'who_id' : 'whom_id', $user_id)
+            ->orderBy('updated_at', 'DESC')
             ->limit($limit)
             ->get()
             ->toArray();

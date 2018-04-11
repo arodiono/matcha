@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateActivityTable extends AbstractMigration
+class CreateVisitsTable extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,22 +28,19 @@ class CreateActivityTable extends AbstractMigration
      */
     public function change()
     {
-        $activity = $this->table('activity');
-        $activity
-            ->addColumn('user_id', 'integer', ['limit' => 11])
-            ->addColumn('activity_user_id', 'integer', ['limit' => 11])
-            ->addColumn('activity_type','integer', ['limit' => 1])
+        $visit = $this->table('visits');
+        $visit
+            ->addColumn('who_id', 'integer', ['limit' => 11])
+            ->addColumn('whom_id', 'integer', ['limit' => 11])
             ->addColumn('created_at', 'timestamp')
             ->addColumn('updated_at', 'timestamp', [
                 'default' => 'CURRENT_TIMESTAMP',
                 'update' => 'CURRENT_TIMESTAMP',
                 'null' => TRUE
             ])
-            ->addForeignKey('activity_type', 'activity_type', 'id',
+            ->addForeignKey('who_id', 'users', 'id',
                 array('delete' => 'cascade', 'update' => 'no action' ))
-            ->addForeignKey('user_id', 'users', 'id',
-                array('delete' => 'cascade', 'update' => 'no action' ))
-            ->addForeignKey('activity_user_id', 'users', 'id',
+            ->addForeignKey('whom_id', 'users', 'id',
                 array('delete' => 'cascade', 'update' => 'no action' ))
             ->create();
     }
