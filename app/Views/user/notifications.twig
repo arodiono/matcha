@@ -1,0 +1,15 @@
+{% extends 'templates/core.twig' %}
+{% set title = 'Notifications' %}
+{% set body = 'profile-page' %}
+
+{% block content %}
+    <div class="main main-raised">
+        <div class="content">
+            <div class="container">
+                {{ for notify in notifications }}
+                    <p>{{ notify.user_id }}</p>
+                {{ endfor }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

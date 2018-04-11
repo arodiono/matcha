@@ -11,6 +11,7 @@ $app->group('', function () {
     $this->post('/signup', 'AuthController:postSignUp');
     $this->get('/signin', 'AuthController:getSignIn')->setName('signin');
     $this->post('/signin', 'AuthController:postSignIn');
+    $this->get('/fb-login', 'AuthController:facebookCallback')->setName('fb-login');
 
     $this->group('/user', function () {
         $this->get('/password/forgot', 'UserController:getForgotPassword')->setName('user.password.forgot');

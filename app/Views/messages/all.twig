@@ -1,10 +1,9 @@
 {% set title = 'All messages' %}
 {% set body = 'messages' %}
 {% extends 'templates/core.twig' %}
-
 {% block content %}
     <div class="container">
-        <div class="chat col-inside-lg" style="overflow: hidden; outline: none;" tabindex="5000">
+        <div class="chat card col-inside-lg" style="overflow: hidden; outline: none;" tabindex="5000">
             <div class="chat-users">
                 {% for item in conversations %}
                     {% if auth.user.id == item.user_2.id %}

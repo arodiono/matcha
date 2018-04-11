@@ -7,6 +7,11 @@
 {% extends 'templates/core.twig' %}
 
 {% block content %}
+    <script>
+    $(document).ready(function () {
+        scrollChat()
+    })
+    </script>
     <div class="container" data-connection="msg">
         {#<h6>{{ receiver.first_name }}  {{ receiver.last_name }}</h6>#}
         <div class="chat">

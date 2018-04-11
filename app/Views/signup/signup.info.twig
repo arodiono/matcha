@@ -17,7 +17,7 @@
                                     <div class="form-group label-floating is-empty {{ errors.first_name ? 'has-error is-focused' : '' }} {{ oldInput.first_name ? 'is-focused' : '' }}">
                                         <label class="control-label">First name</label>
                                         <input type="text" name="first_name" class="form-control"
-                                               value="{{ oldInput.first_name }}">
+                                               value="{{ oldInput.first_name == null ? user.first_name : oldInput.first_name }}">
                                         <span class="material-input"></span>
                                         {% if errors.first_name %}
                                             <span class="material-icons form-control-feedback">clear</span>
@@ -27,7 +27,7 @@
                                     <div class="form-group label-floating is-empty {{ errors.last_name ? 'has-error is-focused' : '' }} {{ oldInput.last_name ? 'is-focused' : '' }}">
                                         <label class="control-label">Last name</label>
                                         <input type="text" name="last_name" class="form-control"
-                                               value="{{ oldInput.last_name }}">
+                                               value="{{ oldInput.last_name == null ? user.last_name : oldInput.last_name }}">
                                         <span class="material-input"></span>
                                         {% if errors.last_name %}
                                             <span class="material-icons form-control-feedback">clear</span>
@@ -38,8 +38,8 @@
                                         <div class="col-sm-6">
                                             <select name="gender" class="selectpicker"
                                                     data-style="btn btn-primary btn-round" title="Gender" data-size="3">
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
+                                                <option value="male" {{ user.gender == 'male' ? 'selected' : '' }}>Male</option>
+                                                <option value="female" {{ user.gender == 'female' ? 'selected' : '' }}>Female</option>
                                             </select>
                                             {% if errors.gender %}
                                                 <span class="help-block">{{ errors.gender | first }}</span>

@@ -36,7 +36,8 @@ class User extends Model
         'sex_preference',
         'bio',
         'profile_photo',
-        'hash'
+        'hash',
+        'fb_id'
     ];
 
     /**

@@ -29,7 +29,7 @@ class FixConversations extends AbstractMigration
     public function change()
     {
         $messages = $this->table('conversations');
-        $messages->changeColumn('last_message', 'string', [
+        $messages->changeColumn('last_message', 'text', [
             'null' => TRUE,
             'default' => null
         ])->save();

@@ -210,9 +210,10 @@ footer {
   padding: 20px; }
 
 .chat {
+  margin-top: 30px;
   position: relative;
-  height: -webkit-calc(100vh - 70px - 84px);
-  height: calc(100vh - 70px - 84px);
+  height: -webkit-calc(100vh - 70px - 100px - 60px);
+  height: calc(100vh - 70px - 100px - 60px);
   background-color: #ffffff; }
 
 .decor-default {
@@ -309,8 +310,8 @@ footer {
 
 /*****************CHAT BODY *******************/
 .chat-body {
-  height: -webkit-calc(100vh - 70px - 60px - 84px);
-  height: calc(100vh - 70px - 60px - 84px); }
+  height: -webkit-calc(100vh - 70px - 60px - 85px);
+  height: calc(100vh - 70px - 60px - 85px); }
 
 .chat-body h6 {
   font-size: 20px;
@@ -458,6 +459,23 @@ footer {
   -webkit-appearance: none;
   -webkit-border-radius: 0;
           border-radius: 0; }
+
+.navbar-right {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  list-style: none; }
+
+.navbar-fixed-top ul > li {
+  display: block;
+  height: 50px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */
