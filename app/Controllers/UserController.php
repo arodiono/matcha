@@ -37,7 +37,7 @@ class UserController extends Controller
         ];
         if (Auth::user()->id !== $user->id) {
             $user_model = new User();
-            $user_model->setActivity('visit', Auth::user()->id, $user->id);
+            $user_model->setVisit(Auth::user()->id, $user->id);
         }
         return $this->view->render($response, 'user/profile.twig', $data);
     }
