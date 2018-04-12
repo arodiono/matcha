@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: oklymeno
- * Date: 3/20/18
- * Time: 10:31 PM
- */
 
 namespace App\Models;
 
 
+use App\Auth\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -68,12 +63,7 @@ class Conversation extends Model
      */
     public function getAllConversations(int $userId) : array
     {
-        return $this::select('user_id_1', 'user_id_2', 'last_message')
-            ->where('user_id_1', '=', $userId)
-            ->orWhere('user_id_2', '=', $userId)
-            ->with('user_1', 'user_2')
-            ->latest()
-            ->get();
+        return Auth::user()->conversations()->with('user_1', 'user_2')->get()->toArray();
     }
 
     /**
@@ -90,11 +80,13 @@ class Conversation extends Model
 
     public function user_1()
     {
-        return $this->hasOne('App\Model\User', 'user_id_1');
+        return $this->belongsTo('App\Models\User', 'user_id_1');
+
     }
 
     public function user_2()
     {
-        return $this->hasOne('App\Model\User', 'user_id_2');
+        return $this->belongsTo('App\Models\User', 'user_id_2');
+
     }
 }

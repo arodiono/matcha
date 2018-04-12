@@ -11,6 +11,7 @@ $app->group('', function () {
     $this->post('/signup', 'AuthController:postSignUp');
     $this->get('/signin', 'AuthController:getSignIn')->setName('signin');
     $this->post('/signin', 'AuthController:postSignIn');
+    $this->get('/fb-login', 'AuthController:facebookCallback')->setName('fb-login');
 
     $this->group('/user', function () {
         $this->get('/password/forgot', 'UserController:getForgotPassword')->setName('user.password.forgot');
@@ -58,8 +59,8 @@ $app->group('', function () {
     });
 
     $this->group('/messages', function() {
-        $this->get('', 'MessageController:getAllConversations');
-        $this->get('/{name}', 'MessageController:getMessages')->setName('messages');
+        $this->get('', 'MessageController:getAllConversations')->setName('messages.all');
+        $this->get('/{name}', 'MessageController:getMessages')->setName('messages.chat');
         $this->post('/{name}', 'MessageController:postMessage');
         $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');
     });

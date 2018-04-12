@@ -55,9 +55,9 @@
                             </form>
                         {% endif %}
                         {% if isMutually %}
-                            <button class="btn btn-fab btn-rose" rel="tooltip" title="" data-original-title="Send message">
+                            <a href="{{ path_for('messages.chat', {name: user.username}) }}" class="btn btn-fab btn-rose" rel="tooltip" title="" data-original-title="Send message">
                                 <i class="material-icons">email</i>
-                            </button>
+                            </a>
                         {% else %}
                             <button class="btn bnt-disabled btn-fab btn-rose" rel="tooltip" title="" data-original-title="To write a message you need mutual sympathy!" data-toggle="modal" data-target="#InfoModal">
                                 <i class="material-icons">email</i>
