@@ -26,8 +26,6 @@ class UserController extends Controller
      */
     public function getUserProfile(Request $request, Response $response, $args): Response
     {
-        $test = new Rating();
-        $test->calculateRating('14');
         $user = User::where('username', $args['name'])->with('photos', 'tags')->first();
         if ($user === null) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
