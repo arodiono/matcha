@@ -75,11 +75,60 @@ class Rating extends Model
             ->get()
             ->first()
             ->toArray()['likes_month'];
+        $rating['match_last_week'] =
 
-        $res = $rating['photo'] * 0.05 + ($rating['convs_all'] % $rating['convs_all']) * 0.05
-        ~r(0 % 0);
+        $convs_all = $rating['convs_all'] == 0 ? 0 : 0.05;
+        $convs_week = $rating['convs_week'] < 5 ? 0 : 0.1;
+        $convs_month = $rating['convs_month'] < 5 ? 0 : 0.05;
+        $likes_set = $rating['likes_set'] < 5 ? 0 : 0.1;
+        $likes_week = $rating['likes_get_week'] == 0 ? 0 : 0.07;
+        $likes_month = $rating['likes_get_month'] == 0 ? 0 : 0.03;
+        $matches_week = $this->getMatches(1022, $week) == 0 ? 0 : 0.05;
+        $matches_month = $this->getMatches(1022, $month) == 0 ? 0 : 0.05;
+        $rate = $rating['photo'] * 0.05 +
+            $convs_all +
+            $convs_week +
+            $convs_month +
+            $rating['bio'] * 0.25 +
+            $likes_set +
+            $likes_month +
+            $likes_week +
+            $matches_month +
+            $matches_week;
+        return $rate;
     }
 
-    // Photo 25%
-    //
+    private function getMatches($user_id, $period)
+    {
+        $likes_set = $this::from('likes')
+            ->select('whom_id as whom')
+            ->where('who_id', $user_id)
+            ->whereDate('updated_at', '>', $period)
+            ->get()
+            ->toArray();
+        $likes_get = $this::from('likes')
+            ->select('who_id as who')
+            ->where('whom_id', $user_id)
+            ->whereDate('updated_at', '>', $period)
+            ->get()
+            ->toArray();
+        $set = [];
+        $get = [];
+        foreach ($likes_set as $item)
+        {
+            $set[] = $item['whom'];
+        }
+        foreach ($likes_get as $item)
+        {
+            $get[] = $item['who'];
+        }
+        $matches = 0;
+        foreach ($set as $like)
+        {
+            if (in_array($like, $get)) {
+                $matches++;
+            }
+        }
+        return $matches;
+    }
 }
