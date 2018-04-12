@@ -57,6 +57,7 @@ $container['view'] = function ($container) {
         $container->router,
         $container->request->getUri()
     ));
+    $view->addExtension(new Twig_Extension_Debug());
     $view->getEnvironment()->addGlobal('auth', [
         'check' => $container->auth->check(),
         'user' => $container->auth->user(),
@@ -65,6 +66,7 @@ $container['view'] = function ($container) {
 
     return $view;
 };
+
 $container['validator'] = function () {
     return new App\Validation\Validator;
 };

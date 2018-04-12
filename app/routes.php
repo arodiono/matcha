@@ -30,11 +30,12 @@ $app->group('', function () {
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
         $this->post('/edit', 'UserController:postUserEdit');
         $this->any('/location', 'UserController:setLocation')->setName('user.location');
-        $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
         $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
-        $this->post('/block', 'BlockController::blockUser');
+        $this->post('/block', 'BlockController:blockUser');
+        $this->get('/visits', 'UserController:getVisits')->setName('user.visits');
+        $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
     });
 
     $this->group('/like', function () {

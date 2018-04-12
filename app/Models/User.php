@@ -91,6 +91,11 @@ class User extends Model
             ->orWhere('user_id_2', '=', $this->id);
     }
 
+    public function visits()
+    {
+        return $this->hasMany('App\Models\Visit');
+    }
+
     /**
      * @param $user
      * @return bool
@@ -204,23 +209,22 @@ class User extends Model
         }
     }
 
-    /**
-     * @param int $user_id
-     * @param int $limit
-     * @param string $type - can be 'me' or 'my', default - my
-     * @return array
-     */
-    public function getUserVisits(int $user_id, string $type='my', int $limit=50): array
-    {
-        if ($type != 'my' && $type != 'me') {
-            return [];
-        }
-        return $this::from('visits')
-            ->select($type == 'my' ? 'whom_id' : 'who_id', 'updated_at')
-            ->where($type == 'my' ? 'who_id' : 'whom_id', $user_id)
-            ->orderBy('updated_at', 'DESC')
-            ->limit($limit)
-            ->get()
-            ->toArray();
-    }
+//    /**
+//     * @param int $user_id
+//     * @param int $limit
+//     * @param string $type - can be 'me' or 'my', default - my
+//     * @return array
+//     */
+//    public function getUserVisits(int $user_id, string $type='my', int $limit=50)
+//    {
+//        if ($type != 'my' && $type != 'me') {
+//            return [];
+//        }
+//        return $this::from('visits')
+//            ->select($type == 'my' ? 'whom_id' : 'who_id', 'updated_at')
+//            ->where($type == 'my' ? 'who_id' : 'whom_id', $user_id)
+//            ->orderBy('updated_at', 'DESC')
+//            ->limit($limit)
+//            ->get()->all();
+//    }
 }
