@@ -25,8 +25,8 @@ class Notification extends Model
     {
         $this::insert(
             [
-                'sender_id' => $senderId,
-                'receiver_id' => $receiverId,
+                'who_id' => $senderId,
+                'whom_id' => $receiverId,
                 'type' => $type
             ]
         );
