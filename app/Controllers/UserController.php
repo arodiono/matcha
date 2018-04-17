@@ -9,6 +9,7 @@ use App\Models\Photo;
 use App\Models\Rating;
 use App\Models\User;
 use App\Models\Tag;
+use App\Models\Visit;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
@@ -200,4 +201,11 @@ class UserController extends Controller
         return $response->withStatus(200);
     }
 
+    public function getVisits(Request $request, Response $response)
+    {
+        $visits = Visit::where('whom_id', $_SESSION['user'])->get()->all();
+//        $visits = Visit::where('whom_id', $_SESSION['user'])->first()->who()->get()->first();
+//        ~r($visits);
+        return $this->view->render($response, 'user/notifications.twig', ['visits' => $visits]);
+    }
 }

@@ -6,9 +6,9 @@
     <div class="main main-raised">
         <div class="content">
             <div class="container">
-                {{ for notify in notifications }}
-                    <p>{{ notify.user_id }}</p>
-                {{ endfor }}
+                {% for visit in visits %}
+                    <p>{{ visit.who.first_name }} visit your page at {{ visit.created_at | date() }}</p>
+                {% endfor %}
             </div>
         </div>
     </div>
