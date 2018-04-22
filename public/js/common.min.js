@@ -71,19 +71,19 @@ $(function () {
 		$(this).html(moment($(this).data().time, "YYYY-MM-DD HH:mm:ss").fromNow())
     })
 
-    var conn = new WebSocket('wss://' + window.location.hostname + ':8000/ws');
+    var conn = new WebSocket('wss://' + window.location.hostname + '/ws');
     conn.onopen = function (e) {
     	// console.log(conn)
         conn.send(JSON.stringify({
             auth: $('[data-user]').data().user,
             type: $('[data-connection]').data() == null ? 'ntf' : $('[data-connection]').data().connection,
-            host: window.location.protocol + '//' + window.location.host + '/user/online'
+            host: window.location.protocol + '//' + window.location.host + '/ws/user/online'
         }));
     };
     conn.onmessage = function (e) {
     	console.log(e.data)
         addNewIncomeMessage(e.data);
-        $.post(window.location.href + '/smhbr',
+        $.post(window.location.href + '/ws/smhbr',
             {
                 user: $('[data-user]').data().user
             });

@@ -13,18 +13,22 @@ $app->group('', function () {
     $this->post('/signin', 'AuthController:postSignIn');
     $this->get('/fb-login', 'AuthController:facebookCallback')->setName('fb-login');
 
+
     $this->group('/user', function () {
         $this->get('/password/forgot', 'UserController:getForgotPassword')->setName('user.password.forgot');
         $this->post('/password/forgot', 'UserController:postForgotPassword');
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
-        $this->post('/online', 'UserController:postOnline');
     });
 })->add(new \App\Middleware\GuestMiddleware($container));
 
 $app->group('', function () {
 
     $this->get('/signout', 'AuthController:getSignOut')->setName('signout');
+
+    $this->group('/ws', function () {
+        $this->post('/user/online', 'UserController:postOnline');
+    });
 
     $this->group('/user', function () {
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
@@ -60,14 +64,17 @@ $app->group('', function () {
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
 
-    $this->group('/messages', function() {
+    $this->group('/ws/messages', function() {
         $this->get('', 'MessageController:getAllConversations')->setName('messages.all');
         $this->get('/{name}', 'MessageController:getMessages')->setName('messages.chat');
-        $this->post('/{name}', 'MessageController:postMessage');
         $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');
     });
 
-    $this->group('/connection', function() {
+    $this->group('/messages', function() {
+        $this->post('/{name}', 'MessageController:postMessage');
+    });
+
+    $this->group('/ws/connection', function() {
         $this->post('/get', 'ConnectionController:getConnection');
         $this->post('/set', 'ConnectionController:setConnection');
         $this->post('/delete', 'ConnectionController:deleteConnection');
