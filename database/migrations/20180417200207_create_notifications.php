@@ -30,19 +30,19 @@ class CreateNotifications extends AbstractMigration
     {
         $notifications = $this->table('notifications');
         $notifications
-            ->addColumn('receiver_id', 'integer', ['limit' => 11])
-            ->addColumn('sender_id', 'integer', ['limit' => 11])
-            ->addColumn('type', 'string', ['limit' => 10])
+            ->addColumn('who_id', 'integer', ['limit' => 11])
+            ->addColumn('whom_id', 'integer', ['limit' => 11])
             ->addColumn('has_been_read', 'integer', ['limit' => 1, 'default' => 0])
+            ->addColumn('type', 'enum', ['values' => ['like', 'unlike', 'mutually', 'visit']])
             ->addColumn('created_at', 'timestamp')
             ->addColumn('updated_at', 'timestamp', [
                 'default' => 'CURRENT_TIMESTAMP',
                 'update' => 'CURRENT_TIMESTAMP',
                 'null' => TRUE
             ])
-            ->addForeignKey('receiver_id', 'users', 'id',
+            ->addForeignKey('who_id', 'users', 'id',
                 array('delete' => 'cascade', 'update' => 'no action' ))
-            ->addForeignKey('sender_id', 'users', 'id',
+            ->addForeignKey('whom_id', 'users', 'id',
                 array('delete' => 'cascade', 'update' => 'no action' ))
             ->create();
     }
