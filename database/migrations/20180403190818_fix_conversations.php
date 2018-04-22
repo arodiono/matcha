@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateMessagesTable extends AbstractMigration
+class FixConversations extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,18 +28,10 @@ class CreateMessagesTable extends AbstractMigration
      */
     public function change()
     {
-        $messages = $this->table('messages');
-        $messages
-            ->addColumn('sender', 'integer', ['limit' => 11])
-            ->addColumn('receiver', 'integer', ['limit' => 11])
-            ->addColumn('message', 'string')
-            ->addColumn('has_been_read', 'boolean', ['default' => false])
-            ->addColumn('created_at', 'timestamp')
-            ->addColumn('updated_at', 'timestamp', [
-                'default' => 'CURRENT_TIMESTAMP',
-                'update' => 'CURRENT_TIMESTAMP',
-                'null' => TRUE
-            ])
-            ->create();
+        $messages = $this->table('conversations');
+        $messages->changeColumn('last_message', 'text', [
+            'null' => TRUE,
+            'default' => null
+        ])->save();
     }
 }

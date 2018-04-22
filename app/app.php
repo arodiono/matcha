@@ -3,6 +3,7 @@
 use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Tinify\Tinify;
 
 session_start();
 date_default_timezone_set('Europe/Kiev');
@@ -57,6 +58,7 @@ $container['view'] = function ($container) {
         $container->router,
         $container->request->getUri()
     ));
+    $view->addExtension(new Twig_Extension_Debug());
     $view->getEnvironment()->addGlobal('auth', [
         'check' => $container->auth->check(),
         'user' => $container->auth->user(),
@@ -65,6 +67,7 @@ $container['view'] = function ($container) {
 
     return $view;
 };
+
 $container['validator'] = function () {
     return new App\Validation\Validator;
 };
@@ -133,6 +136,15 @@ $app->add(function (Request $request, Response $response, callable $next) {
     return $next($request, $response);
 });
 
+$app->add(function ($req, $res, $next) {
+    $response = $next($req, $res);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+});
+
 v::with('App\\Validation\\Rules\\');
+Tinify::setKey('Q0fPpkfgcREXv52XL1NHvP2LupHokyDw');
 
 require __DIR__ . '/routes.php';

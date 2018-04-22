@@ -5,8 +5,8 @@ define('DB_HOST', '35.198.137.227');
 define('DB_USER', 'test');
 define('DB_PASS', 'test');
 define('DB_NAME', 'matcha');
-define('DB_CHARSET', 'utf8');
-define('DB_COLLATION', 'utf8_unicode_ci');
+define('DB_CHARSET', 'utf8mb4');
+define('DB_COLLATION', 'utf8mb4_unicode_ci');
 define('DB_PORT', '3306');
 
 define('MAIL_PASS', 'arodiono-oklymeno-matcha');

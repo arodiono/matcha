@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class UserSocketConnections extends AbstractMigration
+class AddOnlineToUser extends AbstractMigration
 {
     /**
      * Change Method.
@@ -28,10 +28,7 @@ class UserSocketConnections extends AbstractMigration
      */
     public function change()
     {
-        $connections = $this->table('connections');
-        $connections
-            ->addColumn('connection_id', 'integer', ['limit' => 11])
-            ->addColumn('user_id', 'integer', ['limit' => 11])
-            ->create();
+        $users = $this->table('users');
+        $users->addColumn('online', 'boolean', ['default' => false])->save();
     }
 }

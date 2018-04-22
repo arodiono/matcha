@@ -2,8 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Auth\Auth;
 use App\Models\Tag;
 use App\Models\User;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Respect\Validation\Validator as v;
@@ -14,6 +18,18 @@ use Respect\Validation\Validator as v;
  */
 class AuthController extends Controller
 {
+    private $fb;
+
+    public function __construct($container)
+    {
+        parent::__construct($container);
+        $this->fb = new Facebook([
+            'app_id' => '1773360252722944',
+            'app_secret' => '7b948af41043383139af1b6e54856281',
+            'default_graph_version' => 'v2.2',
+        ]);
+    }
+
     public function getSignUpPhotos(Request $request, Response $response): Response
     {
         return $this->view->render($response, 'signup/signup.photos.twig');
@@ -21,7 +37,7 @@ class AuthController extends Controller
 
     public function getSignUpInfo(Request $request, Response $response): Response
     {
-        return $this->view->render($response, 'signup/signup.info.twig');
+        return $this->view->render($response, 'signup/signup.info.twig', ['user' => Auth::user()->toArray()]);
     }
 
     public function postSignUpInfo(Request $request, Response $response): Response
@@ -78,7 +94,83 @@ class AuthController extends Controller
      */
     public function getSignIn(Request $request, Response $response): Response
     {
-        return $this->view->render($response, 'signup/signin.twig');
+        $helper = $this->fb->getRedirectLoginHelper();
+
+        $permissions = ['email', 'user_photos'];
+        $url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $this->router->pathFor('fb-login');
+        $loginUrl = $helper->getLoginUrl(htmlspecialchars($url), $permissions);
+
+        return $this->view->render($response, 'signup/signin.twig', ['fb' => $loginUrl]);
+    }
+
+    public function facebookCallback(Request $request, Response $response): Response
+    {
+        $helper = $this->fb->getRedirectLoginHelper();
+
+        try {
+            $accessToken = $helper->getAccessToken();
+        } catch (\Exception $e) {
+            return $this->view->render(
+                $response->withStatus(400),
+                'templates/error.twig',
+                [
+                    'status' => 404,
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+        if (!isset($accessToken)) {
+            return $this->view->render(
+                $response->withStatus(400),
+                'templates/error.twig',
+                [
+                    'status' => 404,
+                    'message' => $helper->getError()
+                ]
+            );
+        }
+
+
+        try {
+            $fbResponse = $this->fb->get('/me/?fields=first_name,last_name,email,gender', $accessToken);
+//            $requestUserPhotos = $this->fb->get(htmlspecialchars('/me/albums?fields=photos{images}'), $accessToken);
+        } catch (\Exception $e) {
+            return $this->view->render(
+                $response->withStatus(404),
+                'templates/error.twig',
+                [
+                    'status' => 404,
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+
+        $user = $fbResponse->getGraphUser();
+
+        $exist = User::select('id')
+            ->where('fb_id', '=', $user->getId())
+            ->get()
+            ->first();
+        if (!empty($exist)) {
+            $_SESSION['user'] = $exist->id;
+            return $response->withRedirect($this->router->pathFor('home'));
+        }
+
+        $newUser = User::create([
+            'username' => $user->getId(),
+            'email' => $user->getEmail(),
+            'password' => password_hash(hash('md5', uniqid(rand(), true)), PASSWORD_DEFAULT),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'gender' => $user->getGender(),
+            'fb_id' => $user->getId(),
+            'hash' => hash('md5', uniqid(rand(), true))
+        ]);
+
+        $_SESSION['user'] = $newUser->id;
+        $this->flash->addMessage('success', 'You have been signed up! Please tell about yourself');
+
+        return $response->withRedirect($this->router->pathFor('signup.info'));
     }
 
     /**

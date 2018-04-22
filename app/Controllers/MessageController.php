@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use Respect\Validation\Exceptions\MaxException;
+use App\Auth\Auth;
+use App\Models\Conversation;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Models\User;
@@ -15,6 +16,12 @@ use App\Models\Message;
 
 class MessageController extends Controller
 {
+    private $messageModel;
+
+    private $userModel;
+
+    private $conversationsModel;
+
     /**
      * @param Request $request
      * @param Response $response
@@ -22,16 +29,50 @@ class MessageController extends Controller
      * @return Response
      */
 
-    public function getMessage(Request $request, Response $response, $args): Response
+    public function __construct($container)
     {
-        $user = new User();
-        if (!array_key_exists('name', $args) || !array_key_exists('user', $_SESSION) || !$user->isUserExist($args['name'])) {
+        parent::__construct($container);
+        $this->messageModel = new Message();
+        $this->userModel = new User();
+        $this->conversationsModel = new Conversation();
+    }
+
+    public function getAllConversations(Request $request, Response $response, $args): Response
+    {
+        if (!array_key_exists('user', $_SESSION)) {
             return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
         }
-        $user_id = $user->getId($args['name']);
-        $messageBase = new Message();
-        $messages = $messageBase->getMessageHistory($_SESSION['user'], $user_id);
-        return $this->view->render($response, 'messages/message.twig', ['messages' => $messages, 'user' => $user->getUsernameById($_SESSION['user'])]);
+        return $this->view->render(
+            $response, 'messages/all.twig',
+            ['conversations' => $this->conversationsModel->getAllConversations($_SESSION['user'])]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return Response
+     */
+
+    public function getMessages(Request $request, Response $response, $args): Response
+    {
+        if (!array_key_exists('name', $args) || !array_key_exists('user', $_SESSION) || !$this->userModel->isUserExist($args['name'])) {
+            return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
+        }
+        $interlocutor = $this->userModel->getId($args['name']);
+        if ($interlocutor === $_SESSION['user']){
+            return $response->withStatus(404);
+        }
+        return $this->view->render(
+            $response,
+            'messages/message.twig',
+            [
+                'messages' => $this->messageModel->getMessageHistory($_SESSION['user'], $interlocutor),
+                'current_user' => Auth::user(),
+                'interlocutor' => User::find($interlocutor)
+            ]
+        );
     }
 
     /**
@@ -46,13 +87,13 @@ class MessageController extends Controller
         if (!array_key_exists('text', $body)) {
             return $response->withStatus(401);
         }
-        $user = new User();
-        $message = new Message();
         $pathArray  = explode('/', $request->getUri()->getPath());
-        $receiver = $user->getId(array_last($pathArray));
+        $receiver = $this->userModel->getId(array_last($pathArray));
         $sender = $_SESSION['user'];
-        $text = $request->getParsedBody()['text'];
-        if ($message->setMessage($sender, $receiver, $text)) {
+        if ($receiver === $sender || $body['text'] == '') {
+            return $response->withStatus(504);
+        }
+        if ($this->messageModel->setMessage($sender, $receiver, $body['text'])) {
             return $response->withStatus(200);
         } else {
             return $response->withStatus(504);
@@ -68,14 +109,12 @@ class MessageController extends Controller
 
     public function setMessageHasBeenRead(Request $request, Response $response, $args): Response
     {
-        $user = new User();
-        $message = new Message();
         $pathArray  = explode('/', $request->getUri()->getPath());
-        $senderId = $user->getId($pathArray[count($pathArray) - 2]);
+        $senderId = $this->userModel->getId($pathArray[count($pathArray) - 2]);
         $parsedBody = $request->getParsedBody();
         if (array_key_exists('user', $parsedBody)) {
             $receiverName = $parsedBody['user'];
-            if ($message->setMessagesAsHasBeenRead($senderId, $user->getId($receiverName))) {
+            if ($this->messageModel->setMessagesAsHasBeenRead($senderId, $this->userModel->getId($receiverName))) {
                 return $response->withStatus(200);
             }
         }

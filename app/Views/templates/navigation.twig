@@ -1,39 +1,30 @@
-<nav class="navbar navbar-default navbar-fixed-top" id="sectionsNav">
+<div class="navbar navbar-fixed-top">
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+        <div class="pull-left">
             <a class="navbar-brand" href="{{ path_for('home') }}">Matcha</a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="pull-right">
             <ul class="nav navbar-nav navbar-right">
                 {% if auth.check %}
-                    <li><a href="#"><i class="material-icons">notifications</i> Notifications</a></li>
-                    <li><a href="#"><i class="material-icons">chat</i> Messages</a></li>
-                    <li><a href="{{ path_for('search.nearby') }}"><i class="material-icons">search</i> Search</a></li>
-                    <li class="">
-                        <a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
-                            <i class="material-icons">email</i>
-                            <div class="ripple-container"></div>
-                        </a>
-                    </li>
+                    <li><a href="{{ path_for('search.nearby') }}"><i class="material-icons">search</i></a></li>
+                    <li><a href="#"><i class="material-icons">notifications</i></a></li>
+                    <li><a href="{{ path_for('messages.all') }}"><i class="material-icons">email</i></a></li>
                     <li class="dropdown">
                         <a href="#" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <div class="profile-photo-small">
                                 {% if  auth.user.profile_photo %}
-                                    <img src="{{ base_url() }}/uploads/{{ auth.user.username }}/{{ auth.user.profile_photo }}" alt="Circle Image" class="img-circle img-responsive">
+                                    <img src="{{ base_url() }}/uploads/{{ auth.user.username }}/200x200_{{ auth.user.profile_photo }}"
+                                         alt="Circle Image" class="img-circle img-responsive">
                                 {% else %}
-                                    <img src="{{ base_url() }}/img/placeholder.jpg" alt="Circle Image" class="img-circle img-responsive">
+                                    <img src="{{ base_url() }}/img/placeholder.jpg" alt="Circle Image"
+                                         class="img-circle img-responsive">
                                 {% endif %}
                             </div>
                             <div class="ripple-container"></div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ path_for('user.profile', { 'name': auth.user.username }) }}">Profile</a></li>
+                            <li><a href="{{ path_for('user.profile', { 'name': auth.user.username }) }}">Profile</a>
+                            </li>
                             <li><a href="{{ path_for('user.edit') }}">Settings</a></li>
                             <li class="divider"></li>
                             <li><a href="{{ path_for('signout') }}">Sign out</a></li>
@@ -41,9 +32,105 @@
                     </li>
                 {% else %}
                     <li><a href="{{ path_for('signin') }}"><i class="material-icons">person</i> Sign in</a></li>
-                    <li><a class="btn btn-primary" href="{{ path_for('signup') }}"><i class="material-icons">person_add</i> Sign up</a></li>
+                    <li><a class="btn btn-primary" href="{{ path_for('signup') }}"><i
+                                    class="material-icons">person_add</i> Sign up</a></li>
                 {% endif %}
             </ul>
         </div>
     </div>
-</nav>
+</div>
+
+{#<div class="navbar navbar-fixed-top">#}
+    {#<div class="container">#}
+        {#<div class="navbar-header pull-left">#}
+            {#<a class="navbar-brand" href="{{ path_for('home') }}">Matcha</a>#}
+        {#</div>#}
+        {#<div class="navbar-header pull-right">#}
+            {#<ul class="nav navbar-nav navbar-right">#}
+                {#{% if auth.check %}#}
+                    {#<li><a href="{{ path_for('search.nearby') }}"><i class="material-icons">search</i></a></li>#}
+                    {#<li><a href="#"><i class="material-icons">notifications</i></a></li>#}
+                    {#<li><a href="{{ path_for('messages.all') }}"><i class="material-icons">email</i></a></li>#}
+                    {#<li class="">#}
+                    {#<a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">#}
+                    {#<i class="material-icons">email</i>#}
+                    {#<div class="ripple-container"></div>#}
+                    {#</a>#}
+                    {#</li>#}
+                    {#<li class="dropdown">#}
+                        {#<a href="#" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">#}
+                            {#<div class="profile-photo-small">#}
+                                {#{% if  auth.user.profile_photo %}#}
+                                    {#<img src="{{ base_url() }}/uploads/{{ auth.user.username }}/{{ auth.user.profile_photo }}" alt="Circle Image" class="img-circle img-responsive">#}
+                                {#{% else %}#}
+                                    {#<img src="{{ base_url() }}/img/placeholder.jpg" alt="Circle Image" class="img-circle img-responsive">#}
+                                {#{% endif %}#}
+                            {#</div>#}
+                            {#<div class="ripple-container"></div>#}
+                        {#</a>#}
+                        {#<ul class="dropdown-menu">#}
+                            {#<li><a href="{{ path_for('user.profile', { 'name': auth.user.username }) }}">Profile</a></li>#}
+                            {#<li><a href="{{ path_for('user.edit') }}">Settings</a></li>#}
+                            {#<li class="divider"></li>#}
+                            {#<li><a href="{{ path_for('signout') }}">Sign out</a></li>#}
+                        {#</ul>#}
+                    {#</li>#}
+                {#{% else %}#}
+                    {#<li><a href="{{ path_for('signin') }}"><i class="material-icons">person</i> Sign in</a></li>#}
+                    {#<li><a class="btn btn-primary" href="{{ path_for('signup') }}"><i class="material-icons">person_add</i> Sign up</a></li>#}
+                {#{% endif %}#}
+            {#</ul>#}
+        {#</div>#}
+    {#</div>#}
+{#</div>#}
+
+
+{#<nav class="navbar navbar-fixed-top" id="sectionsNav">#}
+    {#<div class="container">#}
+        {#<div class="navbar-header">#}
+            {#<button type="button" class="navbar-toggle" data-toggle="collapse">#}
+                {#<span class="sr-only">Toggle navigation</span>#}
+                {#<span class="icon-bar"></span>#}
+                {#<span class="icon-bar"></span>#}
+                {#<span class="icon-bar"></span>#}
+            {#</button>#}
+            {#<a class="navbar-brand" href="{{ path_for('home') }}">Matcha</a>#}
+        {#</div>#}
+        {#<div class="">#}
+            {#<ul class="nav navbar-nav navbar-right">#}
+                {#{% if auth.check %}#}
+                    {#<li><a href="{{ path_for('search.nearby') }}"><i class="material-icons">search</i></a></li>#}
+                    {#<li><a href="#"><i class="material-icons">notifications</i></a></li>#}
+                    {#<li><a href="{{ path_for('messages.all') }}"><i class="material-icons">email</i></a></li>#}
+                    {#<li class="">#}
+                        {#<a href="#pablo" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">#}
+                            {#<i class="material-icons">email</i>#}
+                            {#<div class="ripple-container"></div>#}
+                        {#</a>#}
+                    {#</li>#}
+                    {#<li class="dropdown">#}
+                        {#<a href="#" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">#}
+                            {#<div class="profile-photo-small">#}
+                                {#{% if  auth.user.profile_photo %}#}
+                                    {#<img src="{{ base_url() }}/uploads/{{ auth.user.username }}/{{ auth.user.profile_photo }}" alt="Circle Image" class="img-circle img-responsive">#}
+                                {#{% else %}#}
+                                    {#<img src="{{ base_url() }}/img/placeholder.jpg" alt="Circle Image" class="img-circle img-responsive">#}
+                                {#{% endif %}#}
+                            {#</div>#}
+                            {#<div class="ripple-container"></div>#}
+                        {#</a>#}
+                        {#<ul class="dropdown-menu">#}
+                            {#<li><a href="{{ path_for('user.profile', { 'name': auth.user.username }) }}">Profile</a></li>#}
+                            {#<li><a href="{{ path_for('user.edit') }}">Settings</a></li>#}
+                            {#<li class="divider"></li>#}
+                            {#<li><a href="{{ path_for('signout') }}">Sign out</a></li>#}
+                        {#</ul>#}
+                    {#</li>#}
+                {#{% else %}#}
+                    {#<li><a href="{{ path_for('signin') }}"><i class="material-icons">person</i> Sign in</a></li>#}
+                    {#<li><a class="btn btn-primary" href="{{ path_for('signup') }}"><i class="material-icons">person_add</i> Sign up</a></li>#}
+                {#{% endif %}#}
+            {#</ul>#}
+        {#</div>#}
+    {#</div>#}
+{#</nav>#}

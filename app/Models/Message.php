@@ -9,7 +9,7 @@
 namespace App\Models;
 
 
-use Illuminate\Contracts\Support\Arrayable;
+use App\Auth\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -26,15 +26,22 @@ class Message extends Model
      * @return array
      */
 
+    protected $conversations;
+
     protected $fillable = ['has_been_read'];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->conversations = new Conversation();
+    }
 
     public function getMessageHistory(int $user1, int $user2, $limit=50) : array
     {
-        $data = $this::select('*')
-            ->whereIn('sender', [$user1, $user2])
+        $data = $this::whereIn('sender', [$user1, $user2])
             ->whereIn('receiver', [$user1, $user2])
+            ->orderBy('id', 'DESC')
             ->limit($limit)
-            ->latest()
             ->get();
         $ids = [];
         foreach ($data->toArray() as $message) {
@@ -50,23 +57,43 @@ class Message extends Model
         }
     }
 
+    /**
+     * @param int $sender
+     * @param int $receiver
+     * @param string $message
+     * @return mixed
+     */
     public function setMessage(int $sender, int $receiver, string $message)
     {
+        if (!$this->conversations->isConversationExist($sender, $receiver)) {
+            $this->conversations->createConversation($sender, $receiver);
+            Rating::setRating(Auth::user()->id);
+        }
+        $this->conversations->setLastMessage($sender, $receiver, $message);
         return $this::insert(
             [
                 'sender' => $sender,
                 'receiver' => $receiver,
-                'message' => $message
+                'message' => $message,
+                'conversation_id' => $this->conversations->getConversationId($sender, $receiver)
             ]
         );
     }
 
+    /**
+     * @param $messageIds
+     */
     private function setMessagesAsHasBeenReadByMessageIds($messageIds)
     {
         $this::whereIn('id', $messageIds)
             ->update(['has_been_read' => true]);
     }
 
+    /**
+     * @param $sender
+     * @param $receiver
+     * @return bool
+     */
     public function setMessagesAsHasBeenRead($sender, $receiver) : bool
     {
         return $this::where('sender', '=', $sender)
@@ -76,4 +103,10 @@ class Message extends Model
             ->first()
             ->update(['has_been_read' => true]);
     }
+
+//        public function conversation()
+//        {
+//            return $this->hasOne('App\\Models\\Conversation', 'conversation_id');
+//        }
+
 }

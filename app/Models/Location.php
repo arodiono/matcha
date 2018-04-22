@@ -34,6 +34,27 @@ class Location extends Model
         }
     }
 
+    /**
+     * @param array $source ['lat' => $lat, 'lon' => $lon]
+     * @param array $destination ['lat' => $lat, 'lon' => $lon]
+     * @return int
+     */
+    public function getDistance(array $source, array $destination) : int
+    {
+        if (array_key_exists('lat', $source) &&
+            array_key_exists('lon', $source) &&
+            array_key_exists('lat', $destination) &&
+            array_key_exists('lon', $destination)) {
+            $lat1 = deg2rad($source['lat']);
+            $lon1 = deg2rad($source['lon']);
+            $lat2 = deg2rad($destination['lat']);
+            $lon2 = deg2rad($destination['lon']);
+            $haversine = pow(sin(($lat2 - $lat1) / 2), 2) + cos($lat1) * cos($lat2) * pow(sin(($lon2 - $lon1) / 2), 2);
+            return 6373 * 2 * atan2(sqrt($haversine), sqrt(1 - $haversine));
+        }
+        return -1;
+    }
+
     public function setCoordinates($data=['latitude' => 0, 'longitude' => 0])
     {
         $this::updateOrCreate(

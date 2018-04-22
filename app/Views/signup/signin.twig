@@ -28,8 +28,7 @@
                                             </div>
                                         </div>
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i
-                                                        class="material-icons">lock_outline</i></span>
+                                            <span class="input-group-addon"><i class="material-icons">lock_outline</i></span>
                                             <div class="form-group label-floating is-empty {{ errors.password ? 'has-error is-focused' : '' }} {{ oldInput.password ? 'is-focused' : '' }}">
                                                 <label class="control-label">Password</label>
                                                 <input type="password" name="password" class="form-control"
@@ -46,10 +45,11 @@
                                         </div>
                                     </div>
                                     <div class="footer text-center">
-                                        <button type="submit" href="#" class="btn btn-primary btn-round btn-wd btn-lg">
+                                        <button type="submit" href="#" class="btn btn-primary">
                                             Sign in
                                         </button>
-
+                                        <hr>
+                                        <a href="{{ fb }}" class="btn btn-facebook">Log in with Facebook!</a>
                                     </div>
                                     {{ csrf.field | raw }}
                                 </form>

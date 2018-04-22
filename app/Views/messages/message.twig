@@ -1,70 +1,129 @@
 {% set title = 'Private messages' %}
 {% set body = 'messages' %}
+{% set sender = current_user %}
+{% set receiver = interlocutor %}
+{% set sender_photo = sender.profile_photo == null ? '/img/placeholder.jpg' : '/uploads/' ~ sender.username ~ '/' ~ sender.profile_photo %}
+{% set receiver_photo = receiver.profile_photo == null ?'/img/placeholder.jpg' : '/uploads/' ~ receiver.username ~ '/' ~ receiver.profile_photo %}
 {% extends 'templates/core.twig' %}
 
 {% block content %}
-    <div class="">
-
-
-        <div class="">
-            {#<div class="header header-primary">#}
-            {#<!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->#}
-            {#<div class="nav-tabs-navigation">#}
-            {#<div class="nav-tabs-wrapper">#}
-            {#<p>chat</p>#}
-            {#</div>#}
-            {#</div>#}
-            {#</div>#}
-            <div class="">
-                <div class="messagefield">
+    <script>
+    $(document).ready(function () {
+        scrollChat()
+    })
+    </script>
+    <div class="container" data-connection="msg">
+        {#<h6>{{ receiver.first_name }}  {{ receiver.last_name }}</h6>#}
+        <div class="chat">
+                <div class="chat-body col-inside-lg" style="overflow: hidden; outline: none;" tabindex="5001">
+                    <div class="answer left hide">
+                        <a href="/user/{{ receiver.username }}">
+                            <div class="avatar">
+                                <img src="{{ base_url() }}{{ receiver_photo }}"
+                                     alt="{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}">
+                                <div class="status {{ receiver.online == 1 ? 'online' : 'offline' }}"></div>
+                            </div>
+                        </a>
+                        <a href="/user/{{ receiver.username }}">
+                            <div class="name">{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}</div>
+                        </a>
+                        <div class="text"></div>
+                        <div class="time"></div>
+                    </div>
+                    <div class="answer right hide">
+                        <a href="/user/{{ sender.username }}">
+                            <div class="avatar">
+                                <img src="{{ base_url() }}{{ sender_photo }}"
+                                     alt="{{ current_user.first_name ~ ' ' ~ current_user.last_name }}">
+                                <div class="status {{ sender.online == 1 ? 'online' : 'offline' }}"></div>
+                            </div>
+                        </a>
+                        <a href="/user/{{ sender.username }}">
+                            <div class="name">{{ current_user.first_name ~ ' ' ~ current_user.last_name }}</div>
+                        </a>
+                        <div class="text"></div>
+                        <div class="time"></div>
+                    </div>
                     {% for message in messages %}
-                        <div class="message">
-                            {{ message.message }}
-                        </div>
+                        {% if message.sender == interlocutor.id %}
+                            <div class="answer left">
+                                <a href="/user/{{ receiver.username }}">
+                                    <div class="avatar">
+                                        <img src="{{ base_url() }}{{ receiver_photo }}"
+                                             alt="{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}">
+                                        <div class="status {{ receiver.online == 1 ? 'online' : 'offline' }}"></div>
+                                    </div>
+                                </a>
+                                <a href="/user/{{ receiver.username }}">
+                                    <div class="name">{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}</div>
+                                </a>
+                                <div class="text">{{ message.message }}</div>
+                                <div class="time" data-time="{{ message.updated_at }}"></div>
+                            </div>
+                            {% else %}
+                        {#{% endif %}#}
+                        {#{% if message.sender == current_user.id %}#}
+                            <div class="answer right">
+                                <a href="/user/{{ sender.username }}">
+                                    <div class="avatar">
+                                        <img src="{{ base_url() }}{{ sender_photo }}"
+                                             alt="{{ current_user.first_name ~ ' ' ~ current_user.last_name }}">
+                                        <div class="status {{ sender.online == 1 ? 'online' : 'offline' }}"></div>
+                                    </div>
+                                </a>
+                                <a href="/user/{{ sender.username }}">
+                                    <div class="name">{{ current_user.first_name ~ ' ' ~ current_user.last_name }}</div>
+                                </a>
+                                <div class="text">{{ message.message }}</div>
+                                <div class="time" data-time="{{ message.updated_at }}"></div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
-                    {#<div class="textfield">#}
-                        {#<form class="message-field">#}
-                            {#<div class="form-group">#}
-                                {#<div class="input-group">#}
-                                    {#<input id="new-message" type="text" value="" placeholder="New message..." class="form-control"/>#}
-                                    {#<span class="input-group-btn">#}
-                                        {#<button class="btn-send" type="submit"><i class="material-icons">send</i></button>#}
-                                    {#</span>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</form>#}
-                    {#</div>#}
                 </div>
-            </div>
+                <form class="message-field">
+                    <div class="answer-add">
+                        <input id="new-message" type="text" placeholder="Write a message" autofocus>
+                        <button type="submit" value="" class="answer-btn answer-btn-2"><i class="material-icons">send</i></button>
+                    </div>
+                </form>
         </div>
     </div>
 
-    </div>
-    <script type="text/javascript">
-        var conn = new WebSocket('ws://localhost:8000');
-        conn.onopen = function (e) {
-            conn.send(JSON.stringify({auth: '{{ user }}', type: 'msg'}));
-        };
-        conn.onmessage = function (e) {
-            addNewIncomeMessage(e.data);
-            $.post(window.location.href + '/smhbr',
-                {
-                    user: '{{ user }}'
-                });
-        };
-        var form = document.querySelector('.message-field');
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            addNewOutcomeMessage(document.getElementById('new-message').value);
-            document.getElementById('new-message').value = '';
-        }, false);
-
-        function addNewIncomeMessage(message) {
-            var newMessage = document.createElement('span');
-            newMessage.textContent = message;
-            document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
-            document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));
-        }
+    {#<div>#}
+        {#<div class="messagefield">#}
+            {#{% for item in data %}#}
+                {#<span>{{ item.message }}</span><br>#}
+            {#{% endfor %}#}
+        {#</div>#}
+        {#<div class="textfield">#}
+            {#<form class="message-field">#}
+                {#<input id="new-message" type="text" value="" placeholder="New message...">#}
+                {#<input type="submit" value="Submit">#}
+            {#</form>#}
+        {#</div>#}
+    {#</div>#}
+    {#<script type="text/javascript">#}
+        {#var conn = new WebSocket('ws://' + window.location.hostname + ':8000');#}
+        {#conn.onopen = function (e) {#}
+            {#conn.send(JSON.stringify({#}
+                {#auth: $('[data-user]').data().user,#}
+                {#type: 'ntf',#}
+                {#host: window.location.protocol + '//' + window.location.host + '/user/online'#}
+            {#}));#}
+        {#};#}
+        {#conn.onmessage = function (e) {#}
+            {#addNewIncomeMessage(e.data);#}
+            {#$.post(window.location.href + '/smhbr',#}
+                {#{#}
+                    {#user: $('[data-user]').data().user#}
+                {#});#}
+        {#};#}
+        {#var form = document.querySelector('.message-field');#}
+        {#form.addEventListener("submit", function (e) {#}
+            {#e.preventDefault();#}
+            {#addNewOutcomeMessage(document.getElementById('new-message').value);#}
+            {#document.getElementById('new-message').value = '';#}
+        {#}, false);#}
 
         function addNewOutcomeMessage(message) {
             var newMessage = document.createElement('span');

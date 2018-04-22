@@ -11,16 +11,16 @@ $app->group('', function () {
     $this->post('/signup', 'AuthController:postSignUp');
     $this->get('/signin', 'AuthController:getSignIn')->setName('signin');
     $this->post('/signin', 'AuthController:postSignIn');
+    $this->get('/fb-login', 'AuthController:facebookCallback')->setName('fb-login');
 
     $this->group('/user', function () {
         $this->get('/password/forgot', 'UserController:getForgotPassword')->setName('user.password.forgot');
         $this->post('/password/forgot', 'UserController:postForgotPassword');
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
         $this->post('/password/reset/{hash}', 'UserController:postResetPassword');
+        $this->post('/online', 'UserController:postOnline');
     });
-})
-    ->add(new \App\Middleware\GuestMiddleware($container));
-//    ->add(new \App\Middleware\CsrfViewMiddleware($container));
+})->add(new \App\Middleware\GuestMiddleware($container));
 
 $app->group('', function () {
 
@@ -30,10 +30,12 @@ $app->group('', function () {
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
         $this->post('/edit', 'UserController:postUserEdit');
         $this->any('/location', 'UserController:setLocation')->setName('user.location');
-        $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
         $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
+        $this->post('/block', 'BlockController:blockUser');
+        $this->get('/visits', 'UserController:getVisits')->setName('user.visits');
+        $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
     });
 
     $this->group('/like', function () {
@@ -44,12 +46,13 @@ $app->group('', function () {
         $this->get('/info', 'AuthController:getSignUpInfo')->setName('signup.info');
         $this->post('/info', 'AuthController:postSignUpInfo');
         $this->get('/photos', 'AuthController:getSignUpPhotos')->setName('signup.photos');
-        $this->post('/photos', 'AuthController:postSignUpPhotos');
+//        $this->post('/photos', 'AuthController:postSignUpPhotos');
     });
 
     $this->group('/photo', function () {
         $this->post('/upload', 'PhotoController:upload')->setName('photo.upload');
         $this->post('/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
+        $this->post('/{id}/delete', 'PhotoController:deletePhoto')->setName('photo.delete');
     });
 
 	$this->group('/search', function () {
@@ -57,11 +60,9 @@ $app->group('', function () {
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
 
-})->add(new \App\Middleware\AuthMiddleware($container));
-
-$app->group('', function () {
     $this->group('/messages', function() {
-        $this->get('/{name}', 'MessageController:getMessage')->setName('messages');
+        $this->get('', 'MessageController:getAllConversations')->setName('messages.all');
+        $this->get('/{name}', 'MessageController:getMessages')->setName('messages.chat');
         $this->post('/{name}', 'MessageController:postMessage');
         $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');
     });
@@ -72,5 +73,4 @@ $app->group('', function () {
         $this->post('/delete', 'ConnectionController:deleteConnection');
     });
 
-});
-//->add(new \App\Middleware\MessageMiddleware($container));
+})->add(new \App\Middleware\AuthMiddleware($container));
