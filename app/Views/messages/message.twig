@@ -125,25 +125,19 @@
             {#document.getElementById('new-message').value = '';#}
         {#}, false);#}
 
-        {#function addNewIncomeMessage(message) {#}
-            {#var newMessage = $('.left').first().clone().removeClass('hide');#}
-            {#newMessage.find('.text').html(message);#}
-            {#newMessage.find('.time').html(moment().fromNow());#}
-            {#$('.chat-body').append(newMessage)#}
-        {#}#}
+        function addNewOutcomeMessage(message) {
+            var newMessage = document.createElement('span');
+            var url = window.location.href;
+            var receiver = url.split('/')[url.split('/').length - 1];
+            $.post(url,
+                {
+                    text: message
+                });
 
-        {#function addNewOutcomeMessage(message) {#}
-            {#var newMessage = $('.right').first().clone().removeClass('hide');#}
-            {#var url = window.location.href;#}
-            {#var receiver = url.split('/')[url.split('/').length - 1];#}
-            {#conn.send(JSON.stringify({to: receiver, msg: message}));#}
-            {#newMessage.find('.text').html(message);#}
-            {#newMessage.find('.time').html(moment().fromNow());#}
-            {#$('.chat-body').append(newMessage);#}
-            {#$.post(url,#}
-                {#{#}
-                    {#text: message#}
-                {#});#}
-        {#}#}
-    {#</script>#}
+            conn.send(JSON.stringify({to: receiver, msg: message}));
+            newMessage.textContent = message;
+            document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
+            document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));
+        }
+    </script>
 {% endblock %}
