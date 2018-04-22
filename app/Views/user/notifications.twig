@@ -6,9 +6,21 @@
     <div class="main main-raised">
         <div class="content">
             <div class="container">
-                {{ for notify in notifications }}
-                    <p>{{ notify.user_id }}</p>
-                {{ endfor }}
+                {% for visit in visits %}
+                    <div class="notification">
+                        <div class="notification-info">
+                            <a href="{{ base_url() ~ '/user/' ~ visit.who.username }}">
+                                {% if user.profile_photo %}
+                                    <img src="{{ base_url() ~ "/uploads/" ~ visit.who.username ~ "/" ~ visit.who.profile_photo }}" alt="" class="img-circle img-responsive img-raised">
+                                {% else %}
+                                    <img src="{{ base_url() ~ "/img/placeholder.jpg" }}" alt="" class="img-circle img-responsive img-raised">
+                                {% endif %}
+                            </a>
+                            <p><a href="{{ base_url() ~ '/user/' ~ visit.who.username }}">{{ visit.who.first_name }} {{ visit.who.last_name }}</a> is interested your page</p>
+                        </div>
+                        <div class="time" data-time="{{ visit.created_at }}"></div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>

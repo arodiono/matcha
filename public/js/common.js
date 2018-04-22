@@ -24,6 +24,49 @@ $(function () {
     	})
     });
 
+    $(document).ready(function() {
+        $("#lightgallery").lightGallery();
+    });
+
+    $(document).ready(function () {
+        $('.delete-photo').on('click', function () {
+        	var photo = $(this)
+            var photoId = $(this).data('id')
+			$('#submit-delete-photo').on('click', function () {
+				$.ajax({
+					method: 'post',
+					url: '/photo/' + photoId + '/delete/',
+                    statusCode: {
+                        200: function () {
+                            photo.parent().remove()
+                            $('#deletePhotoModal').modal('hide')
+                        },
+						403: function () {
+                            window.location.href = '/404'
+                        },
+                        404: function () {
+                            window.location.href = '/404'
+                        }
+                    }
+				})
+			})
+        })
+    })
+
+	$(document).ready(function () {
+        $( 'input:file[name="files"]' ).change(function() {
+        	$('input:hidden').val($(this)[0].files[0].name)
+			$('[name="update-profile-photo"]').submit()
+            // $.ajax({
+				// url: '/photo/upload',
+				// method: 'post',
+				// data: function () {
+				//
+            //     }
+            // })
+        });
+    })
+
     $('[data-time]').each(function () {
 		$(this).html(moment($(this).data().time, "YYYY-MM-DD HH:mm:ss").fromNow())
     })
@@ -141,7 +184,7 @@ Dropzone.options.uploadWidget = {
 					"    <span aria-hidden=\"true\"><i class=\"material-icons\">clear</i></span>\n" +
 					"</button>\n" +
 					"\n" +
-					"<b>Info alert:</b> Choose your profile photo\n" +
+					"<b>Info:</b> Choose your profile photo\n" +
 					"</div>\n" +
 					"</div>");
 			}
@@ -149,15 +192,22 @@ Dropzone.options.uploadWidget = {
 		this.on("sendingmultiple", function () {
 		});
 		this.on("successmultiple", function (files, response) {
-			window.location.href = '/';
+			// window.location.href = '/';
 		});
 		this.on("errormultiple", function (files, response) {
 		});
 		this.on("addedfile", function (file) {
+			if (this.files.length > 0) {
+				$('.choose').css('opacity', 1)
+			}
+            file.previewElement.querySelector('.dz-progress').style.opacity = 0
 			file.previewElement.addEventListener('click', function () {
+				// console.log(this);
 				if (!this.classList.contains('dz-error')) {
-					$('.dz-preview').removeClass('choose');
-					this.classList.add('choose');
+					$('.dz-success-mark').css('opacity', 0)
+                    $('.choose').hide()
+            		file.previewElement.querySelector('.dz-success-mark').style.opacity = 1
+					// this.classList.add('choose');
 					$('#profile-photo').val($(this).find('img').attr('alt'));
 				}
 			})

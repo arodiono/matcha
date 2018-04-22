@@ -13,7 +13,7 @@
                         <a href="#" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                             <div class="profile-photo-small">
                                 {% if  auth.user.profile_photo %}
-                                    <img src="{{ base_url() }}/uploads/{{ auth.user.username }}/{{ auth.user.profile_photo }}"
+                                    <img src="{{ base_url() }}/uploads/{{ auth.user.username }}/200x200_{{ auth.user.profile_photo }}"
                                          alt="Circle Image" class="img-circle img-responsive">
                                 {% else %}
                                     <img src="{{ base_url() }}/img/placeholder.jpg" alt="Circle Image"
