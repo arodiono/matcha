@@ -46,12 +46,13 @@ $app->group('', function () {
         $this->get('/info', 'AuthController:getSignUpInfo')->setName('signup.info');
         $this->post('/info', 'AuthController:postSignUpInfo');
         $this->get('/photos', 'AuthController:getSignUpPhotos')->setName('signup.photos');
-        $this->post('/photos', 'AuthController:postSignUpPhotos');
+//        $this->post('/photos', 'AuthController:postSignUpPhotos');
     });
 
     $this->group('/photo', function () {
         $this->post('/upload', 'PhotoController:upload')->setName('photo.upload');
         $this->post('/set', 'PhotoController:setProfilePhoto')->setName('photo.set');
+        $this->post('/{id}/delete', 'PhotoController:deletePhoto')->setName('photo.delete');
     });
 
 	$this->group('/search', function () {

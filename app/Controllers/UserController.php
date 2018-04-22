@@ -60,7 +60,8 @@ class UserController extends Controller
     
     public function getUserEdit(Request $request, Response $response): Response
 	{
-		return $this->view->render($response, 'user/profile.edit.twig', ['user' => Auth::user()]);
+	    $user = User::where('id', $_SESSION['user'])->with('photos')->first();
+		return $this->view->render($response, 'user/profile.edit.twig', ['user' => $user]);
 	}
 	
 	public function postUserEdit(Request $request, Response $response): Response
@@ -203,8 +204,22 @@ class UserController extends Controller
     public function getVisits(Request $request, Response $response)
     {
         $visits = Visit::where('whom_id', $_SESSION['user'])->get()->all();
-//        $visits = Visit::where('whom_id', $_SESSION['user'])->first()->who()->get()->first();
-//        ~r($visits);
+
+        return $this->view->render($response, 'user/notifications.twig', ['visits' => $visits]);
+    }
+
+    public function getNotifications(Request $request, Response $response)
+    {
+        $visits = Visit::where('whom_id', Auth::user()->id)->get()->toArray();
+        $likes = Like::where('whom_id', Auth::user()->id)->get()->toArray();
+//        $visits = User::select('users.*', 'visits.*', 'likes.*')
+//            ->join('visits', 'visits.whom_id', '=', 'users.id')
+//            ->join('likes', 'likes.whom_id', '=', 'users.id')
+//            ->where('visits.whom_id', Auth::user()->id)
+//            ->where('likes.whom_id', Auth::user()->id)
+////            ->groupBy('created_at', 'desc')
+//            ->get()->all();
+        ~r($visits, $likes);
         return $this->view->render($response, 'user/notifications.twig', ['visits' => $visits]);
     }
 }

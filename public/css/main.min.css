@@ -1,6 +1,8 @@
 @import url(../libs/bootstrap/bootstrap.min.css);
 @import url(../libs/material-kit/material-kit.css);
 @import url(../libs/dropzone/dropzone.css);
+@import url(../libs/dropzone/dropzone.css);
+@import url(../libs/lightgallery/dist/css/lightgallery.css);
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons";
 * {
   -webkit-box-sizing: border-box;
@@ -93,10 +95,54 @@ footer {
       -ms-flex-align: baseline;
           align-items: baseline; }
 
+.profile-page .profile img {
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none; }
+
+.avatar {
+  -webkit-transform: translate3d(0, -50%, 0);
+          transform: translate3d(0, -50%, 0); }
+
+.profile-page .gallery .edit-photo {
+  max-width: 33.33%; }
+
 .profile-page .gallery img {
   margin: 0;
-  max-width: 33.33%;
   height: auto; }
+
+.edit-photo, .avatar {
+  -webkit-transition: .4s ease;
+  -o-transition: .4s ease;
+  transition: .4s ease;
+  position: relative; }
+
+.edit-photo:hover img {
+  -webkit-transition: .5s ease;
+  -o-transition: .5s ease;
+  transition: .5s ease;
+  opacity: 0.3; }
+
+.edit-photo:hover button, .avatar:hover button {
+  -webkit-transition: .6s ease;
+  -o-transition: .6s ease;
+  transition: .6s ease;
+  opacity: 1; }
+
+.delete-photo, .update-profile-photo {
+  -webkit-transition: .7s ease;
+  -o-transition: .7s ease;
+  transition: .7s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-transition: .5s ease;
+  -o-transition: .5s ease;
+  transition: .5s ease; }
 
 .interests {
   padding-top: 30px;
@@ -163,7 +209,7 @@ footer {
           transform: translate(-50%, -50%); }
 
 .choose {
-  opacity: 0.7; }
+  opacity: 0; }
 
 .card .card-image {
   height: auto; }
@@ -476,6 +522,62 @@ footer {
   height: 50px;
   -webkit-box-sizing: border-box;
           box-sizing: border-box; }
+
+.notification {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 15px 25px;
+  border-top: 1px solid #ebebeb; }
+  .notification:first-child {
+    border: none; }
+  .notification img {
+    height: 40px;
+    margin-right: 15px; }
+  .notification p {
+    margin: 0; }
+
+.notification-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.profile-photo-uploader {
+  width: 160px;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+  left: 50%;
+  top: 0;
+  -webkit-transform: translate(-50%);
+      -ms-transform: translate(-50%);
+          transform: translate(-50%); }
+
+.profile-photo-uploader input[type=file] {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+  opacity: 0;
+  cursor: pointer; }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

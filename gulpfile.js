@@ -36,6 +36,7 @@ gulp.task('js', ['common-js'], function() {
         'public/libs/nicescroll/jquery.nicescroll.min.js',
         'public/libs/moments/moment-with-locales.min.js',
         'public/libs/bootstrap-notify/bootstrap-notify.js',
+        'public/libs/lightgallery/dist/js/lightgallery.js',
         'public/js/common.min.js' // Всегда в конце
 		])
 	.pipe(concat('scripts.min.js'))
