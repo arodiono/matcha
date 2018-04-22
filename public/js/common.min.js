@@ -71,7 +71,7 @@ $(function () {
 		$(this).html(moment($(this).data().time, "YYYY-MM-DD HH:mm:ss").fromNow())
     })
 
-    var conn = new WebSocket('ws://' + window.location.hostname + ':8000');
+    var conn = new WebSocket('wss://' + window.location.hostname + ':8000/ws');
     conn.onopen = function (e) {
     	// console.log(conn)
         conn.send(JSON.stringify({
