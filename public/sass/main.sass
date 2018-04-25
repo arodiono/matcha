@@ -3,198 +3,191 @@
 @import "libs"
 
 *
-  -webkit-box-sizing: border-box
-  -moz-box-sizing: border-box
-  box-sizing: border-box
-  &:before, &:after
-    -webkit-box-sizing: border-box
-    -moz-box-sizing: border-box
-    box-sizing: border-box
+	-webkit-box-sizing: border-box
+	-moz-box-sizing: border-box
+	box-sizing: border-box
+	&:before, &:after
+		-webkit-box-sizing: border-box
+		-moz-box-sizing: border-box
+		box-sizing: border-box
 
 *::-webkit-input-placeholder
-  color: #666
-  opacity: 1
+	color: #666
+	opacity: 1
 
 *:-moz-placeholder
-  color: #666
-  opacity: 1
+	color: #666
+	opacity: 1
 
 *::-moz-placeholder
-  color: #666
-  opacity: 1
+	color: #666
+	opacity: 1
 
 *:-ms-input-placeholder
-  color: #666
-  opacity: 1
+	color: #666
+	opacity: 1
 
 body input:focus:required:invalid,
 body textarea:focus:required:invalid
-  color: #666
-
+	color: #666
 body input:required:valid,
 body textarea:required:valid
-  color: #666
+	color: #666
 
 html
-  height: 100%
-  background-color: #E5E5E5
+	height: 100%
+	background-color: #E5E5E5
 
 body
-  position: relative
-  min-width: 320px
-  overflow-x: hidden
-  opacity: 1
-  min-height: 100%
+	position: relative
+	min-width: 320px
+	overflow-x: hidden
+	opacity: 1
+	min-height: 100%
 
 footer
-  //position: fixed
-  width: 100%
-  z-index: 1
+	//position: fixed
+	width: 100%
+	z-index: 1
 
 .container
-  max-width: 700px
+	max-width: 700px
+
 
 .profile-info
-  display: flex
-  justify-content: space-between
-  line-height: 24px
+	display: flex
+	justify-content: space-between
+	line-height: 24px
 
-  li
-    display: flex
-    align-items: center
-    text-transform: capitalize
+	li
+		display: flex
+		align-items: center
+		text-transform: capitalize
 
 .main
-  margin-left: auto
-  margin-right: auto
-  max-width: 700px
+	margin-left: auto
+	margin-right: auto
+	max-width: 700px
 
 .main-raised-bottom
-  margin: 30px auto
+	margin: 30px auto
 
 .gallery
-  display: flex
-  flex-wrap: wrap
-  align-items: baseline
+	display: flex
+	flex-wrap: wrap
+	align-items: baseline
 
-.profile-page .profile img
-  transform: none
-.avatar
-  transform: translate3d(0, -50%, 0)
-
-.profile-page .gallery .edit-photo
-  max-width: 33.33%
 .profile-page .gallery img
-  margin: 0
-  //max-width: 33.33%
-  height: auto
-
-.edit-photo, .avatar
-  transition: .4s ease
-  position: relative
-.edit-photo:hover img
-  transition: .5s ease
-  opacity: 0.3
-.edit-photo:hover button, .avatar:hover button
-  transition: .6s ease
-  opacity: 1
-
-.delete-photo, .update-profile-photo
-  transition: .7s ease
-  opacity: 0
-  //width: 60px
-  //height: 30px
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
-  transition: .5s ease
+	margin: 0
+	max-width: 33.33%
+	height: auto
 
 .interests
-  padding-top: 30px
-  display: flex
-  justify-content: center
+	padding-top: 30px
+	display: flex
+	justify-content: center
 
 .profile-page .profile
-  text-align: start
+	text-align: start
 
 .profile-page .description
-  margin: 30px 0
+	margin: 30px 0
 
 .profile-content
-  padding-bottom: 30px
-
+	padding-bottom: 30px
 .alert
-  position: absolute
-  top: 70px
-  left: 0
-  margin-bottom: 0
-  z-index: 99
-  width: 100%
+	position: absolute
+	top: 70px
+	left: 0
+	margin-bottom: 0
+	z-index: 99
+	width: 100%
 
 .navbar-brand
-  font-family: "Roboto Slab", "Times New Roman", serif
-  font-size: 18px
-  font-weight: 700
+	font-family: "Roboto Slab", "Times New Roman", serif
+	font-size: 18px
+	font-weight: 700
 
 .bootstrap-tagsinput
-  background-image: none
-  padding: 0
+	background-image: none
+	padding: 0
 
 .dropzone
-  position: relative
-  margin-top: 40px
-  border: 2px dashed #9c27b0
-  border-radius: 5px
-  background: white
+	position: relative
+	margin-top: 40px
+	border: 2px dashed #9c27b0
+	border-radius: 5px
+	background: white
 
 .dropzone .dz-preview .dz-image
-  max-width: 105px
-  max-height: 105px
+	max-width: 105px
+	max-height: 105px
 
 .dropzone .dz-preview .dz-image img
-  cursor: pointer
+	cursor: pointer
 
 .dropzone .dz-details
-  display: none
-
+	display: none
 .dropzone .dz-message
-  margin: 0 auto
-  position: absolute
-  top: 50%
-  left: 50%
-  transform: translate(-50%, -50%)
+	margin: 0 auto
+	position: absolute
+	top: 50%
+	left: 50%
+	transform: translate(-50%, -50%)
 
 .choose
-  opacity: 0
+	opacity: 0.7
 
 .card .card-image
-  height: auto
+	height: auto
 
 .card .footer
-  margin: 0 0 15px 0
+	margin: 0 0 15px 0
 
 .search-nearby
-  margin-top: 30px
-  display: flex
-  flex-wrap: wrap
-  justify-content: space-between
+	margin-top: 30px
+	display: flex
+	flex-wrap: wrap
+	justify-content: space-between
 
 .content
-  height: 100%
-  padding-top: 70px
-  padding-bottom: 84px
-  margin-bottom: -84px
+	height: 100%
+	padding-top: 70px
+	padding-bottom: 84px
+	margin-bottom: -84px
 
 .modal-backdrop
-  z-index: 1040
+	z-index: 1040
 
 .modal
-  z-index: 1050
+	z-index: 1050
 
 .follow
-  display: flex
+	display: flex
 
+
+
+.main-chat
+	margin-top: 30px
+	padding: 15px
+
+.message
+	clear: both
+	background-color: rgba(0, 202, 227, .15)
+	-webkit-border-radius: 3px
+	-moz-border-radius: 3px
+	border-radius: 3px
+	padding: 7px 15px
+	margin: 5px 0
+
+.btn-send
+	background-color: transparent
+	padding: 0
+	border: none
+
+.messagefield
+	width: auto
+@import "media" // Всегда в конце
 .row.row-broken
   padding-bottom: 0
 

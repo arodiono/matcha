@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Auth\Auth;
 use App\Models\Like;
+use App\Models\Rating;
 use App\Models\User;
 use Slim\Http\Response;
 use Slim\Http\Request;
@@ -31,6 +32,7 @@ class LikeController extends Controller
                 'whom_id' => $whom->id
             ]);
         }
+        Rating::setRating(Auth::user()->id);
 
         return $response->withRedirect($this->router->pathFor('user.profile', ['name' => $whom->username]));
     }

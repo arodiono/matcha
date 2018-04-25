@@ -6,6 +6,7 @@ use App\Auth\Auth;
 use App\Models\Like;
 use App\Models\Location;
 use App\Models\Photo;
+use App\Models\Rating;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Visit;

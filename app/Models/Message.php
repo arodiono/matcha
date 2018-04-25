@@ -9,6 +9,7 @@
 namespace App\Models;
 
 
+use App\Auth\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -66,6 +67,7 @@ class Message extends Model
     {
         if (!$this->conversations->isConversationExist($sender, $receiver)) {
             $this->conversations->createConversation($sender, $receiver);
+            Rating::setRating(Auth::user()->id);
         }
         $this->conversations->setLastMessage($sender, $receiver, $message);
         return $this::insert(
