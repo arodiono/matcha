@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\Location;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -43,6 +44,41 @@ class SearchController extends Controller
                 $data['users'] = User::whereNotIn('id', $blockedUsers)->get()->all();
         }
 
+        return $this->view->render($response, 'search/by.nearby.twig', $data);
+    }
+
+    public function advancedSearch(Request $request, Response $response): Response
+    {
+        $blockedUsers = $this->blockModel->getBlockedUsersForUser(Auth::user()->id);
+        $whereParams = [];
+        $tags = [];
+        foreach ($request->getQueryParams() as $param => $value)
+        {
+            if ($param == 'age') {
+                $whereParams[] = ['age', '>=', explode(',', $value)[0]];
+                $whereParams[] = ['age', '<=', explode(',', $value)[1]];
+                continue;
+            }
+            if ($param == 'tags') {
+                $tags = explode(',', $value);
+                continue;
+            }
+            $whereParams[] = ['users.' . $param, $value];
+        }
+        if (empty($tags)){
+            $rawData['users'] = User::where($whereParams)->whereNotIn('users.id', $blockedUsers)->distinct()->get()->all();
+        } else {
+            $rawData['users'] = User::from('tag_user')->whereIn('tag_id', $tags)->where($whereParams)->whereNotIn('users.id', $blockedUsers)->join('users', 'users.id', '=', 'tag_user.user_id')->distinct()->get()->all();
+        }
+        $userIds = [];
+        $data = [];
+        foreach ($rawData['users'] as $user)
+        {
+            if (!in_array($user->id, $userIds)) {
+                $userIds[] = $user->id;
+                $data['users'][] = $user;
+            }
+        }
         return $this->view->render($response, 'search/by.nearby.twig', $data);
     }
     
