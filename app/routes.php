@@ -60,6 +60,7 @@ $app->group('', function () {
     });
 
 	$this->group('/search', function () {
+        $this->get('', 'SearchController:advancedSearch')->setName('search.advanced');
         $this->get('/nearby', 'SearchController:getNearbyUsers')->setName('search.nearby');
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
