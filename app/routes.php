@@ -38,7 +38,7 @@ $app->group('', function () {
         $this->post('/password/change', 'UserController:postChangePassword');
         $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
         $this->post('/block', 'BlockController:blockUser');
-        $this->get('/visits', 'UserController:getVisits')->setName('user.visits');
+        $this->get('/notifications', 'UserController:getVisits')->setName('user.notifications');
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
     });
 
@@ -64,7 +64,7 @@ $app->group('', function () {
         $this->get('/tag/{id}', 'SearchController:getUsersByTag')->setName('search.tag');
     });
 
-    $this->group('/ws/messages', function() {
+    $this->group('/messages', function() {
         $this->get('', 'MessageController:getAllConversations')->setName('messages.all');
         $this->get('/{name}', 'MessageController:getMessages')->setName('messages.chat');
         $this->post('/{name}/smhbr', 'MessageController:setMessageHasBeenRead');

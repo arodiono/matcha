@@ -165,7 +165,7 @@ footer {
           transform: translate(-50%, -50%); }
 
 .choose {
-  opacity: 0.7; }
+  opacity: 0; }
 
 .card .card-image {
   height: auto; }
@@ -221,54 +221,6 @@ footer {
   background-color: transparent;
   padding: 0;
   border: none; }
-
-.messagefield {
-  width: auto; }
-
-/*==========  Desktop First  ==========*/
-/* Large Devices, Wide Screens */
-@media only screen and (max-width: 1200px) {
-  /**/ }
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width: 992px) {
-  /**/ }
-
-/* Small Devices, Tablets */
-@media only screen and (max-width: 768px) {
-  /**/ }
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width: 480px) {
-  /**/ }
-
-/* Custom, iPhone Retina */
-@media only screen and (max-width: 320px) {
-  /**/ }
-
-/*==========  Mobile First  ==========*/
-/* Custom, iPhone Retina */
-/* Extra Small Devices, Phones */
-@media only screen and (min-width: 480px) {
-  /**/ }
-
-/* Small Devices, Tablets */
-@media only screen and (min-width: 768px) {
-  /**/ }
-
-/* Medium Devices, Desktops */
-@media only screen and (min-width: 992px) {
-  /**/ }
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
-  /**/ }
-
-.row.row-broken {
-  padding-bottom: 0; }
-
-.col-inside-lg {
-  padding: 20px; }
 
 .chat {
   margin-top: 30px;
@@ -571,16 +523,43 @@ footer {
       -ms-flex-align: center;
           align-items: center; }
 
-.profile-photo-uploader {
-  width: 160px;
-  height: 100%;
-  position: absolute;
-  overflow: hidden;
-  left: 50%;
-  top: 0;
-  -webkit-transform: translate(-50%);
-      -ms-transform: translate(-50%);
-          transform: translate(-50%); }
+.profile .avatar {
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%); }
+  .profile .avatar img {
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none; }
+  .profile .avatar .profile-photo-uploader {
+    width: 160px;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    left: 50%;
+    top: 0;
+    -webkit-transform: translate(-50%);
+        -ms-transform: translate(-50%);
+            transform: translate(-50%);
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+    .profile .avatar .profile-photo-uploader button {
+      -webkit-transition: .3s;
+      -o-transition: .3s;
+      transition: .3s;
+      opacity: 0; }
+    .profile .avatar .profile-photo-uploader:hover button {
+      opacity: 1; }
 
 .profile-photo-uploader input[type=file] {
   width: 100%;
@@ -593,6 +572,120 @@ footer {
           transform: translate(0, -50%);
   opacity: 0;
   cursor: pointer; }
+
+.profile-page .profile img {
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
+  max-width: none; }
+
+.profile .avatar {
+  max-width: 160px;
+  margin: 0 auto; }
+
+.edit-photo {
+  position: relative;
+  width: 33.33333%;
+  overflow: hidden; }
+  .edit-photo img {
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s; }
+  .edit-photo:hover img {
+    opacity: .75;
+    -webkit-transform: scale3d(1.05, 1.05, 1);
+            transform: scale3d(1.05, 1.05, 1); }
+  .edit-photo:hover button {
+    opacity: 1; }
+  .edit-photo button {
+    -webkit-transition: all 0.25s linear;
+    -o-transition: all 0.25s linear;
+    transition: all 0.25s linear;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); }
+
+.photos {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start; }
+
+@-webkit-keyframes animate-circle {
+  from {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1; }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0; } }
+
+@keyframes animate-circle {
+  from {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1; }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0; } }
+
+.loader-fade {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  opacity: 0; }
+
+.loader {
+  z-index: 10000;
+  --size: 10rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: var(--size);
+  width: var(--size);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%); }
+
+.loader > .circle {
+  --duration: 2s;
+  position: absolute;
+  height: inherit;
+  width: inherit;
+  background: #e91e63;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+  -webkit-animation: animate-circle var(--duration) cubic-bezier(0.9, 0.24, 0.62, 0.79) infinite;
+  animation: animate-circle var(--duration) cubic-bezier(0.9, 0.24, 0.62, 0.79) infinite; }
+
+.loader > .circle:nth-of-type(1) {
+  -webkit-animation-delay: 0;
+  animation-delay: 0; }
+
+.loader > .circle:nth-of-type(2) {
+  -webkit-animation-delay: -webkit-calc(var(--duration) / -3);
+  animation-delay: calc(var(--duration) / -3); }
+
+.loader > .circle:nth-of-type(3) {
+  -webkit-animation-delay: -webkit-calc(var(--duration) / -6);
+  animation-delay: calc(var(--duration) / -6); }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

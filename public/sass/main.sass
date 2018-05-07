@@ -3,196 +3,197 @@
 @import "libs"
 
 *
-	-webkit-box-sizing: border-box
-	-moz-box-sizing: border-box
-	box-sizing: border-box
-	&:before, &:after
-		-webkit-box-sizing: border-box
-		-moz-box-sizing: border-box
-		box-sizing: border-box
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+  &:before, &:after
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    box-sizing: border-box
 
 *::-webkit-input-placeholder
-	color: #666
-	opacity: 1
+  color: #666
+  opacity: 1
 
 *:-moz-placeholder
-	color: #666
-	opacity: 1
+  color: #666
+  opacity: 1
 
 *::-moz-placeholder
-	color: #666
-	opacity: 1
+  color: #666
+  opacity: 1
 
 *:-ms-input-placeholder
-	color: #666
-	opacity: 1
+  color: #666
+  opacity: 1
 
 body input:focus:required:invalid,
 body textarea:focus:required:invalid
-	color: #666
+  color: #666
+
 body input:required:valid,
 body textarea:required:valid
-	color: #666
+  color: #666
 
 html
-	height: 100%
-	background-color: #E5E5E5
+  height: 100%
+  background-color: #E5E5E5
 
 body
-	position: relative
-	min-width: 320px
-	overflow-x: hidden
-	opacity: 1
-	min-height: 100%
+  position: relative
+  min-width: 320px
+  overflow-x: hidden
+  opacity: 1
+  min-height: 100%
 
 footer
-	//position: fixed
-	width: 100%
-	z-index: 1
+  //position: fixed
+  width: 100%
+  z-index: 1
 
 .container
-	max-width: 700px
-
+  max-width: 700px
 
 .profile-info
-	display: flex
-	justify-content: space-between
-	line-height: 24px
+  display: flex
+  justify-content: space-between
+  line-height: 24px
 
-	li
-		display: flex
-		align-items: center
-		text-transform: capitalize
+  li
+    display: flex
+    align-items: center
+    text-transform: capitalize
 
 .main
-	margin-left: auto
-	margin-right: auto
-	max-width: 700px
+  margin-left: auto
+  margin-right: auto
+  max-width: 700px
 
 .main-raised-bottom
-	margin: 30px auto
+  margin: 30px auto
 
 .gallery
-	display: flex
-	flex-wrap: wrap
-	align-items: baseline
+  display: flex
+  flex-wrap: wrap
+  align-items: baseline
 
 .profile-page .gallery img
-	margin: 0
-	max-width: 33.33%
-	height: auto
+  margin: 0
+  max-width: 33.33%
+  height: auto
 
 .interests
-	padding-top: 30px
-	display: flex
-	justify-content: center
+  padding-top: 30px
+  display: flex
+  justify-content: center
 
 .profile-page .profile
-	text-align: start
+  text-align: start
 
 .profile-page .description
-	margin: 30px 0
+  margin: 30px 0
 
 .profile-content
-	padding-bottom: 30px
+  padding-bottom: 30px
+
 .alert
-	position: absolute
-	top: 70px
-	left: 0
-	margin-bottom: 0
-	z-index: 99
-	width: 100%
+  position: absolute
+  top: 70px
+  left: 0
+  margin-bottom: 0
+  z-index: 99
+  width: 100%
 
 .navbar-brand
-	font-family: "Roboto Slab", "Times New Roman", serif
-	font-size: 18px
-	font-weight: 700
+  font-family: "Roboto Slab", "Times New Roman", serif
+  font-size: 18px
+  font-weight: 700
 
 .bootstrap-tagsinput
-	background-image: none
-	padding: 0
+  background-image: none
+  padding: 0
 
 .dropzone
-	position: relative
-	margin-top: 40px
-	border: 2px dashed #9c27b0
-	border-radius: 5px
-	background: white
+  position: relative
+  margin-top: 40px
+  border: 2px dashed #9c27b0
+  border-radius: 5px
+  background: white
 
 .dropzone .dz-preview .dz-image
-	max-width: 105px
-	max-height: 105px
+  max-width: 105px
+  max-height: 105px
 
 .dropzone .dz-preview .dz-image img
-	cursor: pointer
+  cursor: pointer
 
 .dropzone .dz-details
-	display: none
+  display: none
+
 .dropzone .dz-message
-	margin: 0 auto
-	position: absolute
-	top: 50%
-	left: 50%
-	transform: translate(-50%, -50%)
+  margin: 0 auto
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
 
 .choose
-	opacity: 0.7
+  opacity: 0
 
 .card .card-image
-	height: auto
+  height: auto
 
 .card .footer
-	margin: 0 0 15px 0
+  margin: 0 0 15px 0
 
 .search-nearby
-	margin-top: 30px
-	display: flex
-	flex-wrap: wrap
-	justify-content: space-between
+  margin-top: 30px
+  display: flex
+  flex-wrap: wrap
+  justify-content: space-between
 
 .content
-	height: 100%
-	padding-top: 70px
-	padding-bottom: 84px
-	margin-bottom: -84px
+  height: 100%
+  padding-top: 70px
+  padding-bottom: 84px
+  margin-bottom: -84px
 
 .modal-backdrop
-	z-index: 1040
+  z-index: 1040
 
 .modal
-	z-index: 1050
+  z-index: 1050
 
 .follow
-	display: flex
-
-
+  display: flex
 
 .main-chat
-	margin-top: 30px
-	padding: 15px
+  margin-top: 30px
+  padding: 15px
 
 .message
-	clear: both
-	background-color: rgba(0, 202, 227, .15)
-	-webkit-border-radius: 3px
-	-moz-border-radius: 3px
-	border-radius: 3px
-	padding: 7px 15px
-	margin: 5px 0
+  clear: both
+  background-color: rgba(0, 202, 227, .15)
+  -webkit-border-radius: 3px
+  -moz-border-radius: 3px
+  border-radius: 3px
+  padding: 7px 15px
+  margin: 5px 0
 
 .btn-send
-	background-color: transparent
-	padding: 0
-	border: none
+  background-color: transparent
+  padding: 0
+  border: none
 
-.messagefield
-	width: auto
-@import "media" // Всегда в конце
-.row.row-broken
-  padding-bottom: 0
-
-.col-inside-lg
-  padding: 20px
+//.messagefield
+//  width: auto
+//
+//// Всегда в конце
+//.row.row-broken
+//  padding-bottom: 0
+//
+//.col-inside-lg
+//  padding: 20px
 
 //
 //  CHAT
@@ -451,12 +452,9 @@ footer
   list-style: none
 
 .navbar-fixed-top ul > li
-    display: block
-    height: 50px
-    box-sizing: border-box
-
-
-
+  display: block
+  height: 50px
+  box-sizing: border-box
 
 .notification
   display: flex
@@ -471,23 +469,34 @@ footer
     margin-right: 15px
   p
     margin: 0
+
 .notification-info
   display: flex
   align-items: center
 
-
-.profile-photo-uploader
-  width: 160px
-  height: 100%
-  position: absolute
-  overflow: hidden
-  left: 50%
-  top: 0
-  transform: translate(-50%)
-
+.profile .avatar
+  transform: translate(0, -50%)
+  img
+    transform: none
+  .profile-photo-uploader
+    width: 160px
+    height: 100%
+    position: absolute
+    overflow: hidden
+    left: 50%
+    top: 0
+    transform: translate(-50%)
+    display: flex
+    align-items: center
+    justify-content: center
+    button
+      transition: .3s
+      opacity: 0
+    &:hover
+      button
+        opacity: 1
 
 .profile-photo-uploader input[type=file]
-  //font-size: 100px
   width: 100%
   height: 100%
   position: absolute
@@ -496,6 +505,114 @@ footer
   transform: translate(0, -50%)
   opacity: 0
   cursor: pointer
+
+.profile-page .profile img
+  transform: none
+  max-width: none
+
+.profile .avatar
+  max-width: 160px
+  margin: 0 auto
+
+.edit-photo
+  position: relative
+  width: 33.33333%
+  overflow: hidden
+  img
+    transition: 0.5s
+  &:hover img
+    opacity: .75
+    transform: scale3d(1.05, 1.05, 1)
+  &:hover button
+    opacity: 1
+  button
+    transition: all 0.25s linear
+    opacity: 0
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+.photos
+  display: flex
+  flex-wrap: wrap
+  justify-content: flex-start
+  //.edit-photo
+  //  &:last-child
+  //    align-self: flex-start
+@-webkit-keyframes animate-circle
+  from
+    -webkit-transform: scale(0)
+    transform: scale(0)
+    opacity: 1
+
+  to
+    -webkit-transform: scale(1)
+    transform: scale(1)
+    opacity: 0
+
+
+
+@keyframes animate-circle
+  from
+    -webkit-transform: scale(0)
+    transform: scale(0)
+    opacity: 1
+
+  to
+    -webkit-transform: scale(1)
+    transform: scale(1)
+    opacity: 0
+
+.loader-fade
+  z-index: 9999
+  position: fixed
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background-color: #fff
+  opacity: 0
+
+.loader
+  z-index: 10000
+  --size: 10rem
+
+  position: fixed
+  top: 50%
+  left: 50%
+  height: var(--size)
+  width: var(--size)
+  -webkit-transform: translateX(-50%) translateY(-50%)
+  transform: translateX(-50%) translateY(-50%)
+
+
+.loader > .circle 
+  --duration: 2s
+
+  position: absolute
+  height: inherit
+  width: inherit
+  background: #e91e63
+  border-radius: 50%
+  -webkit-animation: animate-circle var(--duration) cubic-bezier(0.9, 0.24, 0.62, 0.79) infinite
+  animation: animate-circle var(--duration) cubic-bezier(0.9, 0.24, 0.62, 0.79) infinite
+
+
+.loader > .circle:nth-of-type(1) 
+  -webkit-animation-delay: 0
+  animation-delay: 0
+
+
+.loader > .circle:nth-of-type(2) 
+  -webkit-animation-delay: calc(var(--duration) / -3)
+  animation-delay: calc(var(--duration) / -3)
+
+
+.loader > .circle:nth-of-type(3) 
+  -webkit-animation-delay: calc(var(--duration) / -6)
+  animation-delay: calc(var(--duration) / -6)
+
+
 
 @import "media"
 // Всегда в конце

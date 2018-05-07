@@ -21,7 +21,7 @@ gulp.task('common-js', function() {
 
 gulp.task('js', ['common-js'], function() {
 	return gulp.src([
-		'public/libs/jquery/dist/jquery.min.js',
+		// 'public/libs/jquery/dist/jquery.min.js',
 		'public/libs/popper/popper.js',
 		'public/libs/bootstrap/bootstrap.min.js',
 		'public/libs/material-kit/material.min.js',
@@ -32,7 +32,7 @@ gulp.task('js', ['common-js'], function() {
 		'public/libs/material-kit/bootstrap-tagsinput.js',
 		'public/libs/jasny-bootstrap/jasny-bootstrap.js',
 		'public/libs/material-kit/material-kit.js',
-        'public/libs/dropzone/dropzone.js',
+        // 'public/libs/dropzone/dropzone.js',
         'public/libs/nicescroll/jquery.nicescroll.min.js',
         'public/libs/moments/moment-with-locales.min.js',
         'public/libs/bootstrap-notify/bootstrap-notify.js',

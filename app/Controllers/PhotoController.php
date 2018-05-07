@@ -64,10 +64,15 @@ class PhotoController extends Controller
     {
         $files = $request->getUploadedFiles();
         $user = Auth::user();
+        $photoCount = Photo::where('user_id', $user->id)->get()->count();
         $dir = $this->uploads . DIRECTORY_SEPARATOR . $user->username;
         $profilePhoto = $request->getParsedBody()["profile-photo"];
 
+        $responseData[] = $user->username;
         foreach ($files['files'] as $file) {
+            if ($photoCount >= 5) {
+                return $response->withStatus(403);
+            }
             if ($file->getError() === UPLOAD_ERR_OK) {
                 $filename = $this->moveUploadedFile($dir, $file);
                 $this->createThumbs($filename, $dir);
@@ -78,10 +83,12 @@ class PhotoController extends Controller
                 if ($file->getClientFilename() == $profilePhoto) {
                     $this->auth->user()->setPhoto($id->photo);
                 }
+                $responseData[] = $id;
+                $photoCount++;
             }
         }
         Rating::setRating(Auth::user()->id);
-        return $response->withStatus(200);
+        return $response->withJson($responseData);
     }
 
     public function deletePhoto(Request $request, Response $response, $args): Response

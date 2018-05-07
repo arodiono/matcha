@@ -14,7 +14,11 @@
                     <div class="col-xs-10 col-xs-offset-1">
                         <div class="profile">
                             <div class="avatar">
-                                <img src="{{ base_url() ~ "/uploads/" ~ user.username ~ "/200x200_" ~ user.profile_photo }}" class="img-circle img-responsive img-raised">
+                                {% if user.profile_photo %}
+                                    <img src="{{ base_url() ~ "/uploads/" ~ user.username ~ "/200x200_" ~ user.profile_photo }}" class="img-circle img-responsive img-raised">
+                                {% else %}
+                                    <img src="{{ base_url() ~ "/img/placeholder.jpg" }}" alt="" class="img-circle img-responsive img-raised">
+                                {% endif %}
                                 <div class="profile-photo-uploader">
                                     <button data-toggle="modal" data-target="#updateProfilePhoto"
                                             class="btn btn-xs btn-primary update-profile-photo">
@@ -27,20 +31,14 @@
                                 </div>
                             </div>
                             <ul class="nav nav-pills nav-pills-rose">
-                                <li class="active"><a href="#photos" data-toggle="tab" aria-expanded="true">Photos</a>
-                                </li>
-                                <li><a href="#profile" data-toggle="tab" aria-expanded="false">Profile</a>
-                                </li>
-                                <li><a href="#settings" data-toggle="tab" aria-expanded="false">Settings</a>
-                                </li>
+                                <li class="active"><a href="#profile" data-toggle="tab" aria-expanded="true">Profile</a></li>
+                                <li><a href="#photos" data-toggle="tab" aria-expanded="false">Photos</a></li>
+                                <li><a href="#settings" data-toggle="tab" aria-expanded="false">Settings</a></li>
                             </ul>
                             <div class="tab-content tab-space">
-                                <div class="tab-pane" id="profile">
+                                <div class="tab-pane active" id="profile">
                                     <form action="{{ path_for('user.edit') }}" method="post">
                                         <div class="profile-edit-form ">
-                                            {#<div class="header header-primary">#}
-                                            {#<h4 class="card-title text-center">Change profile info</h4>#}
-                                            {#</div>#}
                                             <div class="form-group label-floating">
                                                 <label class="control-label">Email</label>
                                                 <input name="email" type="email" class="form-control"
@@ -101,30 +99,12 @@
 
                                             <div class="row">
                                                 <button type="submit" class="btn btn-round btn-rose">Update</button>
-                                                <a href="{{ base_url() }}{{ path_for('user.password.change') }}"
-                                                   class="btn btn-xs btn-simple btn-rose">Change password</a>
-                                                <button type="button" data-toggle="modal"
-                                                        data-target="#deleteAccountModal"
-                                                        class="btn btn-xs btn-simple btn-rose">Delete account
-                                                </button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane active" id="photos">
-                                    <div id="dropzone">
-                                        <form id="upload-widget" class="dropzone" method="post" action="{{ path_for('photo.upload') }}">
-                                            <input name="profile-photo" type="hidden" id="profile-photo" value="">
-                                            <p class="text-center text-rose choose">Choose profile picture!</p>
-                                            <div class="dropzone-previews"></div>
-                                            <div class="fallback">
-                                                <input name="file" type="file"/>
-                                            </div>
-                                            {{ csrf.field | raw }}
-                                        </form>
-                                        <small class="max"><span class="pull-right">Max 5 photos</span></small>
-                                    </div>
-                                    <div class="row gallery">
+                                <div class="tab-pane" id="photos">
+                                    <div class="photos">
 
                                         {#<div id="lightgallery">#}
                                             {#<a href="{{ base_url() }}/uploads/{{ user.username }}/{{ photo.photo }}">#}
@@ -133,21 +113,39 @@
                                         {#</div>#}
 
                                         {% for photo in user.photos %}
-                                            <div class="edit-photo" id="lightgallery">
-                                                <a href="{{ base_url() }}/uploads/{{ user.username }}/{{ photo.photo }}">
-                                                    <img src="{{ base_url() }}/uploads/{{ user.username }}/200x200_{{ photo.photo }}" class="gallery-img"/>
-                                                </a>
-                                                {#<img src="{{ base_url() }}/uploads/{{ user.username }}/200x200_{{ photo.photo }}" class="gallery-img"/>#}
-                                                {#<button data-toggle="modal" data-target="#deletePhotoModal" data-id="{{ photo.id }}"#}
-                                                        {#class="btn btn-xs btn-danger delete-photo">#}
+                                            <div class="edit-photo">
+                                                {#<a href="{{ base_url() }}/uploads/{{ user.username }}/{{ photo.photo }}">#}
+                                                    {#<img src="{{ base_url() }}/uploads/{{ user.username }}/200x200_{{ photo.photo }}" class="gallery-img"/>#}
+                                                {#</a>#}
+                                                <img src="{{ base_url() }}/uploads/{{ user.username }}/200x200_{{ photo.photo }}"/>
+                                                <button data-toggle="modal" data-target="#deletePhotoModal" data-id="{{ photo.id }}"
+                                                        class="btn btn-xs btn-danger delete-photo">
                                                     {#<i class="material-icons">delete</i>#}
-                                                {#</button>#}
+                                                    Delete
+                                                </button>
                                             </div>
                                         {% endfor %}
                                     </div>
+                                    <div id="dropzone">
+                                        <form id="upload-widget" class="dropzone" method="post" action="{{ path_for('photo.upload') }}">
+                                            <input name="profile-photo" type="hidden" id="profile-photo" value="">
+                                            {#<p class="text-center text-rose choose">Choose profile picture!</p>#}
+                                            <div class="dropzone-previews"></div>
+                                            <div class="fallback">
+                                                <input name="file" type="file"/>
+                                            </div>
+                                            {{ csrf.field | raw }}
+                                        </form>
+                                        <small class="max"><span class="pull-right">Max 5 photos</span></small>
+                                    </div>
                                 </div>
                                 <div class="tab-pane" id="settings">
-
+                                    <a href="{{ base_url() }}{{ path_for('user.password.change') }}"
+                                       class="btn btn-xs btn-simple btn-rose">Change password</a>
+                                    <button type="button" data-toggle="modal"
+                                            data-target="#deleteAccountModal"
+                                            class="btn btn-xs btn-simple btn-rose">Delete account
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +195,80 @@
             </div>
         </div>
     </div>
-
+    <script src="/libs/dropzone/dropzone.js"></script>
+    <script>
+            Dropzone.options.uploadWidget = {
+                uploadMultiple: true,
+                parallelUploads: 1,
+                maxFiles: 5,
+                paramName: 'files',
+                acceptedFiles: 'image/png, image/jpeg',
+                dictDefaultMessage: 'Click or drop files here to upload',
+                clickable: true,
+                init: function () {
+                    var myDropzone = this;
+                    document.querySelector("button[type=submit]").addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        myDropzone.processQueue();
+                    });
+                    this.on("successmultiple", function (files, response) {
+                        let username = response[0]
+                        for (let i = 1; i < response.length; i++) {
+                            let photoId = response[i].id
+                            let photo = response[i].photo
+                            let photoElement = `<div class="edit-photo">
+                                                    <img src="${window.location.origin}/uploads/${username}/200x200_${photo}"/>
+                                                    <button data-toggle="modal" data-target="#deletePhotoModal" data-id="${photoId}"
+                                                            class="btn btn-xs btn-danger delete-photo">
+                                                        <i class="material-icons">delete</i>
+                                                    </button>
+                                                </div>`;
+                            setTimeout(function () {
+                                let template = $(photoElement);
+                                $('.photos').append(template)
+                                files[i - 1].previewElement.remove()
+                                console.log($('dz-preview').length)
+                                $('#upload-widget').removeClass('dz-started')
+                                deletePhotoEvent()
+                            }, 1500)
+                        }
+                    });
+                    this.on("errormultiple", function (files, response) {
+                        files.forEach(function (file) {
+                            file.previewElement.querySelector('.dz-error-message').innerText = 'You added the maximum number of photos.'
+                        })
+                    });
+                }
+            };
+            function deletePhotoEvent() {
+                $('.delete-photo').on('click', function () {
+                    var photo = $(this)
+                    var photoId = $(this).data('id')
+                    $('#submit-delete-photo').on('click', function () {
+                        $(this).prop('disabled', true)
+                        $.ajax({
+                            method: 'post',
+                            url: '/photo/' + photoId + '/delete/',
+                            statusCode: {
+                                200: function () {
+                                    photo.parent().remove()
+                                    $('#deletePhotoModal').modal('hide')
+                                    $('#submit-delete-photo').prop('disabled', false)
+                                    $('#submit-delete-photo').off('click')
+                                },
+                                403: function () {
+                                     window.location.href = '/404'
+                                },
+                                404: function () {
+                                     window.location.href = '/404'
+                                }
+                            }
+                        })
+                    })
+                })
+            }
+            $(deletePhotoEvent)
+    </script>
     {% include 'user/password.change.modal.twig' %}
 {% endblock %}

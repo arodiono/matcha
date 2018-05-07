@@ -1,6 +1,22 @@
-"use strict";
 
 $(function () {
+
+    $( ":input" ).each(function () {
+        if($(this).val()) {
+            $(this).parent().removeClass('is-empty')
+        }
+    })
+
+	function toggleLoader() {
+		$(document.body).append('<div class="loader-fade">\n' +
+            '        <div class="loader">\n' +
+            '            <div class="circle"></div>\n' +
+            '            <div class="circle"></div>\n' +
+            '            <div class="circle"></div>\n' +
+            '        </div>\n' +
+            '    </div>')
+		$('.loader-fade').animate({opacity: 0.875}, 500)
+    }
 
 	// Limit number of characters in limited textarea
 	$('.textarea-limited').keyup(function () {
@@ -24,46 +40,10 @@ $(function () {
     	})
     });
 
-    $(document).ready(function() {
-        $("#lightgallery").lightGallery();
-    });
-
-    $(document).ready(function () {
-        $('.delete-photo').on('click', function () {
-        	var photo = $(this)
-            var photoId = $(this).data('id')
-			$('#submit-delete-photo').on('click', function () {
-				$.ajax({
-					method: 'post',
-					url: '/photo/' + photoId + '/delete/',
-                    statusCode: {
-                        200: function () {
-                            photo.parent().remove()
-                            $('#deletePhotoModal').modal('hide')
-                        },
-						403: function () {
-                            window.location.href = '/404'
-                        },
-                        404: function () {
-                            window.location.href = '/404'
-                        }
-                    }
-				})
-			})
-        })
-    })
-
 	$(document).ready(function () {
         $( 'input:file[name="files"]' ).change(function() {
         	$('input:hidden').val($(this)[0].files[0].name)
 			$('[name="update-profile-photo"]').submit()
-            // $.ajax({
-				// url: '/photo/upload',
-				// method: 'post',
-				// data: function () {
-				//
-            //     }
-            // })
         });
     })
 
@@ -155,62 +135,5 @@ window.onload = function () {
 			async: 'true',
 			data: pos
 		})
-	}
-};
-
-Dropzone.options.uploadWidget = {
-	autoProcessQueue: false,
-	uploadMultiple: true,
-	parallelUploads: 5,
-	maxFiles: 5,
-	paramName: 'files',
-	acceptedFiles: 'image/png, image/jpeg',
-	dictDefaultMessage: 'Click or drop files here to upload',
-	clickable: true,
-	init: function () {
-		var myDropzone = this;
-		document.querySelector("button[type=submit]").addEventListener("click", function (e) {
-			if ($('#profile-photo').val() !== "") {
-				e.preventDefault();
-				e.stopPropagation();
-				myDropzone.processQueue();
-			} else {
-				$('.page-header').after("<div class=\"alert alert-info\">\n" +
-					"    <div class=\"container\">\n" +
-					"    <div class=\"alert-icon\">\n" +
-					"    <i class=\"material-icons\">info_outline</i>\n" +
-					"    </div>\n" +
-					"    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n" +
-					"    <span aria-hidden=\"true\"><i class=\"material-icons\">clear</i></span>\n" +
-					"</button>\n" +
-					"\n" +
-					"<b>Info:</b> Choose your profile photo\n" +
-					"</div>\n" +
-					"</div>");
-			}
-		});
-		this.on("sendingmultiple", function () {
-		});
-		this.on("successmultiple", function (files, response) {
-			// window.location.href = '/';
-		});
-		this.on("errormultiple", function (files, response) {
-		});
-		this.on("addedfile", function (file) {
-			if (this.files.length > 0) {
-				$('.choose').css('opacity', 1)
-			}
-            file.previewElement.querySelector('.dz-progress').style.opacity = 0
-			file.previewElement.addEventListener('click', function () {
-				// console.log(this);
-				if (!this.classList.contains('dz-error')) {
-					$('.dz-success-mark').css('opacity', 0)
-                    $('.choose').hide()
-            		file.previewElement.querySelector('.dz-success-mark').style.opacity = 1
-					// this.classList.add('choose');
-					$('#profile-photo').val($(this).find('img').attr('alt'));
-				}
-			})
-		});
 	}
 };

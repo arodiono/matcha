@@ -14,7 +14,7 @@
                         <div class="profile">
                             <div class="avatar">
                                 {% if user.profile_photo %}
-                                    <img src="{{ base_url() ~ "/uploads/" ~ user.username ~ "/" ~ user.profile_photo }}" alt="" class="img-circle img-responsive img-raised">
+                                    <img src="{{ base_url() ~ "/uploads/" ~ user.username ~ "/200x200_" ~ user.profile_photo }}" alt="" class="img-circle img-responsive img-raised">
                                 {% else %}
                                     <img src="{{ base_url() ~ "/img/placeholder.jpg" }}" alt="" class="img-circle img-responsive img-raised">
                                 {% endif %}
