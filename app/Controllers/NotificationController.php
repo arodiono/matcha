@@ -26,19 +26,20 @@ class NotificationController extends Controller
 
     public function getNotifications(Request $request, Response $response, $args): Response
     {
-        if (!array_key_exists('name', $args) || !array_key_exists('user', $_SESSION) || !$this->userModel->isUserExist($args['name'])) {
-            return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
-        }
-        $notifications = Notification::where('receiver_id', $_SESSION['user'])->with('sender')->get();
+//        if (!array_key_exists('name', $args) || !array_key_exists('user', $_SESSION) || !$this->userModel->isUserExist($args['name'])) {
+//            return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
+//        }
+        $notifications = Notification::where('whom_id', $_SESSION['user'])->with('who')->get()->all();
         $ids = [];
         foreach ($notifications as $notification)
         {
             $ids[] = $notification->id;
         }
         $this->notificationModel->setHasBeenRead($ids);
+//        ~r($notifications[0]->who()->first());
         return $this->view->render(
             $response,
-            'notification/list.twig',
+            'user/notifications.twig',
             [
                 'notifications' => $notifications
             ]

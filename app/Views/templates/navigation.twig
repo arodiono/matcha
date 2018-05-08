@@ -7,7 +7,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if auth.check %}
                     <li><a href="{{ path_for('search.nearby') }}"><i class="material-icons">search</i></a></li>
-                    <li><a href="#"><i class="material-icons">notifications</i></a></li>
+                    <li><a href="{{ path_for('user.notifications') }}"><i class="material-icons">notifications</i></a></li>
                     <li><a href="{{ path_for('messages.all') }}"><i class="material-icons">email</i></a></li>
                     <li class="dropdown">
                         <a href="#" class="profile-photo dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

@@ -2,8 +2,8 @@
 {% set body = 'messages' %}
 {% set sender = current_user %}
 {% set receiver = interlocutor %}
-{% set sender_photo = sender.profile_photo == null ? '/img/placeholder.jpg' : '/uploads/' ~ sender.username ~ '/' ~ sender.profile_photo %}
-{% set receiver_photo = receiver.profile_photo == null ?'/img/placeholder.jpg' : '/uploads/' ~ receiver.username ~ '/' ~ receiver.profile_photo %}
+{% set sender_photo = sender.profile_photo == null ? '/img/placeholder.jpg' : '/uploads/' ~ sender.username ~ '/200x200_' ~ sender.profile_photo %}
+{% set receiver_photo = receiver.profile_photo == null ?'/img/placeholder.jpg' : '/uploads/' ~ receiver.username ~ '/200x200_' ~ receiver.profile_photo %}
 {% extends 'templates/core.twig' %}
 
 {% block content %}
@@ -120,19 +120,19 @@
             {#document.getElementById('new-message').value = '';#}
         {#}, false);#}
 
-        function addNewOutcomeMessage(message) {
-            var newMessage = document.createElement('span');
-            var url = window.location.href;
-            var receiver = url.split('/')[url.split('/').length - 1];
-            $.post(url,
-                {
-                    text: message
-                });
+        {#function addNewOutcomeMessage(message) {#}
+            {#var newMessage = document.createElement('span');#}
+            {#var url = window.location.href;#}
+            {#var receiver = url.split('/')[url.split('/').length - 1];#}
+            {#$.post(url,#}
+                {#{#}
+                    {#text: message#}
+                {#});#}
 
-            conn.send(JSON.stringify({to: receiver, msg: message}));
-            newMessage.textContent = message;
-            document.getElementsByClassName('messagefield')[0].appendChild(newMessage);
-            document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));
-        }
-    </script>
+            {#conn.send(JSON.stringify({to: receiver, msg: message}));#}
+            {#newMessage.textContent = message;#}
+            {#document.getElementsByClassName('messagefield')[0].appendChild(newMessage);#}
+            {#document.getElementsByClassName('messagefield')[0].appendChild(document.createElement('br'));#}
+        {#}#}
+    {#</script>#}
 {% endblock %}
