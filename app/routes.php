@@ -26,11 +26,11 @@ $app->group('', function () {
 
     $this->get('/signout', 'AuthController:getSignOut')->setName('signout');
 
-    $this->group('/ws', function () {
-        $this->post('/user/online', 'UserController:postOnline');
-    });
+//    $this->group('/ws', function () {
+//    });
 
     $this->group('/user', function () {
+        $this->post('/user/online', 'UserController:postOnline');
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
         $this->post('/edit', 'UserController:postUserEdit');
         $this->any('/location', 'UserController:setLocation')->setName('user.location');
@@ -75,7 +75,7 @@ $app->group('', function () {
         $this->post('/{name}', 'MessageController:postMessage');
     });
 
-    $this->group('/ws/connection', function() {
+    $this->group('/connection', function() {
         $this->post('/get', 'ConnectionController:getConnection');
         $this->post('/set', 'ConnectionController:setConnection');
         $this->post('/delete', 'ConnectionController:deleteConnection');
