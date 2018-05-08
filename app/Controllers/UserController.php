@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Auth\Auth;
 use App\Models\Like;
 use App\Models\Location;
+use App\Models\Notification;
 use App\Models\Photo;
 use App\Models\Rating;
 use App\Models\User;
@@ -38,8 +39,7 @@ class UserController extends Controller
             'isMutually' => Like::isMutually(Auth::user()->id, $user->id)
         ];
         if (Auth::user()->id !== $user->id) {
-            $user_model = new User();
-            $user_model->setVisit(Auth::user()->id, $user->id);
+            Notification::setNotification(Auth::user()->id, $user->id, Notification::VISIT);
         }
         return $this->view->render($response, 'user/profile.twig', $data);
     }

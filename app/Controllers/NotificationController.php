@@ -8,8 +8,8 @@
 
 namespace App\Controllers;
 
+use App\Auth\Auth;
 use App\Models\Notification;
-use Illuminate\Support\Facades\Auth;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -31,8 +31,7 @@ class NotificationController extends Controller
 //        }
         $notifications = Notification::where('whom_id', $_SESSION['user'])->with('who')->get()->all();
         $ids = [];
-        foreach ($notifications as $notification)
-        {
+        foreach ($notifications as $notification) {
             $ids[] = $notification->id;
         }
         $this->notificationModel->setHasBeenRead($ids);
@@ -44,23 +43,5 @@ class NotificationController extends Controller
                 'notifications' => $notifications
             ]
         );
-    }
-
-    public function postNotification(Request $request, Response $response, $args): Response
-    {
-        $body = $request->getParsedBody();
-        if (!array_key_exists('user', $body) || !array_key_exists('type', $body)) {
-            return $response->withStatus(401);
-        }
-        $receiver = $body['user'];
-        $sender = $_SESSION['user'];
-        if ($receiver === $sender) {
-            return $response->withStatus(504);
-        }
-        if ($this->notificationModel->setNotification($sender, $receiver, $body['type'])) {
-            return $response->withStatus(200);
-        } else {
-            return $response->withStatus(504);
-        }
     }
 }
