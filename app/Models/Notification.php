@@ -10,8 +10,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Notification extends Model
 {
+    const LIKE = 'like';
+    const UNLIKE = 'unlike';
+    const MUTUAL = 'mutual';
+    const VISIT = 'visit';
+
     protected $table = 'notifications';
 
     protected $fillable = ['has_been_read'];
@@ -21,9 +27,9 @@ class Notification extends Model
         return $this->hasOne('App\Models\User', 'id','sender_id');
     }
 
-    public function setNotification(int $senderId, int $receiverId, string $type)
+    static public function setNotification(int $senderId, int $receiverId, string $type)
     {
-        $this::insert(
+        self::insert(
             [
                 'who_id' => $senderId,
                 'whom_id' => $receiverId,
