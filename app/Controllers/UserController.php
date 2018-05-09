@@ -201,26 +201,4 @@ class UserController extends Controller
         $user->setOnline($user->getId($username), $status);
         return $response->withStatus(200);
     }
-
-    public function getVisits(Request $request, Response $response)
-    {
-        $visits = Visit::where('whom_id', $_SESSION['user'])->get()->all();
-
-        return $this->view->render($response, 'user/notifications.twig', ['visits' => $visits]);
-    }
-
-    public function getNotifications(Request $request, Response $response)
-    {
-        $visits = Visit::where('whom_id', Auth::user()->id)->get()->toArray();
-        $likes = Like::where('whom_id', Auth::user()->id)->get()->toArray();
-//        $visits = User::select('users.*', 'visits.*', 'likes.*')
-//            ->join('visits', 'visits.whom_id', '=', 'users.id')
-//            ->join('likes', 'likes.whom_id', '=', 'users.id')
-//            ->where('visits.whom_id', Auth::user()->id)
-//            ->where('likes.whom_id', Auth::user()->id)
-////            ->groupBy('created_at', 'desc')
-//            ->get()->all();
-        ~r($visits, $likes);
-        return $this->view->render($response, 'user/notifications.twig', ['visits' => $visits]);
-    }
 }
