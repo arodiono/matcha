@@ -10,7 +10,7 @@
             <div class="container">
 
                 <div class="row">
-                    <div class="col-xs-6 col-xs-offset-3">
+                    <div class="col-xs-8 col-xs-offset-2">
                         <div class="profile">
                             <div class="avatar">
                                 {% if user.profile_photo %}
@@ -20,33 +20,38 @@
                                 {% endif %}
                             </div>
                             <div class="name text-center">
-                                <h3 class="title">{{ user.first_name|capitalize ~ ' ' ~ user.last_name|capitalize }}<i class="material-icons" data-toggle="tooltip"
-                                                                    data-placement="top" title="" data-container="body"
-                                                                    data-original-title="last online">fiber_manual_record</i>
+                                <h3 class="title">
+                                    {{ user.first_name|capitalize ~ ' ' ~ user.last_name|capitalize }}
+                                    {#<i class="material-icons">fiber_manual_record</i>#}
                                 </h3>
+                                    {% if user.online == 1 %}
+                                        <span>online</span>
+                                    {% else %}
+                                        <span id="last-online" data-toggle="tooltip" data-placement="top" title="" data-container="body" data-date="{{ user.updated_at }}" data-original-title="">offline</span>
+                                    {% endif %}
+
                             </div>
                         </div>
                         <br/>
                         <div class="profile-info list-unstyled">
-                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
-                                data-original-title="rating">
-                                <i class="material-icons">whatshot</i>{{ user.rating }}
+                            <li><i class="material-icons">whatshot</i>{{ user.rating }}
                             </li>
-                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
-                                data-original-title="rating">
-                                <i class="material-icons">room</i>Kyiv
+                            <li><i class="material-icons">room</i>Kyiv</li>
+                            <li data-date="{{ user.date }}" id="birthday">
+                                <i class="material-icons">date_range</i>
                             </li>
-                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
-                                data-original-title="rating">
-                                <i class="material-icons">wc</i> {{ user.gender }}
-                            </li>
-                            <li data-toggle="tooltip" data-placement="top" title="" data-container="body"
-                                data-original-title="rating">
-                                <i class="material-icons">people</i> {{ user.sex_preference }}
-                            </li>
+                            <li><i class="material-icons">wc</i> {{ user.gender }}</li>
+                            <li><i class="material-icons">people</i> {{ user.sex_preference }}</li>
                         </div>
+                        <script>
+                            $(function (){
+                                $('#birthday').append(moment($('#birthday').data('date')).toNow(true));
+//                                console.log(moment($('#last-online').data('date')).fromNow())
+                                $('#last-online').attr('title', 'Last online ' + moment($('#last-online').data('date')).fromNow())
+                            })
+                        </script>
                     </div>
-                    <div class="col-xs-3 follow">
+                    <div class="col-xs-2 follow">
                         {% if user.id != auth.user.id %}
                             <form action="{{ path_for('like.toggle', {id: user.id }) }}" method="post">
                                     <button type="submit" class="btn btn-fab {{ isLiked ? '' : 'btn-rose' }}" rel="tooltip" title="" data-original-title="{{ isLiked ? 'Unlike this user' : 'Like this user' }}">

@@ -37,7 +37,12 @@ class User extends Model
         'bio',
         'profile_photo',
         'hash',
-        'fb_id'
+        'fb_id',
+        'date'
+    ];
+
+    protected $casts = [
+        'date' => 'datetime',
     ];
 
     /**

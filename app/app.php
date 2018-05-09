@@ -6,7 +6,8 @@ use Slim\Http\Response;
 use Tinify\Tinify;
 
 session_start();
-date_default_timezone_set('Europe/Kiev');
+//date_default_timezone_set('Europe/Kiev');
+date_default_timezone_set('UTC');
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/config.php';

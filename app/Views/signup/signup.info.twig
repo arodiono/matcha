@@ -34,6 +34,16 @@
                                             <span class="help-block">{{ errors.last_name | first }}</span>
                                         {% endif %}
                                     </div>
+
+                                    <div class="form-group label-floating is-empty is-focused">
+                                        <label class="control-label">Birthday</label>
+                                        <input type="text" name="date" class="form-control datepicker" value="{{ oldInput.date == null ? user.date : oldInput.date }}">
+                                        <span class="material-input"></span>
+                                        {% if errors.date %}
+                                            <span class="material-icons form-control-feedback">clear</span>
+                                            <span class="help-block">{{ errors.date | first }}</span>
+                                        {% endif %}
+                                    </div>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <select name="gender" class="selectpicker"

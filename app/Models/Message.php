@@ -86,7 +86,7 @@ class Message extends Model
     private function setMessagesAsHasBeenReadByMessageIds($messageIds)
     {
         $this::whereIn('id', $messageIds)
-            ->update(['has_been_read' => true]);
+            ->update(['has_been_read' => 1]);
     }
 
     /**
@@ -101,7 +101,7 @@ class Message extends Model
             ->orderBy('created_at', 'desc')
             ->get()
             ->first()
-            ->update(['has_been_read' => true]);
+            ->update(['has_been_read' => 1]);
     }
 
 //        public function conversation()

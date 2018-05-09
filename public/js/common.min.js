@@ -1,6 +1,23 @@
 
 $(function () {
 
+    $('.datepicker').datetimepicker({
+        format: 'MM/DD/YYYY',
+        defaultDate: moment().format('l'),
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove',
+            inline: true
+        }
+    });
+
     $( ":input" ).each(function () {
         if($(this).val()) {
             $(this).parent().removeClass('is-empty')
@@ -31,6 +48,9 @@ $(function () {
 	});
 
     $(".chat-body").niceScroll();
+    $(function () {
+        $(".chat-body").length != 0 ? scrollChat() : null
+    })
 
     $(document).ready(function () {
 		$(".label-floating").find('input').each(function (index, value ) {
@@ -48,7 +68,7 @@ $(function () {
     })
 
     $('[data-time]').each(function () {
-		$(this).html(moment($(this).data().time, "YYYY-MM-DD HH:mm:ss").fromNow())
+		$(this).html(moment.utc($(this).data().time).from(moment.utc()))
     })
 
     var conn = new WebSocket('ws://' + window.location.hostname + ':8000');
@@ -80,6 +100,7 @@ $(function () {
         newMessage.find('.time').html(moment().fromNow());
         $('.chat-body').append(newMessage)
         scrollChat()
+        showNotification('info', JSON.parse(message).text)
     }
 
     function addNewOutcomeMessage(message) {
@@ -99,6 +120,25 @@ $(function () {
 
     function scrollChat() {
         $('.chat-body').animate({scrollTop: document.querySelector(".chat-body").scrollHeight});
+    }
+    function showNotification(type, message) {
+        console.log('test')
+        // type = ['', 'info', 'success', 'warning', 'danger', 'rose', 'primary'];
+
+        // color = Math.floor((Math.random() * 6) + 1);
+
+        $.notify({
+            icon: "notifications",
+            message: message
+
+        }, {
+            type: type,
+            timer: 3000,
+            placement: {
+                from: "bottom",
+                align: "left"
+            }
+        });
     }
 });
 
