@@ -81,12 +81,33 @@ $(function () {
         }));
     };
     conn.onmessage = function (e) {
-    	console.log(e.data)
-        addNewIncomeMessage(e.data);
-        $.post(window.location.href + '/smhbr',
-            {
-                user: $('[data-user]').data().user
+        let message = JSON.parse(e.data)
+        if (message.message) {
+            addNewIncomeMessage(e.data);
+            setTimeout(function () {
+                $.post(window.location.href + '/smhbr',
+                    {
+                        user: $('[data-user]').data().user
+                    });
+            }, 500)
+        }
+        else if (message.notification) {
+            $.notify({
+                icon: "notifications",
+                title: "New "+message.notification.type+ " from <b>"+message.notification.from+"</b>",
+                message: message.notification.text,
+                url: '//' + window.location.host + '/messages/'+ message.notification.from,
+
+            }, {
+                type: 'rose',
+                timer: 3000,
+                placement: {
+                    from: "bottom",
+                    align: "left"
+                }
             });
+        }
+
     };
     $('.message-field').submit(function (e) {
         e.preventDefault();
@@ -96,18 +117,23 @@ $(function () {
 
     function addNewIncomeMessage(message) {
         var newMessage = $('.left').first().clone().removeClass('hide');
-        newMessage.find('.text').html(JSON.parse(message).text);
+        // console.log(message)
+        newMessage.find('.text').html(JSON.parse(message).message.text);
         newMessage.find('.time').html(moment().fromNow());
         $('.chat-body').append(newMessage)
         scrollChat()
-        showNotification('info', JSON.parse(message).text)
     }
 
     function addNewOutcomeMessage(message) {
         var newMessage = $('.right').first().clone().removeClass('hide');
         var url = window.location.href;
         var receiver = url.split('/')[url.split('/').length - 1];
-        conn.send(JSON.stringify({to: receiver, msg: message}));
+        conn.send(JSON.stringify({
+            auth: $('[data-user]').data().user,
+            type: 'message',
+            to: receiver,
+            msg: message
+        }));
         newMessage.find('.text').html(message);
         newMessage.find('.time').html(moment().fromNow());
         $('.chat-body').append(newMessage);

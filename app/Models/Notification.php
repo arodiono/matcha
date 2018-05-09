@@ -15,7 +15,7 @@ class Notification extends Model
 {
     const LIKE = 'like';
     const UNLIKE = 'unlike';
-    const MUTUAL = 'mutual';
+    const MUTUAL = 'mutually';
     const VISIT = 'visit';
 
     protected $table = 'notifications';

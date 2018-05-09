@@ -17,7 +17,7 @@ class MessageService implements MessageComponentInterface
 
     private $message = ['message'];
 
-    private $ntf = ['like', 'unlike', 'mutual', 'visit'];
+    private $ntf = ['like', 'unlike', 'mutual', 'visit', 'ntf'];
 
     protected $clients;
 
@@ -99,25 +99,19 @@ class MessageService implements MessageComponentInterface
         if (property_exists($data, 'auth') && property_exists($data, 'type') && property_exists($data, 'host')) {
             $this->onlineUrl = $data->host;
             $this->setOnlineStatus(self::ONLINE, $data->auth);
-            if (array_key_exists($data->type, $this->message)) {
-                $this->directMessageConnections[] = [$data->auth => $from];
-            } elseif (array_key_exists($data->type, $this->ntf)) {
-                $this->notificationConnections[] = [$data->auth => $from];
+            if (in_array($data->type, $this->message)) {
+                $this->directMessageConnections[$data->auth] = $from;
+            } elseif (in_array($data->type, $this->ntf)) {
+                $this->notificationConnections[$data->auth] = $from;
             }
         } else {
             if (property_exists($data, 'to')){
                 $body = ['type' => $data->type, 'text' => $data->msg, 'from' => $data->auth];
-                foreach ($this->directMessageConnections as $user) {
-                    if (array_key_exists($data->to, $user)) {
-                        $user[$data->to]->send(json_encode(['message'=> $body]));
-                        $this->done = 1;
-                    }
-                }
-                if ($this->done === 0) {
-                    foreach ($this->notificationConnections as $user) {
-                        if (array_key_exists($data->to, $user)) {
-                            $user[$data->to]->send(json_encode(['notification' => $body]));
-                        }
+                if (array_key_exists($data->to, $this->directMessageConnections)) {
+                    $this->directMessageConnections[$data->to]->send(json_encode(['message' => $body]));
+                } else {
+                    if (array_key_exists($data->to, $this->notificationConnections)) {
+                        $this->notificationConnections[$data->to]->send(json_encode(['notification' => $body]));
                     }
                 }
             }
@@ -130,18 +124,19 @@ class MessageService implements MessageComponentInterface
     public function onClose(ConnectionInterface $conn) {
         foreach ($this->notificationConnections as $key => $user)
         {
-            if (array_values($user)[0] == $conn) {
+
+            if ($user == $conn) {
                 unset($this->notificationConnections[$key]);
                 $this->setOnlineStatus(self::OFFLINE, $key);
-                $ts = array_keys($user)[0];
+                $ts = $key;
                 echo "Deleted {$ts} has disconnected\n";
             }
         }
         foreach ($this->directMessageConnections as $key => $user)
         {
-            if (array_values($user)[0] == $conn) {
+            if ($user == $conn) {
                 unset($this->directMessageConnections[$key]);
-                $username = array_keys($user)[0];
+                $username = $key;
                 $this->setOnlineStatus(self::OFFLINE, $username);
                 echo "Deleted {$username} has disconnected\n";
             }
