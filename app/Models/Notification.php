@@ -22,9 +22,9 @@ class Notification extends Model
 
     protected $fillable = ['has_been_read'];
 
-    public function sender()
+    public function who()
     {
-        return $this->hasOne('App\Models\User', 'id','sender_id');
+        return $this->hasOne('App\Models\User', 'id','who_id');
     }
 
     static public function setNotification(int $senderId, int $receiverId, string $type)

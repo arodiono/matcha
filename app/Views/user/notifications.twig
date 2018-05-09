@@ -6,19 +6,30 @@
     <div class="main main-raised">
         <div class="content">
             <div class="container">
-                {% for visit in visits %}
+                {% for notify in notifications %}
                     <div class="notification">
                         <div class="notification-info">
-                            <a href="{{ base_url() ~ '/user/' ~ visit.who.username }}">
-                                {% if user.profile_photo %}
-                                    <img src="{{ base_url() ~ "/uploads/" ~ visit.who.username ~ "/" ~ visit.who.profile_photo }}" alt="" class="img-circle img-responsive img-raised">
+                            <a href="{{ base_url() ~ '/user/' ~ notify.who.username }}">
+                                {% if notify.who.profile_photo %}
+                                    <img src="{{ base_url() ~ "/uploads/" ~ notify.who.username ~ "/200x200_" ~ notify.who.profile_photo }}" alt="" class="img-circle img-responsive img-raised">
                                 {% else %}
                                     <img src="{{ base_url() ~ "/img/placeholder.jpg" }}" alt="" class="img-circle img-responsive img-raised">
                                 {% endif %}
                             </a>
-                            <p><a href="{{ base_url() ~ '/user/' ~ visit.who.username }}">{{ visit.who.first_name }} {{ visit.who.last_name }}</a> is interested your page</p>
+                            <p>
+                                <a href="{{ base_url() ~ '/user/' ~ notify.who.username }}">{{ notify.who.first_name }} {{ notify.who.last_name }}</a>
+                                {% if notify.type == 'visit' %}
+                                    is interested your profile
+                                {% elseif notify.type == 'like' %}
+                                    is liked your profile
+                                {% elseif notify.type == 'unlike' %}
+                                    is unliked your profile
+                                {% elseif notify.type == 'mutually' %}
+                                    is mutually liked your profile
+                                {% endif %}
+                            </p>
                         </div>
-                        <div class="time" data-time="{{ visit.created_at }}"></div>
+                        <div class="time" data-time="{{ notify.created_at }}"></div>
                     </div>
                 {% endfor %}
             </div>

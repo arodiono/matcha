@@ -92,6 +92,9 @@ $container['SearchController'] = function ($container) {
 $container['MessageController'] = function ($container) {
     return new \App\Controllers\MessageController($container);
 };
+$container['NotificationController'] = function ($container) {
+    return new \App\Controllers\NotificationController($container);
+};
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
 };

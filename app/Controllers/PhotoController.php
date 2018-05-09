@@ -28,7 +28,7 @@ class PhotoController extends Controller
             "height" => 275
         ]);
         $thumb = $source->resize([
-            "method" => "cover",
+            "method" => "thumb",
             "width" => 200,
             "height" => 200
         ]);
