@@ -14,6 +14,11 @@ use Ratchet\ConnectionInterface;
 
 class MessageService implements MessageComponentInterface
 {
+
+    private $message = ['message'];
+
+    private $ntf = ['like', 'unlike', 'mutual', 'visit'];
+
     protected $clients;
 
     private $directMessageConnections = [];
@@ -94,25 +99,24 @@ class MessageService implements MessageComponentInterface
         if (property_exists($data, 'auth') && property_exists($data, 'type') && property_exists($data, 'host')) {
             $this->onlineUrl = $data->host;
             $this->setOnlineStatus(self::ONLINE, $data->auth);
-            if ($data->type == 'msg') {
+            if (array_key_exists($data->type, $this->message)) {
                 $this->directMessageConnections[] = [$data->auth => $from];
-            } elseif ($data->type == 'ntf') {
+            } elseif (array_key_exists($data->type, $this->ntf)) {
                 $this->notificationConnections[] = [$data->auth => $from];
             }
         } else {
-            if (property_exists($data, 'to') && property_exists($data, 'msg')){
-                $message = ['text' => $data->msg, 'type' => 'msg'];
+            if (property_exists($data, 'to')){
+                $body = ['type' => $data->type, 'text' => $data->msg, 'from' => $data->auth];
                 foreach ($this->directMessageConnections as $user) {
                     if (array_key_exists($data->to, $user)) {
-                        $user[$data->to]->send(json_encode($message));
+                        $user[$data->to]->send(json_encode(['message'=> $body]));
                         $this->done = 1;
                     }
                 }
                 if ($this->done === 0) {
-                    $message['type'] = 'ntf';
                     foreach ($this->notificationConnections as $user) {
                         if (array_key_exists($data->to, $user)) {
-                            $user[$data->to]->send(json_encode($message));
+                            $user[$data->to]->send(json_encode(['notification' => $body]));
                         }
                     }
                 }

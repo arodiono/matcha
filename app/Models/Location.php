@@ -55,6 +55,18 @@ class Location extends Model
         return -1;
     }
 
+    public function getCurrentCoords() : array
+    {
+        $srcData = $this::select('lat', 'lon')
+            ->where('user_id', '=', $_SESSION['user'])
+            ->get()
+            ->first();
+        if ($srcData) {
+            return $srcData->toArray();
+        }
+        return [];
+    }
+
     public function setCoordinates($data=['latitude' => 0, 'longitude' => 0])
     {
         $this::updateOrCreate(
