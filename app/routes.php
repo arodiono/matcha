@@ -12,6 +12,7 @@ $app->group('', function () {
     $this->get('/signin', 'AuthController:getSignIn')->setName('signin');
     $this->post('/signin', 'AuthController:postSignIn');
     $this->get('/fb-login', 'AuthController:facebookCallback')->setName('fb-login');
+    $this->get('/intra-login', 'AuthController:intraSignUp')->setName('intra-login');
 
 
     $this->group('/user', function () {

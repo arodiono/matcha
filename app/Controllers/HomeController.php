@@ -3,9 +3,6 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
-use App\Models\Location;
-use App\Models\Tag;
-use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Services\Intra;
