@@ -7,7 +7,7 @@
 {% extends 'templates/core.twig' %}
 
 {% block content %}
-    <div class="container" data-connection="msg">
+    <div class="container" data-connection="message">
         {#<h6>{{ receiver.first_name }}  {{ receiver.last_name }}</h6>#}
         <div class="chat">
                 <div class="chat-body col-inside-lg" style="overflow: hidden; outline: none;" tabindex="5001">
@@ -53,7 +53,7 @@
                                     <div class="name">{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}</div>
                                 </a>
                                 <div class="text">{{ message.message }}</div>
-                                <div class="time" data-time="{{ message.updated_at }}"></div>
+                                <div class="time" data-time="{{ message.created_at }}"></div>
                             </div>
                             {% else %}
                         {#{% endif %}#}
@@ -70,17 +70,17 @@
                                     <div class="name">{{ current_user.first_name ~ ' ' ~ current_user.last_name }}</div>
                                 </a>
                                 <div class="text">{{ message.message }}</div>
-                                <div class="time" data-time="{{ message.updated_at }}"></div>
+                                <div class="time" data-time="{{ message.created_at }}"></div>
                             </div>
                         {% endif %}
                     {% endfor %}
                 </div>
-                <form class="message-field">
-                    <div class="answer-add">
-                        <input id="new-message" type="text" placeholder="Write a message" autofocus>
-                        <button type="submit" value="" class="answer-btn answer-btn-2"><i class="material-icons">send</i></button>
-                    </div>
-                </form>
+        <form class="message-field">
+            <div class="answer-add">
+                <input id="new-message" type="text" placeholder="Write a message" autofocus>
+                <button type="submit" value="" class="answer-btn answer-btn-2"><i class="material-icons">send</i></button>
+            </div>
+        </form>
         </div>
     </div>
 

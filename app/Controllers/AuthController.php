@@ -45,6 +45,7 @@ class AuthController extends Controller
         $validation = $this->validator->validate($request, [
             'first_name' => v::noWhitespace()->notEmpty()->alpha(),
             'last_name' => v::noWhitespace()->notEmpty()->alpha(),
+            'date' => v::noWhitespace()->notEmpty(),
             'gender' => v::notEmpty(),
             'sex_preference' => v::notEmpty(),
             'bio' => v::length(null, 150)
@@ -54,9 +55,13 @@ class AuthController extends Controller
         }
 
         $user = $this->auth->user();
+
+//        ~r( $request->getParam('date'), new \DateTime($request->getParam('date')));
+
         $user->update([
             'first_name' => $request->getParam('first_name'),
             'last_name' => $request->getParam('last_name'),
+            'date' => new \DateTime($request->getParam('date')),
             'gender' => $request->getParam('gender'),
             'sex_preference' => $request->getParam('sex_preference'),
             'bio' => $request->getParam('bio')
