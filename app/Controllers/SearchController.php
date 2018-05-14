@@ -59,26 +59,30 @@ class SearchController extends Controller
      */
     public function advancedSearch(Request $request, Response $response): Response
     {
-        $orderTypes = ['age', 'rating', 'tags'];
+        $orderTypes = ['age', 'rating'];
         $orderDirections = ['asc', 'desc'];
 
         $blockedUsers = $this->blockModel->getBlockedUsersForUser(Auth::user()->id);
-        $whereParams = [];
+        $whereDateParams = array('from' => new \DateTime('1900-01-01'), 'to' => new \DateTime());
         $orderParams = ['type' => 'rating', 'order' => 'desc'];
         $tags = [];
-        $radius = 0;
+        $location = ['radius' => 0, 'sort' => false];
         foreach ($request->getQueryParams() as $param => $value)
         {
             if ($param == 'age') {
-                $whereParams[] = ['age', '>=', explode(',', $value)[0]];
-                $whereParams[] = ['age', '<=', explode(',', $value)[1]];
+                $from = new \DateTime();
+                $to = new \DateTime();
+                $whereDateParams['to'] = $from->sub(new \DateInterval('P' . explode(',', $value)[0] . 'Y'));
+                $whereDateParams['from'] = $to->sub(new \DateInterval('P' . explode(',', $value)[1] . 'Y'));
                 continue;
             }
             if ($param == 'order') {
                 $data = explode(',', $value);
-                if (in_array($data[0], $orderTypes) && in_array($data[0], $orderDirections)) {
-                    $orderParams['type'] = 'users' . $data[0];
+                if (in_array($data[0], $orderTypes) && in_array($data[1], $orderDirections)) {
+                    $orderParams['type'] = $data[0] != 'age' ? 'users.' . $data[0] : 'users.date';
                     $orderParams['order'] = $data[1];
+                } elseif ($data[0]  == 'location') {
+                    $location['sort'] = true;
                 }
                 continue;
             }
@@ -87,26 +91,30 @@ class SearchController extends Controller
                 continue;
             }
             if ($param == 'location') {
-                $radius = $value;
+                $location['radius'] = $value;
                 continue;
             }
-            $whereParams[] = ['users.' . $param, $value];
         }
         if (empty($tags)){
-            $rawData['users'] = User::where($whereParams)
+            $rawData['users'] = User::select('*', 'users.id as s_user_id')
+                ->whereDate('date', '>=', $whereDateParams['from'])
+                ->whereDate('date', '<=', $whereDateParams['to'])
                 ->whereNotIn('users.id', $blockedUsers)
                 ->distinct()
                 ->orderBy($orderParams['type'], $orderParams['order'])
-                ->join('geoip', 'users.id', '=', 'geoip.user_id')
+                ->leftJoin('geoip', 'users.id', '=', 'geoip.user_id')
                 ->get()
                 ->all();
         } else {
             $rawData['users'] = User::from('tag_user')
-                ->whereIn('tag_id', $tags)
-                ->where($whereParams)
+                ->select('*', 'users.id as s_user_id')
+                ->whereDate('users.date', '>=', $whereDateParams['from'])
+                ->whereDate('users.date', '<=', $whereDateParams['to'])
+                ->whereIn('tags.tag', $tags)
                 ->whereNotIn('users.id', $blockedUsers)
-                ->join('users', 'users.id', '=', 'tag_user.user_id')
-                ->join('geoip', 'users.id', '=', 'geoip.user_id')
+                ->leftJoin('users', 'users.id', '=', 'tag_user.user_id')
+                ->leftJoin('geoip', 'users.id', '=', 'geoip.user_id')
+                ->leftJoin('tags', 'tag_user.tag_id', '=', 'tags.id')
                 ->distinct()
                 ->orderBy($orderParams['type'], $orderParams['order'])
                 ->get()
@@ -118,19 +126,22 @@ class SearchController extends Controller
         $source = $geo->getCurrentCoords();
         foreach ($rawData['users'] as $user)
         {
-            if (!in_array($user->id, $userIds)) {
-                $userIds[] = $user->id;
-                if ($radius !== 0) {
+            if (!in_array($user->s_user_id, $userIds)) {
+                $userIds[] = $user->s_user_id;
+                if ($location['radius'] !== 0) {
                     $user->distance = $geo->getDistance($source, ['lat' => $user->lat, 'lon' => $user->lon]);
-                    if ($user->distance < $radius) {
+                    if ($user->distance < $location['radius']) {
                         $data['users'][] = $user;
                     }
                 } else {
+                    $user->distance = $geo->getDistance($source, ['lat' => $user->lat, 'lon' => $user->lon]);
                     $data['users'][] = $user;
                 }
             }
         }
-        usort($data['users'], array($this, 'cmp'));
+        if ($location['sort']) {
+            usort($data['users'], array($this, 'cmp'));
+        }
         return $this->view->render($response, 'search/by.nearby.twig', $data);
     }
 
@@ -146,12 +157,12 @@ class SearchController extends Controller
     public function getNearbyUsers(Request $request, Response $response): Response
 	{
 		$geo = new Location();
-		$radius = 42;
+		$location['radius'] = 42;
 		if (array_key_exists('radius', $request->getParsedBody())) {
-		    $radius = $request->getParsedBody()['radius'];
+		    $location['radius'] = $request->getParsedBody()['radius'];
         }
 		$blockedUsers = $this->blockModel->getBlockedUsersForUser(Auth::user()->id);
-		$data['users'] = $geo->getUsers($radius);
+		$data['users'] = $geo->getUsers($location['radius']);
 		foreach ($data['users'] as $key => $user)
         {
             if (in_array($user->id, $blockedUsers)) {
