@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
+use App\Services\Search;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Services\Intra;
@@ -13,6 +14,15 @@ use App\Services\Intra;
  */
 class HomeController extends Controller
 {
+
+    protected $search;
+
+    public function __construct($container)
+    {
+        parent::__construct($container);
+        $this->search = new Search();
+    }
+
     /**
      * @param Request $request
      * @param Response $response
@@ -25,7 +35,7 @@ class HomeController extends Controller
             return $this->view->render($response, 'landing.twig');
         }
         else {
-            return $this->SearchController->getSuggestions($request, $response);
+            return $this->SearchController->getMainPageUsers($request, $response);
         }
     }
 }

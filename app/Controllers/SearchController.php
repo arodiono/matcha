@@ -8,7 +8,6 @@ use App\Models\Location;
 use App\Models\Tag;
 use App\Models\User;
 use App\Services\Search;
-use Illuminate\Support\Facades\DB;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -21,10 +20,13 @@ class SearchController extends Controller
 
     protected $blockModel;
 
+    protected $search;
+
     public function __construct($container)
     {
         parent::__construct($container);
         $this->blockModel = new Block();
+        $this->search = new Search();
     }
 
     /**
@@ -34,32 +36,8 @@ class SearchController extends Controller
      */
     public function getSuggestions(Request $request, Response $response): Response
     {
-        $user = Auth::user();
-
-        $blockedUsers = $this->blockModel->getBlockedUsersForUser($user->id);
-
-        $data['users'] = User::whereIn('gender', $this->getSex()['gender'])->whereIn('sex_preference', $this->getSex()['preferences'])->whereNotIn('id', $blockedUsers)->get()->all();
-
+        $data['users'] = $this->search->getSuggestions();
         return $this->view->render($response, 'search/by.nearby.twig', $data);
-    }
-
-    /**
-     * @return array sex preference
-     */
-    private function getSex() : array
-    {
-        $user = Auth::user();
-        switch ($user->sex_preference) {
-            case User::SEX_HETEROSEXUAL:
-                $gender = $user->gender == User::GENDER_MALE ? User::GENDER_FEMALE : User::GENDER_MALE;
-                return ['gender' => [$gender], 'preference' => [$user->sex_preference]];
-                break;
-            case User::SEX_HOMOSEXUAL:
-                return ['gender' => [$user->gender], 'preference' => [$user->sex_preference]];
-                break;
-            default:
-                return ['gender' => [User::GENDER_MALE, User::GENDER_FEMALE], 'preference' => [User::SEX_BISEXUAL, User::SEX_HETEROSEXUAL, User::SEX_HOMOSEXUAL]];
-        }
     }
 
     /**
@@ -69,10 +47,8 @@ class SearchController extends Controller
      */
     public function advancedSearch(Request $request, Response $response): Response
     {
-        $params['blockedUsers'] = $this->blockModel->getBlockedUsersForUser(Auth::user()->id);
         $params['dateParams'] = array('from' => new \DateTime('1900-01-01'), 'to' => new \DateTime());
         $params['tags'] = [];
-        $params['sex'] = $this->getSex();
         $location = ['radius' => 0, 'sort' => false];
         foreach ($request->getQueryParams() as $param => $value)
         {
@@ -96,7 +72,7 @@ class SearchController extends Controller
         $data = [];
         $geo = new Location();
         $source = $geo->getCurrentCoords();
-        foreach (Search::getFilteredUsers($params) as $user)
+        foreach ($this->search->getFilteredUsers($params) as $user)
         {
             if (!in_array($user->s_user_id, $userIds)) {
                 $userIds[] = $user->s_user_id;
@@ -142,7 +118,7 @@ class SearchController extends Controller
         }
 		$blockedUsers = $this->blockModel->getBlockedUsersForUser(Auth::user()->id);
 		$data['users'] = $geo->getUsers($location['radius']);
-		$sex = $this->getSex();
+		$sex = $this->search->getSex();
 		foreach ($data['users'] as $key => $user)
         {
             if (in_array($user->id, $blockedUsers)) {
@@ -169,5 +145,18 @@ class SearchController extends Controller
         $blockedUsers = $this->blockModel->getBlockedUsersForUser(Auth::user()->id);
         $data['users'] = Tag::find($args['id'])->users()->whereNotIn('users.id', $blockedUsers)->get()->all();
         return $this->view->render($response, 'search/by.tag.twig', $data);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function getMainPageUsers(Request $request, Response $response) : Response
+    {
+        $data['users']['popular'] = $this->search->getPopularUsers();
+        $data['users']['near'] = $this->search->getNearestUsers();
+        $data['users']['new'] = $this->search->getNewestUsers();
+        return $this->view->render($response, 'search/by.nearby.twig', $data);
     }
 }
