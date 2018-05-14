@@ -1,0 +1,115 @@
+{% extends 'templates/core.twig' %}
+
+{% block content %}
+
+    <script>
+
+        $(function () {
+
+        })
+    </script>
+    <div class="container">
+        <div class="search-advanced">
+            <div class="search-filter">
+                {#<h5>Filter by</h5>#}
+                <div class="filter-item">
+                    <div class="title col-md-2">Age</div>
+                    <div id="sliderAge" class="slider col-md-9"></div>
+                </div>
+                <div class="filter-item">
+                    <div class="title col-md-2">Distance</div>
+                    <div id="sliderNearBy" class="slider col-md-9"></div>
+                </div>
+                <div class="filter-item">
+                    <div class="title col-md-2">Interests</div>
+                    <div class="col-md-10 form-group label-floating is-empty" id="tagsinput">
+                        <label class="control-label">Write your interests, separated by
+                            commas</label>
+                        <input name="tags" type="text" value="" class="tagsinput" data-role="tagsinput"
+                               data-color="rose" style="display: none;">
+                        <span class="material-input"></span>
+                    </div>
+                </div>
+            </div>
+            {% for user in users %}
+                <div class="card card-profile" style="max-width: 49%">
+                    <a href="/user/{{ user.username }}">
+                        <div class="card-image">
+                            {% if user.profile_photo %}
+                                <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                            {% else %}
+                                <img class="img" src="/img/placeholder.jpg">
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="card-content">
+                        <a href="/user/{{ user.username }}">
+                            <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+                        </a>
+                        <h6 class="category text-gray">{{ user.bio }}</h6>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="material-icons">favorite</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        $(function () {
+            let sliderAge = document.getElementById('sliderAge');
+            let sliderNearBy = document.getElementById('sliderNearBy');
+
+            noUiSlider.create(sliderAge, {
+                start: [ 18, 30 ],
+                step: 1,
+                connect: true,
+                tooltips: true,
+                format: {
+                    to: function ( value ) {
+                        return Math.round(value)
+                    },
+                    from: function ( value ) {
+                        return Math.round(value)
+                    }
+                },
+                range: {
+                    min:  18,
+                    max:  65
+                }
+            })
+            noUiSlider.create(sliderNearBy, {
+                start: [ 1, 5 ],
+                step: 1,
+                connect: true,
+                tooltips: true,
+                format: {
+                    to: function ( value ) {
+                        return Math.round(value)
+                    },
+                    from: function ( value ) {
+                        return Math.round(value)
+                    }
+                },
+                range: {
+                    min:  1,
+                    max:  30
+                }
+            })
+            setTimeout(function () {
+                if ($(".tagsinput").tagsinput('items').length === 0) {
+                    let tags = "{{ auth.user.tags.toJson }}"
+                    tags = JSON.parse(tags.replace(/&quot;/g, '"'))
+                    tags.forEach(function (el) {
+                        console.log(el.tag)
+                        $(".tagsinput").tagsinput('add', el.tag);
+                    })
+                }
+            }, 100)
+        })
+    </script>
+{% endblock %}

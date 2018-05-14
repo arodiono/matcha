@@ -53,11 +53,24 @@
                     </div>
                     <div class="col-xs-2 follow">
                         {% if user.id != auth.user.id %}
-                            <form action="{{ path_for('like.toggle', {id: user.id }) }}" method="post">
-                                    <button type="submit" class="btn btn-fab {{ isLiked ? '' : 'btn-rose' }}" rel="tooltip" title="" data-original-title="{{ isLiked ? 'Unlike this user' : 'Like this user' }}">
+                            {#<form action="{{ path_for('like.toggle', {id: user.id }) }}" method="post">#}
+                                    <button id="like" type="submit" class="btn btn-fab {{ isLiked ? '' : 'btn-rose' }}"data-user="{{ user.id }}">
                                         <i class="material-icons">favorite</i>
                                     </button>
-                            </form>
+                            <script>
+                                $(function () {
+                                    let btn = $('#like')
+                                        btn.on('click', function () {
+                                        let url = '/like/toggle/' + $(this).data('user')
+                                        $.ajax({
+                                            method: 'post',
+                                            url: url
+                                        });
+                                        btn.toggleClass('btn-rose')
+                                    })
+                                })
+                            </script>
+                            {#</form>#}
                         {% endif %}
                         {% if isMutually %}
                             <a href="{{ path_for('messages.chat', {name: user.username}) }}" class="btn btn-fab btn-rose" rel="tooltip" title="" data-original-title="Send message">

@@ -41,7 +41,8 @@ class LikeController extends Controller
             }
         }
         Rating::setRating(Auth::user()->id);
-        return $response->withRedirect($this->router->pathFor('user.profile', ['name' => $whom->username]));
+        return $response;
+//        return $response->withRedirect($this->router->pathFor('user.profile', ['name' => $whom->username]));
     }
 
     protected function mutualLike($who, $whom)
