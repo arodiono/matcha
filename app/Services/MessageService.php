@@ -67,7 +67,7 @@ class MessageService implements MessageComponentInterface
         if (!$this->isConnectionExist($username)) {
             $data = ['username' => $username, 'status' => $status];
             $options = [
-                'https' => [
+                'http' => [
                     'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                     'method'  => 'POST',
                     'content' => http_build_query($data)
