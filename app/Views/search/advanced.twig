@@ -1,13 +1,6 @@
 {% extends 'templates/core.twig' %}
 
 {% block content %}
-
-    <script>
-
-        $(function () {
-
-        })
-    </script>
     <div class="container">
         <div class="search-advanced">
             <div class="search-filter">
@@ -30,7 +23,16 @@
                         <span class="material-input"></span>
                     </div>
                 </div>
+                <div class="filter-footer">
+                    <form id="filter-form" action="{{ path_for('search.advanced') }}" method="get">
+                        <input type="hidden" name="age" id="filter-age">
+                        <input type="hidden" name="radius" id="filter-radius">
+                        <input type="hidden" name="tags" id="filter-tags">
+                        <button class="btn btn-primary btn-sm filter-btn pull-right">Search</button>
+                    </form>
+                </div>
             </div>
+            <div class="search-result">
             {% for user in users %}
                 <div class="card card-profile" style="max-width: 49%">
                     <a href="/user/{{ user.username }}">
@@ -57,12 +59,14 @@
                     </div>
                 </div>
             {% endfor %}
+            </div>
         </div>
     </div>
     <script>
         $(function () {
             let sliderAge = document.getElementById('sliderAge');
             let sliderNearBy = document.getElementById('sliderNearBy');
+            let tagsInput = $(".tagsinput");
 
             noUiSlider.create(sliderAge, {
                 start: [ 18, 30 ],
@@ -100,16 +104,33 @@
                     max:  30
                 }
             })
+
+            $('.filter-btn').on('click', function (e) {
+                e.preventDefault()
+                let age = sliderAge.noUiSlider.get()
+                let nearBy = sliderNearBy.noUiSlider.get()
+                let tags = tagsInput.tagsinput('items')
+
+                $('#filter-age').val(age.join())
+                $('#filter-radius').val(nearBy.join())
+                $('#filter-tags').val(tags.join())
+
+                $('#filter-form').submit()
+//                console.log($('.filter-age'))
+//                console.log(nearBy)
+//                console.log(tags)
+
+            })
+
             setTimeout(function () {
-                if ($(".tagsinput").tagsinput('items').length === 0) {
+                if (tagsInput.tagsinput('items').length === 0) {
                     let tags = "{{ auth.user.tags.toJson }}"
                     tags = JSON.parse(tags.replace(/&quot;/g, '"'))
                     tags.forEach(function (el) {
-                        console.log(el.tag)
                         $(".tagsinput").tagsinput('add', el.tag);
                     })
                 }
-            }, 100)
+            }, 0)
         })
     </script>
 {% endblock %}
