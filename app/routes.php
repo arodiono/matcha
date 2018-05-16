@@ -16,6 +16,7 @@ $app->group('', function () {
 
 
     $this->group('/user', function () {
+        $this->post('/online', 'UserController:postOnline');
         $this->get('/password/forgot', 'UserController:getForgotPassword')->setName('user.password.forgot');
         $this->post('/password/forgot', 'UserController:postForgotPassword');
         $this->get('/password/reset/{hash}', 'UserController:getResetPassword')->setName('user.password.reset');
@@ -31,7 +32,6 @@ $app->group('', function () {
 //    });
 
     $this->group('/user', function () {
-        $this->post('/user/online', 'UserController:postOnline');
         $this->get('/edit', 'UserController:getUserEdit')->setName('user.edit');
         $this->post('/edit', 'UserController:postUserEdit');
         $this->any('/location', 'UserController:setLocation')->setName('user.location');
