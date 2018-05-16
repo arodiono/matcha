@@ -1,0 +1,107 @@
+{% extends 'templates/core.twig' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="main-search">
+            <div class="main-search-title">New users</div>
+            <div class="main-search-section">
+            {% for user in users['new'] %}
+                <div class="card card-profile main-search-item">
+                    <a href="/user/{{ user.username }}">
+                        <div class="card-image">
+                            {% if user.profile_photo %}
+                                <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                            {% else %}
+                                <img class="img" src="/img/placeholder.jpg">
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="card-content">
+                        <a href="/user/{{ user.username }}">
+                            <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+                        </a>
+                        <h6 class="category text-gray">{{ user.bio }}</h6>
+                    </div>
+                    <div class="footer">
+                        {% for tag in user.tags %}
+                            <a href="{{ path_for('search.tag', {id: tag.id}) }}"><span class="label label-primary">#{{ tag.tag }}</span></a>
+                        {% endfor %}
+                        {#<button data-action="like" data-user="{{ user.id }}" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">#}
+                            {#<i class="material-icons">favorite</i>#}
+                            {#<div class="ripple-container"></div>#}
+                        {#</button>#}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="main-search-title">Popular</div>
+            <div class="main-search-section">
+            {% for user in users['popular'] %}
+                <div class="card card-profile main-search-item">
+                    <a href="/user/{{ user.username }}">
+                        <div class="card-image">
+                            {% if user.profile_photo %}
+                                <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                            {% else %}
+                                <img class="img" src="/img/placeholder.jpg">
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="card-content">
+                        <a href="/user/{{ user.username }}">
+                            <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+                        </a>
+                        <h6 class="category text-gray">{{ user.bio }}</h6>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
+                            <i class="material-icons">favorite</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="main-search-title">Near you</div>
+            <div class="main-search-section">
+            {% for user in users['near'] %}
+                <div class="card card-profile main-search-item">
+                    <a href="/user/{{ user.username }}">
+                        <div class="card-image">
+                            {% if user.profile_photo %}
+                                <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                            {% else %}
+                                <img class="img" src="/img/placeholder.jpg">
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="card-content">
+                        <a href="/user/{{ user.username }}">
+                            <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+                        </a>
+                        <h6 class="category text-gray">{{ user.bio }}</h6>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
+                            <i class="material-icons">favorite</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('[data-action="like"]').on('click', function () {
+                $.ajax({
+                    method: 'post',
+                    url: '/like/toggle/' + $(this).data('user')
+                });
+                $(this).toggleClass('btn-rose')
+            })
+        })
+    </script>
+{% endblock %}

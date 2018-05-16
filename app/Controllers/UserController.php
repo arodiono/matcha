@@ -69,7 +69,7 @@ class UserController extends Controller
 	{
         $data = $request->getParsedBody();
 
-        $user = User::find($_SESSION['user'])->first();
+        $user = Auth::user();
 
         $user->update([
             'email' => htmlspecialchars($data['email']),

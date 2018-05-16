@@ -974,6 +974,14 @@ footer {
 .alert [data-notify=dismiss] {
   margin-right: 5px; }
 
+.alert-flash {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  margin-bottom: 0;
+  z-index: 99;
+  width: 100%; }
+
 .search-filter {
   width: 100%;
   display: block;
@@ -1021,6 +1029,39 @@ footer {
   -webkit-transform: translate(-50%);
       -ms-transform: translate(-50%);
           transform: translate(-50%); }
+
+.main-search {
+  margin-top: 30px; }
+  .main-search-title {
+    margin: 30px 0;
+    font-family: "Roboto Slab", "Times New Roman", serif;
+    font-size: 24px;
+    font-weight: bold; }
+  .main-search-section {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+  .main-search-item {
+    width: 32%; }
+    .main-search-item .card-image {
+      -webkit-transition: .3s;
+      -o-transition: .3s;
+      transition: .3s;
+      max-width: 190px;
+      max-height: 190px;
+      overflow: hidden; }
+      .main-search-item .card-image:hover {
+        -webkit-transform: scale(1.05);
+            -ms-transform: scale(1.05);
+                transform: scale(1.05); }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

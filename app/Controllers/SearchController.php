@@ -157,6 +157,6 @@ class SearchController extends Controller
         $data['users']['popular'] = $this->search->getPopularUsers();
         $data['users']['near'] = $this->search->getNearestUsers();
         $data['users']['new'] = $this->search->getNewestUsers();
-        return $this->view->render($response, 'search/by.nearby.twig', $data);
+        return $this->view->render($response, 'main.twig', $data);
     }
 }

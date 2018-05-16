@@ -96,13 +96,6 @@ footer
 .profile-content
   padding-bottom: 30px
 
-//.alert
-//  position: absolute
-//  top: 70px
-//  left: 0
-//  margin-bottom: 0
-//  z-index: 99
-//  width: 100%
 
 .navbar-brand
   font-family: "Roboto Slab", "Times New Roman", serif
@@ -970,7 +963,13 @@ footer
 .alert [data-notify=dismiss]
   margin-right: 5px
 
-
+.alert-flash
+  position: absolute
+  top: 70px
+  left: 0
+  margin-bottom: 0
+  z-index: 99
+  width: 100%
 
 
 //SEARCH
@@ -1008,5 +1007,27 @@ footer
   left: 50%
   transform: translate(-50%)
 
+
+
+.main-search
+  margin-top: 30px
+  &-title
+    margin: 30px 0
+    font-family: "Roboto Slab", "Times New Roman", serif
+    font-size: 24px
+    font-weight: bold
+  &-section
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+  &-item
+    width: 32%
+    .card-image
+      transition: .3s
+      max-width: 190px
+      max-height: 190px
+      overflow: hidden
+      &:hover
+        transform: scale(1.05)
 @import "media"
 // Всегда в конце

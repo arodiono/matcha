@@ -1,5 +1,5 @@
 {% if flash.getMessage('info') %}
-    <div class="alert alert-info">
+    <div class="alert alert-flash alert-info">
         <div class="container">
             <div class="alert-icon">
                 <i class="material-icons">info_outline</i>
@@ -13,7 +13,7 @@
     </div>
 {% endif %}
 {% if flash.getMessage('success') %}
-    <div class="alert alert-success">
+    <div class="alert alert-flash alert-success">
         <div class="container">
             <div class="alert-icon">
                 <i class="material-icons">check</i>
@@ -26,7 +26,7 @@
     </div>
 {% endif %}
 {% if flash.getMessage('warning') %}
-    <div class="alert alert-warning">
+    <div class="alert alert-flash alert-warning">
         <div class="container">
             <div class="alert-icon">
                 <i class="material-icons">warning</i>
@@ -39,7 +39,7 @@
     </div>
 {% endif %}
 {% if flash.getMessage('error') %}
-    <div class="alert alert-danger">
+    <div class="alert alert-flash alert-danger">
         <div class="container">
             <div class="alert-icon">
                 <i class="material-icons">error_outline</i>
