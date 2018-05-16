@@ -26,7 +26,7 @@ gulp.task('js', ['common-js'], function() {
 		'public/libs/bootstrap/bootstrap.min.js',
 		'public/libs/material-kit/material.min.js',
 		// 'public/libs/material-kit/moment.min.js',
-		// 'public/libs/material-kit/nouislider.min.js',
+		'public/libs/material-kit/nouislider.min.js',
 		// 'public/libs/material-kit/bootstrap-datetimepicker.js',
 		'public/libs/material-kit/bootstrap-selectpicker.js',
 		'public/libs/material-kit/bootstrap-tagsinput.js',

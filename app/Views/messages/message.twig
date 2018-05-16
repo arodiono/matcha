@@ -23,7 +23,7 @@
                             <div class="name">{{ interlocutor.first_name ~ ' ' ~ interlocutor.last_name }}</div>
                         </a>
                         <div class="text"></div>
-                        <div class="time"></div>
+                        <div class="time" data-time=""></div>
                     </div>
                     <div class="answer right hide">
                         <a href="/user/{{ sender.username }}">
@@ -37,7 +37,7 @@
                             <div class="name">{{ current_user.first_name ~ ' ' ~ current_user.last_name }}</div>
                         </a>
                         <div class="text"></div>
-                        <div class="time"></div>
+                        <div class="time" data-time=""></div>
                     </div>
                     {% for message in messages %}
                         {% if message.sender == interlocutor.id %}

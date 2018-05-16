@@ -90,7 +90,7 @@ class SearchController extends Controller
         if ($location['sort']) {
             usort($data['users'], array($this, 'cmp'));
         }
-        return $this->view->render($response, 'search/by.nearby.twig', $data);
+        return $this->view->render($response, 'search/advanced.twig', $data);
     }
 
     /**

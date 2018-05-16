@@ -1,0 +1,136 @@
+{% extends 'templates/core.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="search-advanced">
+            <div class="search-filter">
+                {#<h5>Filter by</h5>#}
+                <div class="filter-item">
+                    <div class="title col-md-2">Age</div>
+                    <div id="sliderAge" class="slider col-md-9"></div>
+                </div>
+                <div class="filter-item">
+                    <div class="title col-md-2">Distance</div>
+                    <div id="sliderNearBy" class="slider col-md-9"></div>
+                </div>
+                <div class="filter-item">
+                    <div class="title col-md-2">Interests</div>
+                    <div class="col-md-10 form-group label-floating is-empty" id="tagsinput">
+                        <label class="control-label">Write your interests, separated by
+                            commas</label>
+                        <input name="tags" type="text" value="" class="tagsinput" data-role="tagsinput"
+                               data-color="rose" style="display: none;">
+                        <span class="material-input"></span>
+                    </div>
+                </div>
+                <div class="filter-footer">
+                    <form id="filter-form" action="{{ path_for('search.advanced') }}" method="get">
+                        <input type="hidden" name="age" id="filter-age">
+                        <input type="hidden" name="radius" id="filter-radius">
+                        <input type="hidden" name="tags" id="filter-tags">
+                        <button class="btn btn-primary btn-sm filter-btn pull-right">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="search-result">
+            {% for user in users %}
+                <div class="card card-profile" style="max-width: 49%">
+                    <a href="/user/{{ user.username }}">
+                        <div class="card-image">
+                            {% if user.profile_photo %}
+                                <img class="img" src="/uploads/{{ user.username }}/{{ user.profile_photo }}">
+                            {% else %}
+                                <img class="img" src="/img/placeholder.jpg">
+                            {% endif %}
+                        </div>
+                    </a>
+                    <div class="card-content">
+                        <a href="/user/{{ user.username }}">
+                            <h4 class="card-title">{{ user.first_name }} {{ user.last_name }}</h4>
+                        </a>
+                        <h6 class="category text-gray">{{ user.bio }}</h6>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="material-icons">favorite</i>
+                            <div class="ripple-container"></div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            let sliderAge = document.getElementById('sliderAge');
+            let sliderNearBy = document.getElementById('sliderNearBy');
+            let tagsInput = $(".tagsinput");
+
+            noUiSlider.create(sliderAge, {
+                start: [ 18, 30 ],
+                step: 1,
+                connect: true,
+                tooltips: true,
+                format: {
+                    to: function ( value ) {
+                        return Math.round(value)
+                    },
+                    from: function ( value ) {
+                        return Math.round(value)
+                    }
+                },
+                range: {
+                    min:  18,
+                    max:  65
+                }
+            })
+            noUiSlider.create(sliderNearBy, {
+                start: [ 1, 5 ],
+                step: 1,
+                connect: true,
+                tooltips: true,
+                format: {
+                    to: function ( value ) {
+                        return Math.round(value)
+                    },
+                    from: function ( value ) {
+                        return Math.round(value)
+                    }
+                },
+                range: {
+                    min:  1,
+                    max:  30
+                }
+            })
+
+            $('.filter-btn').on('click', function (e) {
+                e.preventDefault()
+                let age = sliderAge.noUiSlider.get()
+                let nearBy = sliderNearBy.noUiSlider.get()
+                let tags = tagsInput.tagsinput('items')
+
+                $('#filter-age').val(age.join())
+                $('#filter-radius').val(nearBy.join())
+                $('#filter-tags').val(tags.join())
+
+                $('#filter-form').submit()
+//                console.log($('.filter-age'))
+//                console.log(nearBy)
+//                console.log(tags)
+
+            })
+
+            setTimeout(function () {
+                if (tagsInput.tagsinput('items').length === 0) {
+                    let tags = "{{ auth.user.tags.toJson }}"
+                    tags = JSON.parse(tags.replace(/&quot;/g, '"'))
+                    tags.forEach(function (el) {
+                        $(".tagsinput").tagsinput('add', el.tag);
+                    })
+                }
+            }, 0)
+        })
+    </script>
+{% endblock %}

@@ -373,6 +373,7 @@ footer {
           border-radius: 8px 8px 8px 0; }
 
 .chat-body .answer .text {
+  word-wrap: break-word;
   padding: 12px;
   font-size: 14px;
   line-height: 26px;
@@ -972,6 +973,54 @@ footer {
 
 .alert [data-notify=dismiss] {
   margin-right: 5px; }
+
+.search-filter {
+  width: 100%;
+  display: block;
+  margin: 30px 0; }
+  .search-filter .filter-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+    -webkit-justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .search-filter .filter-footer {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+  .search-filter .slider {
+    margin: 35px auto 25px auto; }
+
+.noUi-handle {
+  position: relative; }
+
+.noUi-tooltip {
+  font-size: 12px;
+  position: absolute;
+  bottom: 15px;
+  background-color: #fff;
+  width: 50px;
+  margin: 0 auto;
+  padding: 5px 10px;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  text-align: center;
+  left: 50%;
+  -webkit-transform: translate(-50%);
+      -ms-transform: translate(-50%);
+          transform: translate(-50%); }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

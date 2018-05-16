@@ -1,6 +1,7 @@
 
 $(function () {
 
+
     $('.datepicker').datetimepicker({
         format: 'MM/DD/YYYY',
         defaultDate: moment().format('l'),
@@ -68,8 +69,14 @@ $(function () {
     })
 
     $('[data-time]').each(function () {
-		$(this).html(moment.utc($(this).data().time).from(moment.utc()))
+        setInterval(reloadTimestamp, 1000, $(this))
     })
+
+
+    function reloadTimestamp(el) {
+        el.html(moment.utc(el.data().time).from(moment.utc()))
+
+    }
 
     var conn = new WebSocket('ws://' + window.location.hostname + ':8000');
     conn.onopen = function (e) {
@@ -111,15 +118,19 @@ $(function () {
     };
     $('.message-field').submit(function (e) {
         e.preventDefault();
-        addNewOutcomeMessage(document.getElementById('new-message').value);
+        if (document.getElementById('new-message').value.trim()) {
+            addNewOutcomeMessage(document.getElementById('new-message').value);
+        }
         document.getElementById('new-message').value = '';
     });
 
     function addNewIncomeMessage(message) {
         var newMessage = $('.left').first().clone().removeClass('hide');
-        // console.log(message)
         newMessage.find('.text').html(JSON.parse(message).message.text);
-        newMessage.find('.time').html(moment().fromNow());
+        newMessage.find('.time').data('time', moment().format());
+
+        setInterval(reloadTimestamp, 1000, newMessage.find('.time'))
+
         $('.chat-body').append(newMessage)
         scrollChat()
     }
@@ -135,7 +146,10 @@ $(function () {
             msg: message
         }));
         newMessage.find('.text').html(message);
-        newMessage.find('.time').html(moment().fromNow());
+        newMessage.find('.time').data('time', moment().format())
+
+        setInterval(reloadTimestamp, 1000, newMessage.find('.time'))
+
         $('.chat-body').append(newMessage);
         scrollChat()
         $.post(url,
@@ -147,11 +161,8 @@ $(function () {
     function scrollChat() {
         $('.chat-body').animate({scrollTop: document.querySelector(".chat-body").scrollHeight});
     }
-    function showNotification(type, message) {
-        console.log('test')
-        // type = ['', 'info', 'success', 'warning', 'danger', 'rose', 'primary'];
 
-        // color = Math.floor((Math.random() * 6) + 1);
+    function showNotification(type, message) {
 
         $.notify({
             icon: "notifications",
