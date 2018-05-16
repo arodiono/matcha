@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
+use App\Models\Photo;
 use App\Models\Tag;
 use App\Models\User;
+use App\Services\IntraHelper;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
@@ -232,6 +234,33 @@ class AuthController extends Controller
 
         $this->flash->addMessage('success', 'You have been signed up! Please tell about yourself');
         $this->auth->attempt($user->email, $request->getParam('password'));
+
+        return $response->withRedirect($this->router->pathFor('signup.info'));
+    }
+
+    public function intraSignUp(Request $request, Response $response): Response
+    {
+        $ic = new IntraHelper();
+        $user = $ic->auth($request->getParam('code'), $request->getUri()->getBaseUrl() . $request->getUri()->getPath());
+        $exist = User::select('id')
+            ->where('fb_id', '=', $user->id)
+            ->get()
+            ->first();
+        if (!empty($exist)) {
+            $_SESSION['user'] = $exist->id;
+            return $response->withRedirect($this->router->pathFor('home'));
+        }
+        $newUser = User::create([
+            'username' => $user->id,
+            'email' => $user->email,
+            'password' => password_hash(hash('md5', uniqid(rand(), true)), PASSWORD_DEFAULT),
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'fb_id' => $user->id,
+            'hash' => hash('md5', uniqid(rand(), true))
+        ]);
+        $_SESSION['user'] = $newUser->id;
+        $this->flash->addMessage('success', 'You have been signed up! Please tell about yourself');
 
         return $response->withRedirect($this->router->pathFor('signup.info'));
     }

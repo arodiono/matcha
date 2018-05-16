@@ -13,7 +13,7 @@ use GuzzleHttp\Client;
 
 class IntraHelper
 {
-    private $token;
+    private $headerToken;
 
     private $client;
 
@@ -23,6 +23,9 @@ class IntraHelper
         $this->headerToken = $this->setToken();
     }
 
+    /**
+     * @return array
+     */
     private function setToken()
     {
         $token_request = "https://api.intra.42.fr/oauth/token";
@@ -39,11 +42,56 @@ class IntraHelper
         curl_setopt($token, CURLOPT_RETURNTRANSFER, true);
         $tok = json_decode(curl_exec($token))->access_token;
         curl_close($token);
-        return ('Authorization: Bearer ' . $tok);
+        return (['Authorization' => 'Bearer ' . $tok]);
     }
 
+    /**
+     * @return mixed
+     */
     public function getToken()
     {
-        return $this->token;
+        return $this->headeToken;
+    }
+
+    /**
+     * @param $url
+     * @param array $params
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function get($url, $params = [])
+    {
+        return $this->client->get('https://api.intra.42.fr/v2/' . $url, [
+            'headers' => $this->headerToken
+        ]);
+    }
+
+    /**
+     * @param $url
+     * @param array $params
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function post($url, $params = [])
+    {
+        return $this->client->post('https://api.intra.42.fr/v2/' . $url, ['form_params' => $params]);
+    }
+
+    /**
+     * @param $authCode
+     * @param $redirectUrl
+     * @return mixed
+     */
+    public function auth($authCode, $redirectUrl)
+    {
+        $response = $this->post('oauth/token',
+            [
+                'grant_type' => 'authorization_code',
+                'client_id' => INTRA_UID,
+                'client_secret' => INTRA_SECRET,
+                'code' => $authCode,
+                'redirect_uri' => $redirectUrl
+            ]);
+        $authToken = json_decode($response->getBody()->getContents())->access_token;
+        $this->headerToken = ['Authorization' => 'Bearer ' . $authToken];
+        return json_decode($this->get('me')->getBody()->getContents());
     }
 }

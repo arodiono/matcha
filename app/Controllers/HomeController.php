@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
+use App\Services\IntraHelper;
 use App\Services\Search;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -15,12 +16,9 @@ use App\Services\Intra;
 class HomeController extends Controller
 {
 
-    protected $search;
-
     public function __construct($container)
     {
         parent::__construct($container);
-        $this->search = new Search();
     }
 
     /**
