@@ -77,7 +77,8 @@ class UserController extends Controller
             'last_name' => htmlspecialchars($data['last_name']),
             'gender' => htmlspecialchars($data['gender']),
             'sex_preference' => htmlspecialchars($data['sex_preference']),
-            'bio' => htmlspecialchars($data['bio'])
+            'bio' => htmlspecialchars($data['bio']),
+            'city' => htmlspecialchars($data['city'])
         ]);
 
         $this->flash->addMessage('success', 'Information successfully updated.');

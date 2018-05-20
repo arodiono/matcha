@@ -34,6 +34,16 @@
                                             <span class="help-block">{{ errors.last_name | first }}</span>
                                         {% endif %}
                                     </div>
+                                    <div class="form-group label-floating is-empty {{ errors.city ? 'has-error is-focused' : '' }} {{ oldInput.city ? 'is-focused' : '' }}">
+                                        <label class="control-label">City</label>
+                                        <input type="text" name="city" class="form-control"
+                                               value="{{ oldInput.city == null ? user.city : oldInput.city }}">
+                                        <span class="material-input"></span>
+                                        {% if errors.city %}
+                                            <span class="material-icons form-control-feedback">clear</span>
+                                            <span class="help-block">{{ errors.city | first }}</span>
+                                        {% endif %}
+                                    </div>
 
                                     <div class="form-group label-floating is-empty is-focused">
                                         <label class="control-label">Birthday</label>

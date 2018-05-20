@@ -50,7 +50,8 @@ class AuthController extends Controller
             'date' => v::noWhitespace()->notEmpty(),
             'gender' => v::notEmpty(),
             'sex_preference' => v::notEmpty(),
-            'bio' => v::length(null, 150)
+            'bio' => v::length(null, 150),
+            'city' => v::notEmpty()
         ]);
         if ($validation->failed()) {
             return $response->withRedirect($this->router->pathFor('signup.info'));
@@ -58,7 +59,6 @@ class AuthController extends Controller
 
         $user = $this->auth->user();
 
-//        ~r( $request->getParam('date'), new \DateTime($request->getParam('date')));
 
         $user->update([
             'first_name' => $request->getParam('first_name'),
@@ -66,7 +66,8 @@ class AuthController extends Controller
             'date' => new \DateTime($request->getParam('date')),
             'gender' => $request->getParam('gender'),
             'sex_preference' => $request->getParam('sex_preference'),
-            'bio' => $request->getParam('bio')
+            'bio' => $request->getParam('bio'),
+            'city' => $request->getParam('city')
         ]);
 
         $tags = explode(',', $request->getParam('tags'));

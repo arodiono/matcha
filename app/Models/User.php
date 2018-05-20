@@ -38,7 +38,8 @@ class User extends Model
         'profile_photo',
         'hash',
         'fb_id',
-        'date'
+        'date',
+        'city'
     ];
 
     protected $casts = [

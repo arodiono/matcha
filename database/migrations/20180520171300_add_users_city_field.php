@@ -3,7 +3,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CityField extends AbstractMigration
+class AddUsersCityField extends AbstractMigration
 {
     /**
      * Change Method.
@@ -29,6 +29,6 @@ class CityField extends AbstractMigration
     public function change()
     {
         $users = $this->table('users');
-        $users->addColumn('city', 'string', ['limit' => 255])->save();
+        $users->addColumn('city', 'string', ['limit' => 50, 'null' => TRUE, 'default' => null])->save();
     }
 }
