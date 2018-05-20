@@ -46,7 +46,7 @@ class CreateUsersTable extends AbstractMigration
             ])
             ->addColumn('sex_preference', 'string', [
                 'limit' => 32,
-                'null' => TRUE
+                'default' => 'bisexual'
             ])
             ->addColumn('bio', 'string', [
                 'limit' => 150,

@@ -12,3 +12,4 @@ define('INTRA_UID', '0b140691892f202e371a2e6600153ffe382b3a9d35aa87266e97af33eb2
 define('INTRA_SECRET', '00989f3319d881f0b50af7aa9c0fecebe5cce4690595e8a821fa22086861cf21');
 
 define('MAIL_PASS', 'arodiono-oklymeno-matcha');
+define('GOOGLE_API_KEY', 'AIzaSyC1hk1YWs9aHsxzRKXuw9yHTQw0DV_1bao');
