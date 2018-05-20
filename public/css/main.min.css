@@ -196,7 +196,8 @@ footer {
           justify-content: space-between; }
 
 .content {
-  height: 100%;
+  height: -webkit-calc(100% - 84px);
+  height: calc(100% - 84px);
   padding-top: 70px;
   padding-bottom: 84px; }
   @media only screen and (max-width: 480px) {
@@ -243,6 +244,8 @@ footer {
   background-color: #ffffff; }
 
 .chat-users {
+  position: relative;
+  height: 100%;
   padding: 15px; }
 
 .chat-users h6 {
@@ -1123,6 +1126,24 @@ footer {
 
 .signup-page .content {
   margin-bottom: 0; }
+
+.notification-page .main-raised {
+  margin-top: 30px; }
+
+.notification-page .placeholder, .chat-users .placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+
+.page-header {
+  min-height: -webkit-calc(100% - 84px - 70px);
+  min-height: calc(100% - 84px - 70px); }
+
+.landing-page {
+  padding-bottom: 125px; }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */
