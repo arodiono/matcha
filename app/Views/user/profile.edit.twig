@@ -207,11 +207,11 @@
                 clickable: true,
                 init: function () {
                     var myDropzone = this;
-                    document.querySelector("button[type=submit]").addEventListener("click", function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        myDropzone.processQueue();
-                    });
+//                    document.querySelector("button[type=submit]").addEventListener("click", function (e) {
+//                        e.preventDefault();
+//                        e.stopPropagation();
+//                        myDropzone.processQueue();
+//                    });
                     this.on("successmultiple", function (files, response) {
                         let username = response[0]
                         for (let i = 1; i < response.length; i++) {

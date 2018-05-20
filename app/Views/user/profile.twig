@@ -86,7 +86,7 @@
                 </div>
                 <div class="row">
                     <div class="interests">
-                        {% for tag in user.tags%}
+                        {% for tag in user.tags %}
                             <a href="{{ path_for('search.tag', {id: tag.id}) }}"><span class="label label-default">#{{ tag.tag }}</span></a>
                         {% endfor %}
                     </div>
