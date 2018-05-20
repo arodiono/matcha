@@ -39,8 +39,8 @@ class Search
         $sex = $this->getSex();
         if (empty($params['tags'])) {
             return User::select('*', 'users.id as s_user_id')
-                ->whereDate('date', '>=', $params['dateParams']['from'])
-                ->whereDate('date', '<=', $params['dateParams']['to'])
+                ->whereDate('users.date', '>=', $params['dateParams']['from'])
+                ->whereDate('users.date', '<=', $params['dateParams']['to'])
                 ->whereIn('users.gender', $sex['gender'])
                 ->whereIn('users.sex_preference', $sex['preference'])
                 ->whereNotIn('users.id', $this->blocked)
@@ -102,7 +102,7 @@ class Search
      * @param int $limit
      * @return array
      */
-    public function getPopularUsers(int $limit=10) : array
+    public function getPopularUsers(int $limit=6) : array
     {
         return User::whereIn('gender', $this->getSex()['gender'])
             ->whereIn('sex_preference', $this->getSex()['preference'])
@@ -117,7 +117,7 @@ class Search
      * @param int $limit
      * @return array
      */
-    public function getNearestUsers(int $limit=10) : array
+    public function getNearestUsers(int $limit=6) : array
     {
         $users = User::whereIn('gender', $this->getSex()['gender'])
             ->whereIn('sex_preference', $this->getSex()['preference'])
@@ -139,7 +139,7 @@ class Search
      * @param int $limit
      * @return array
      */
-    public function getNewestUsers(int $limit=10) : array
+    public function getNewestUsers(int $limit=6) : array
     {
         return User::whereIn('gender', $this->getSex()['gender'])
             ->whereIn('sex_preference', $this->getSex()['preference'])

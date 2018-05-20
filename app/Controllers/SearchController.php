@@ -62,7 +62,7 @@ class SearchController extends Controller
                 if ($data[0] == 'location') {
                     $location['sort'] = true;
                 }
-            } elseif ($param == 'tags') {
+            } elseif ($param == 'tags' && !empty($value)) {
                 $params['tags'] = explode(',', $value);
             } elseif ($param == 'location') {
                 $location['radius'] = $value;
