@@ -8,9 +8,8 @@
     <div class="main main-raised">
         <div class="profile-content">
             <div class="container">
-
                 <div class="row">
-                    <div class="col-xs-8 col-xs-offset-2">
+                    <div class="col-md-8 col-md-offset-2">
                         <div class="profile">
                             <div class="avatar">
                                 {% if user.profile_photo %}
@@ -29,7 +28,6 @@
                                     {% else %}
                                         <span id="last-online" data-toggle="tooltip" data-placement="top" title="" data-container="body" data-date="{{ user.updated_at }}" data-original-title="">offline</span>
                                     {% endif %}
-
                             </div>
                         </div>
                         <br/>
@@ -51,38 +49,38 @@
                             })
                         </script>
                     </div>
-                    <div class="col-xs-2 follow">
-                        {% if user.id != auth.user.id %}
+                    {#<div class="col-xs-2 follow">#}
+                        {#{% if user.id != auth.user.id %}#}
                             {#<form action="{{ path_for('like.toggle', {id: user.id }) }}" method="post">#}
-                                    <button id="like" type="submit" class="btn btn-fab {{ isLiked ? '' : 'btn-rose' }}"data-user="{{ user.id }}">
-                                        <i class="material-icons">favorite</i>
-                                    </button>
-                            <script>
-                                $(function () {
-                                    let btn = $('#like')
-                                        btn.on('click', function () {
-                                        let url = '/like/toggle/' + $(this).data('user')
-                                        $.ajax({
-                                            method: 'post',
-                                            url: url
-                                        });
-                                        btn.toggleClass('btn-rose')
-                                    })
-                                })
-                            </script>
+                                    {#<button id="like" type="submit" class="btn btn-fab {{ isLiked ? '' : 'btn-rose' }}"data-user="{{ user.id }}">#}
+                                        {#<i class="material-icons">favorite</i>#}
+                                    {#</button>#}
+                            {#<script>#}
+                                {#$(function () {#}
+                                    {#let btn = $('#like')#}
+                                        {#btn.on('click', function () {#}
+                                        {#let url = '/like/toggle/' + $(this).data('user')#}
+                                        {#$.ajax({#}
+                                            {#method: 'post',#}
+                                            {#url: url#}
+                                        {#});#}
+                                        {#btn.toggleClass('btn-rose')#}
+                                    {#})#}
+                                {#})#}
+                            {#</script>#}
                             {#</form>#}
-                        {% endif %}
-                        {% if isMutually %}
-                            <a href="{{ path_for('messages.chat', {name: user.username}) }}" class="btn btn-fab btn-rose" rel="tooltip" title="" data-original-title="Send message">
-                                <i class="material-icons">email</i>
-                            </a>
-                        {% else %}
-                            <button class="btn bnt-disabled btn-fab btn-rose" rel="tooltip" title="" data-original-title="To write a message you need mutual sympathy!" data-toggle="modal" data-target="#InfoModal">
-                                <i class="material-icons">email</i>
-                            </button>
-                        {% endif %}
+                        {#{% endif %}#}
+                        {#{% if isMutually %}#}
+                            {#<a href="{{ path_for('messages.chat', {name: user.username}) }}" class="btn btn-fab btn-rose" rel="tooltip" title="" data-original-title="Send message">#}
+                                {#<i class="material-icons">email</i>#}
+                            {#</a>#}
+                        {#{% else %}#}
+                            {#<button class="btn bnt-disabled btn-fab btn-rose" rel="tooltip" title="" data-original-title="To write a message you need mutual sympathy!" data-toggle="modal" data-target="#InfoModal">#}
+                                {#<i class="material-icons">email</i>#}
+                            {#</button>#}
+                        {#{% endif %}#}
 
-                    </div>
+                    {#</div>#}
                 </div>
                 <div class="row">
                     <div class="interests">
@@ -107,6 +105,22 @@
                             {#</button>#}
                         {#</div>#}
                     </div>
+                </div>
+                <div class="row profile-buttons">
+                    {% if user.id != auth.user.id %}
+                        <button class="btn {{ isLiked ? '' : 'btn-rose' }}" data-user="{{ user.id }}">
+                            <i class="material-icons">favorite</i>
+                        </button>
+                        {% if isMutually %}
+                            <a href="{{ path_for('messages.chat', {name: user.username}) }}" class="btn btn-rose" rel="tooltip" title="" data-original-title="Send message">
+                                <i class="material-icons">email</i>
+                            </a>
+                        {% else %}
+                            <button class="btn btn-disabled btn-rose" rel="tooltip" title="" data-original-title="To write a message you need mutual sympathy!" data-toggle="modal" data-target="#InfoModal">
+                                <i class="material-icons">email</i>
+                            </button>
+                        {% endif %}
+                    {% endif %}
                 </div>
                 <hr>
                 <div class="row gallery">

@@ -58,11 +58,14 @@ footer
   display: flex
   justify-content: space-between
   line-height: 24px
-
+  @media only screen and (max-width : 480px)
+    flex-direction: column
   li
     display: flex
     align-items: center
     text-transform: capitalize
+    @media only screen and (max-width : 480px)
+      margin: 5px auto
 
 .main
   margin-left: auto
@@ -81,11 +84,15 @@ footer
   margin: 0
   max-width: 33.33%
   height: auto
+  @media only screen and (max-width : 480px)
+    max-width: 100%
+    padding: 10px
 
 .interests
   padding-top: 30px
   display: flex
   justify-content: center
+
 
 .profile-page .profile
   text-align: start
@@ -94,6 +101,7 @@ footer
   margin: 30px 0
 
 .profile-content
+  position: relative
   padding-bottom: 30px
 
 
@@ -149,7 +157,9 @@ footer
   height: 100%
   padding-top: 70px
   padding-bottom: 84px
-  margin-bottom: -84px
+  //margin-bottom: -84px
+  @media only screen and (max-width : 480px)
+    padding-bottom: 125px
 
 .modal-backdrop
   z-index: 1040
@@ -513,6 +523,21 @@ footer
 .profile .avatar
   max-width: 160px
   margin: 0 auto
+
+.profile .title
+  word-wrap: break-word
+
+.profile-content .profile-buttons
+  margin: 0 auto
+  display: flex
+  justify-content: center
+//@media only screen and (max-width : 480px)
+//  .profile-content
+//    .profile
+//      width: 100%
+      //.title
+      //  width: 100%
+
 
 .edit-photo
   position: relative
@@ -1022,12 +1047,35 @@ footer
     justify-content: space-between
   &-item
     width: 32%
+    @media only screen and (max-width : 480px)
+      width: 100%
+    .card-content
+      word-wrap: break-word
     .card-image
       transition: .3s
       max-width: 190px
       max-height: 190px
       overflow: hidden
+      @media only screen and (max-width : 480px)
+        max-width: 100%
+        max-height: 100%
       &:hover
         transform: scale(1.05)
+
+@media only screen and (max-width : 480px)
+  .navbar.navbar-fixed-top .dropdown.open
+    width: 40px
+  .navbar-nav .open .dropdown-menu
+    position: absolute
+    left: auto
+    right: 0
+    background-color: #fff
+  .navbar.navbar-fixed-top .container
+    display: flex
+    align-items: center
+
+.signup-page .content
+  margin-bottom: 0
+
 @import "media"
 // Всегда в конце

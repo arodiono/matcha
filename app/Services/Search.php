@@ -45,7 +45,7 @@ class Search
                 ->whereIn('users.sex_preference', $sex['preference'])
                 ->whereNotIn('users.id', $this->blocked)
                 ->distinct()
-                ->orderBy('users.rating', 'desc')
+
                 ->leftJoin('geoip', 'users.id', '=', 'geoip.user_id')
                 ->get()
                 ->all();

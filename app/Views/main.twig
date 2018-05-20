@@ -27,10 +27,6 @@
                         {% for tag in user.tags %}
                             <a href="{{ path_for('search.tag', {id: tag.id}) }}"><span class="label label-primary">#{{ tag.tag }}</span></a>
                         {% endfor %}
-                        {#<button data-action="like" data-user="{{ user.id }}" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">#}
-                            {#<i class="material-icons">favorite</i>#}
-                            {#<div class="ripple-container"></div>#}
-                        {#</button>#}
                     </div>
                 </div>
             {% endfor %}
@@ -55,10 +51,9 @@
                         <h6 class="category text-gray">{{ user.bio }}</h6>
                     </div>
                     <div class="footer">
-                        <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
-                            <i class="material-icons">favorite</i>
-                            <div class="ripple-container"></div>
-                        </a>
+                        {% for tag in user.tags %}
+                            <a href="{{ path_for('search.tag', {id: tag.id}) }}"><span class="label label-primary">#{{ tag.tag }}</span></a>
+                        {% endfor %}
                     </div>
                 </div>
             {% endfor %}
@@ -83,10 +78,9 @@
                         <h6 class="category text-gray">{{ user.bio }}</h6>
                     </div>
                     <div class="footer">
-                        <a href="#" class="btn btn-rose btn-raised btn-fab btn-fab-mini" data-toggle="dropdown" aria-expanded="false">
-                            <i class="material-icons">favorite</i>
-                            <div class="ripple-container"></div>
-                        </a>
+                        {% for tag in user.tags %}
+                            <a href="{{ path_for('search.tag', {id: tag.id}) }}"><span class="label label-primary">#{{ tag.tag }}</span></a>
+                        {% endfor %}
                     </div>
                 </div>
             {% endfor %}

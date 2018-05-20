@@ -64,9 +64,17 @@
     </div>
     <script>
         $(function () {
+
+            let url =  urldecode(window.location.search).replace(/\?/g, '').split('&')
+            let params = {}
             let sliderAge = document.getElementById('sliderAge');
             let sliderNearBy = document.getElementById('sliderNearBy');
             let tagsInput = $(".tagsinput");
+
+            url.forEach(function (e) {
+                let tmp = e.split('=')
+                params[tmp[0]] = tmp[1]
+            })
 
             noUiSlider.create(sliderAge, {
                 start: [ 18, 30 ],
@@ -105,6 +113,25 @@
                 }
             })
 
+            if (params.age) {
+                sliderAge.noUiSlider.set(params.age.split(','))
+            }
+            if(params.radius) {
+                sliderNearBy.noUiSlider.set(params.radius.split(','))
+            }
+            if (params.tags) {
+                params.tags.split(',').forEach(function (el) {
+                    tagsInput.tagsinput('add', el);
+                })
+            }
+//            else {
+                let tags = "{{ auth.user.tags.toJson }}";
+                tags = JSON.parse(tags.replace(/&quot;/g, '"'));
+                tags.forEach(function (el) {
+                    tagsInput.tagsinput('add', el.tag);
+                })
+//            }
+
             $('.filter-btn').on('click', function (e) {
                 e.preventDefault()
                 let age = sliderAge.noUiSlider.get()
@@ -116,21 +143,16 @@
                 $('#filter-tags').val(tags.join())
 
                 $('#filter-form').submit()
-//                console.log($('.filter-age'))
-//                console.log(nearBy)
-//                console.log(tags)
 
             })
 
-            setTimeout(function () {
-                if (tagsInput.tagsinput('items').length === 0) {
-                    let tags = "{{ auth.user.tags.toJson }}"
-                    tags = JSON.parse(tags.replace(/&quot;/g, '"'))
-                    tags.forEach(function (el) {
-                        $(".tagsinput").tagsinput('add', el.tag);
+            function urldecode (str) {
+                return decodeURIComponent((str + '')
+                    .replace(/%(?![\da-f]{2})/gi, function () {
+                        return '%25'
                     })
-                }
-            }, 0)
+                    .replace(/\+/g, '%20'))
+            }
         })
     </script>
 {% endblock %}
