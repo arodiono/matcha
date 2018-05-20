@@ -6,6 +6,9 @@
     <div class="main main-raised">
         <div class="content">
             <div class="container">
+                {% if (notification.lenght) == 0 %}
+                    <div class="notification">There is no notifications yet</div>
+                {% endif %}
                 {% for notify in notifications %}
                     <div class="notification">
                         <div class="notification-info">
