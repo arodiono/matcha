@@ -38,7 +38,8 @@ $app->group('', function () {
         $this->get('/password/change', 'UserController:getChangePassword')->setName('user.password.change');
         $this->post('/password/change', 'UserController:postChangePassword');
         $this->post('/delete', 'UserController:postDeleteUser')->setName('user.delete');
-        $this->post('/block', 'BlockController:blockUser')->setName('user.block');
+        $this->get('/{name}/block', 'BlockController:blockUser')->setName('user.block');
+        $this->get('/{name}/report', 'FakeController:setFakeUser')->setName('user.report');
         $this->get('/notifications', 'NotificationController:getNotifications')->setName('user.notifications');
         $this->get('/{name}', 'UserController:getUserProfile')->setName('user.profile');
     });

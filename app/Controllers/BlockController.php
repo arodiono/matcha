@@ -11,6 +11,7 @@ namespace App\Controllers;
 
 use App\Auth\Auth;
 use App\Models\Block;
+use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -18,19 +19,25 @@ class BlockController extends Controller
 {
     private $model;
 
+    private $user;
+
     public function __construct($container)
     {
         parent::__construct($container);
         $this->model = new Block();
+        $this->user = new User();
     }
 
     public function blockUser(Request $request, Response $response, $args): Response
     {
-        $body = $request->getParsedBody();
-        if (!array_key_exists('user_id_to_block', $body)) {
-            return $response->withStatus(401);
+        $block = $request->getAttribute('name');
+        try {
+            $this->model->blockUser(Auth::user()->id, $this->user->getId($block));
+            return $response->withRedirect($request->getUri()->getBaseUrl() . '/user/' . $block);
+
         }
-        $this->model->blockUser(Auth::user()->id, $body['user_id_to_block']);
-        return $response->withStatus(200);
+        catch (\Exception $e) {
+            return $this->view->render($response, 'templates/error.twig', []);
+        }
     }
 }

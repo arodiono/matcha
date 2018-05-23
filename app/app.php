@@ -96,6 +96,12 @@ $container['MessageController'] = function ($container) {
 $container['NotificationController'] = function ($container) {
     return new \App\Controllers\NotificationController($container);
 };
+$container['FakeController'] = function ($container) {
+    return new \App\Controllers\FakeController($container);
+};
+$container['BlockController'] = function ($container) {
+    return new \App\Controllers\BlockController($container);
+};
 $container['csrf'] = function () {
     return new \Slim\Csrf\Guard;
 };
