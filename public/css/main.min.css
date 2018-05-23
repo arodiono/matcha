@@ -683,7 +683,7 @@ footer {
   left: 0;
   right: 0;
   background-color: #fff;
-  opacity: 0; }
+  opacity: .7; }
 
 .loader {
   z-index: 10000;
