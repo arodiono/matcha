@@ -33,6 +33,7 @@ class Block extends Model
         {
             $blockedUsers[] = $data->user_id_1 === $userId ? $data->user_id_2 : $data->user_id_1;
         }
+        $blockedUsers[] = $userId;
         return $blockedUsers;
     }
 

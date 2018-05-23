@@ -122,22 +122,17 @@
             }
             if (params.tags) {
                 let data = params.tags.split(',')
+                tagsInput.tagsinput('add', data[0]);
                 for(i =0; i < data.length; i++) {
-                    console.log(data[i])
                     tagsInput.tagsinput('add', data[i]);
                 }
-//                params.tags.split(',').forEach(function (el, i) {
-//                })
-                console.log(tagsInput.tagsinput('items'))
             }
             else {
                 let tags = "{{ auth.user.tags.toJson }}";
                 tags = JSON.parse(tags.replace(/&quot;/g, '"'));
-                tagsInput.tagsinput('add', tags);
-//                tags.forEach(function (el) {
-//                    console.log(el.tag)
-//                    tagsInput.tagsinput('add', el.tag);
-//                })
+                tags.forEach(function (el) {
+                    tagsInput.tagsinput('add', el.tag);
+                })
             }
 
             $('.filter-btn').on('click', function (e) {
