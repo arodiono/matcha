@@ -47,16 +47,9 @@
 <body class="landing-page" data-user="">
 <nav class="navbar navbar-danger navbar-transparent navbar-absolute">
     <div class="container" style="max-width: 1200px;">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+        {#<div class="navbar-header">#}
             <a class="navbar-brand" href="{{ path_for('home') }}">Matcha</a>
-        </div>
+        {#</div>#}
         <ul class="nav navbar-nav navbar-right">
             <li><a href="{{ path_for('signin') }}"><i class="material-icons">person</i> Sign in</a></li>
             <li><a class="btn btn-rose" href="{{ path_for('signup') }}"><i
@@ -71,9 +64,7 @@
                 <h1 class="title">Your Story Starts With Us.</h1>
                 <h4>Every landing page needs a small description after the big bold title, that's why we added this text here. Add here all the information that can make you or your product create the first impression.</h4>
                 <br />
-                <a href="#register" class="btn btn-rose btn-raised btn-lg">
-                    <i class="fa fa-play"></i> Start with us
-                </a>
+                <a href="#register" class="btn btn-rose btn-raised btn-lg">Start with us</a>
             </div>
         </div>
     </div>
@@ -113,9 +104,9 @@
                     <div class="col-md-4">
                         <div class="info">
                             <div class="icon icon-danger">
-                                <i class="material-icons">fingerprint</i>
+                                <i class="material-icons">location_on</i>
                             </div>
-                            <h4 class="info-title">Fingerprint</h4>
+                            <h4 class="info-title">Location Integrated</h4>
                             <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
                         </div>
                     </div>
@@ -125,14 +116,14 @@
         <div class="section section-contacts" id="register">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <h2 class="text-center title">Work with us</h2>
+                    <h2 class="text-center title">Sign up</h2>
                     <h4 class="text-center description">Divide details about your product or agency work into parts. Write a few lines about each one and contact us about any further collaboration. We will responde get back to you in a couple of hours.</h4>
                     <form class="contact-form">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group label-floating">
                                     <label class="control-label">Your Name</label>
-                                    <input type="email" class="form-control">
+                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -144,14 +135,14 @@
                         </div>
 
                         <div class="form-group label-floating">
-                            <label class="control-label">Your Messge</label>
-                            <textarea class="form-control" rows="4"></textarea>
+                            <label class="control-label">Your Password</label>
+                            <input type="password" class="form-control">
                         </div>
 
                         <div class="row">
                             <div class="col-md-4 col-md-offset-4 text-center">
                                 <button class="btn btn-primary btn-raised">
-                                    Send Message
+                                    Sign up
                                 </button>
                             </div>
                         </div>

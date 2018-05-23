@@ -76,6 +76,7 @@
                 params[tmp[0]] = tmp[1]
             })
 
+            console.log(params)
             noUiSlider.create(sliderAge, {
                 start: [ 18, 30 ],
                 step: 1,
@@ -120,17 +121,24 @@
                 sliderNearBy.noUiSlider.set(params.radius.split(','))
             }
             if (params.tags) {
-                params.tags.split(',').forEach(function (el) {
-                    tagsInput.tagsinput('add', el);
-                })
+                let data = params.tags.split(',')
+                for(i =0; i < data.length; i++) {
+                    console.log(data[i])
+                    tagsInput.tagsinput('add', data[i]);
+                }
+//                params.tags.split(',').forEach(function (el, i) {
+//                })
+                console.log(tagsInput.tagsinput('items'))
             }
-//            else {
+            else {
                 let tags = "{{ auth.user.tags.toJson }}";
                 tags = JSON.parse(tags.replace(/&quot;/g, '"'));
-                tags.forEach(function (el) {
-                    tagsInput.tagsinput('add', el.tag);
-                })
-//            }
+                tagsInput.tagsinput('add', tags);
+//                tags.forEach(function (el) {
+//                    console.log(el.tag)
+//                    tagsInput.tagsinput('add', el.tag);
+//                })
+            }
 
             $('.filter-btn').on('click', function (e) {
                 e.preventDefault()
