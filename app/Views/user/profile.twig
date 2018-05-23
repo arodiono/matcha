@@ -13,8 +13,8 @@
                 <button class="dropdown-toggle btn btn-xs btn-simple btn-dots" data-toggle="dropdown"><i class="material-icons">more_vert</i></button>
                 {#<button href="#pablo" class="dropdown-toggle btn btn-primary btn-round btn-block" data-toggle="dropdown" aria-expanded="true">Dropdown <b class="caret"></b><div class="ripple-container"></div></button>#}
                 <ul class="dropdown-menu dropdown-menu-left">
-                    {#<li><a href="{{ path_for('user.block', {name: user.name}) }}">Block user</a></li>#}
-                    {#<li><a href="{{ path_for('user.report', {name: user.name}) }}">Report as fake</a></li>#}
+                    <li><a href="{{ path_for('user.block', {name: user.username}) }}">Block user</a></li>
+                    <li><a href="{{ path_for('user.report', {name: user.username}) }}">Report as fake</a></li>
                 </ul>
             </div>
 

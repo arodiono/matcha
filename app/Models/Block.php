@@ -18,8 +18,7 @@ class Block extends Model
     public function blockUser(int $firstUserId, int $secondUserId)
     {
         $this::insert(
-            ['user_id_1' => $firstUserId],
-            ['user_id_2' => $secondUserId]
+            ['user_id_1' => $firstUserId, 'user_id_2' => $secondUserId]
          );
     }
 

@@ -30,6 +30,9 @@ class FakeController extends Controller
     {
         try {
             $fake = $request->getAttribute('name');
+            if (Auth::user()->username == $fake) {
+                return $response->withRedirect($request->getUri()->getBaseUrl() . '/user/' . $fake);
+            }
             Fake::insert(
                 [
                     "reporter" => Auth::user()->id,

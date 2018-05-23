@@ -31,10 +31,12 @@ class BlockController extends Controller
     public function blockUser(Request $request, Response $response, $args): Response
     {
         $block = $request->getAttribute('name');
+        if (Auth::user()->username == $block) {
+            return $response->withRedirect($request->getUri()->getBaseUrl() . '/user/' . $block);
+        }
         try {
             $this->model->blockUser(Auth::user()->id, $this->user->getId($block));
             return $response->withRedirect($request->getUri()->getBaseUrl() . '/user/' . $block);
-
         }
         catch (\Exception $e) {
             return $this->view->render($response, 'templates/error.twig', []);
