@@ -1,13 +1,17 @@
 {% extends 'templates/core.twig' %}
 {% set title = 'Notifications' %}
-{% set body = 'profile-page' %}
+{% set body = 'notification-page' %}
 
 {% block content %}
     <div class="main main-raised">
         <div class="content">
             <div class="container">
                 {% if (notification.lenght) == 0 %}
-                    <div class="notification">There is no notifications yet</div>
+                    <div class="notification">
+                        <div class="placeholder">
+                        There is no notifications yet
+                        </div>
+                    </div>
                 {% endif %}
                 {% for notify in notifications %}
                     <div class="notification">

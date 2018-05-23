@@ -1,6 +1,161 @@
-{% extends 'templates/core.twig' %}
-{% set title = 'Welcome' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
 
-{% block content %}
-    homepage
-{% endblock %}
+    <title>Matcha</title>
+
+    {{ csrf.meta | raw }}
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:image" content="img/favicon/android-icon-192x192.png">
+    <link rel="shortcut icon" href="{{ base_url() }}/img/favicon/favicon.ico" type="image/x-icon">
+
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ base_url() }}/img/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ base_url() }}/img/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ base_url() }}/img/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ base_url() }}/img/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ base_url() }}/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ base_url() }}/img/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ base_url() }}/img/favicon/favicon-16x16.png">
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#000">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#000">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000">
+
+    <style>
+        body {
+            opacity: 0;
+            overflow-x: hidden;
+        }
+
+        html {
+            background-color: #fff;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+    <script src="/libs/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body class="landing-page" data-user="">
+<nav class="navbar navbar-danger navbar-transparent navbar-absolute">
+    <div class="container" style="max-width: 1200px;">
+        {#<div class="navbar-header">#}
+            <a class="navbar-brand" href="{{ path_for('home') }}">Matcha</a>
+        {#</div>#}
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="{{ path_for('signin') }}"><i class="material-icons">person</i> Sign in</a></li>
+            <li><a class="btn btn-rose" href="{{ path_for('signup') }}"><i
+                            class="material-icons">person_add</i> Sign up</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="page-header header-filter" data-parallax="true" style="background-image: url('/img/bg-dating.jpg');">
+    <div class="container" style="max-width: 1200px;">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="title">Your Story Starts With Us.</h1>
+                <h4>Every landing page needs a small description after the big bold title, that's why we added this text here. Add here all the information that can make you or your product create the first impression.</h4>
+                <br />
+                <a href="#register" class="btn btn-rose btn-raised btn-lg">Start with us</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="main main-raised" style="max-width: 1200px;">
+    <div class="container" style="max-width: 1200px;">
+        <div class="section text-center">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2 class="title">Let's talk about service</h2>
+                    <h5 class="description">This is the paragraph where you can write more details about your product. Keep you user engaged by providing meaningful information. Remember that by this time, the user is curious, otherwise he wouldn't scroll to get here. Add a button if you want the user to see more.</h5>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="info">
+                            <div class="icon icon-info">
+                                <i class="material-icons">chat</i>
+                            </div>
+                            <h4 class="info-title">Free Chat</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="info">
+                            <div class="icon icon-success">
+                                <i class="material-icons">verified_user</i>
+                            </div>
+                            <h4 class="info-title">Verified Users</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="info">
+                            <div class="icon icon-danger">
+                                <i class="material-icons">location_on</i>
+                            </div>
+                            <h4 class="info-title">Location Integrated</h4>
+                            <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section section-contacts" id="register">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h2 class="text-center title">Sign up</h2>
+                    <h4 class="text-center description">Divide details about your product or agency work into parts. Write a few lines about each one and contact us about any further collaboration. We will responde get back to you in a couple of hours.</h4>
+                    <form class="contact-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Your Name</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group label-floating">
+                                    <label class="control-label">Your Email</label>
+                                    <input type="email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group label-floating">
+                            <label class="control-label">Your Password</label>
+                            <input type="password" class="form-control">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4 text-center">
+                                <button class="btn btn-primary btn-raised">
+                                    Sign up
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% include '/templates/footer.twig' %}
+<link rel="stylesheet" href="{{ base_url() }}/css/main.min.css">
+<script src="{{ base_url() }}/js/scripts.min.js"></script>
+
+</body>
+</html>

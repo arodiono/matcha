@@ -196,7 +196,8 @@ footer {
           justify-content: space-between; }
 
 .content {
-  height: 100%;
+  height: -webkit-calc(100% - 84px);
+  height: calc(100% - 84px);
   padding-top: 70px;
   padding-bottom: 84px; }
   @media only screen and (max-width: 480px) {
@@ -243,6 +244,8 @@ footer {
   background-color: #ffffff; }
 
 .chat-users {
+  position: relative;
+  height: 100%;
   padding: 15px; }
 
 .chat-users h6 {
@@ -1040,6 +1043,7 @@ footer {
         -ms-flex-pack: end;
             justify-content: flex-end; }
   .search-filter .slider {
+    width: 100%;
     margin: 35px auto 25px auto; }
 
 .noUi-handle {
@@ -1111,18 +1115,64 @@ footer {
     left: auto;
     right: 0;
     background-color: #fff; }
-  .navbar.navbar-fixed-top .container {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; } }
+  .navbar-right {
+    float: right;
+    margin: 0; }
+  .messages, .notification-page {
+    margin: 0 0; }
+    .messages .footer, .notification-page .footer {
+      display: none; }
+    .messages .content .container, .notification-page .content .container {
+      padding: 0;
+      height: 100%; }
+    .messages .content, .notification-page .content {
+      height: -webkit-calc(100vh - 70px);
+      height: calc(100vh - 70px);
+      padding-bottom: 0;
+      padding-top: 70px; }
+    .messages .chat, .notification-page .chat {
+      height: -webkit-calc(100vh - 70px);
+      height: calc(100vh - 70px);
+      margin: 0;
+      -webkit-border-radius: 0;
+              border-radius: 0; }
+    .messages .chat-users, .notification-page .chat-users {
+      padding: 0; }
+      .messages .chat-users .user .avatar, .notification-page .chat-users .user .avatar {
+        left: 5px; }
+    .messages .chat .time, .notification-page .chat .time {
+      right: 5px; }
+    .messages .chat-body, .notification-page .chat-body {
+      height: -webkit-calc(100vh - 70px - 61px);
+      height: calc(100vh - 70px - 61px);
+      padding: 5px 5px 0 5px; }
+      .messages .chat-body .answer .time, .notification-page .chat-body .answer .time {
+        font-size: 11px;
+        line-height: 20px; }
+      .messages .chat-body .answer .name, .notification-page .chat-body .answer .name {
+        font-size: 13px;
+        line-height: 22px; } }
 
 .signup-page .content {
   margin-bottom: 0; }
+
+.notification-page .main-raised {
+  margin-top: 30px; }
+
+.notification-page .placeholder, .chat-users .placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+
+.page-header {
+  min-height: -webkit-calc(100% - 70px - 70px);
+  min-height: calc(100% - 70px - 70px); }
+
+.landing-page {
+  padding-bottom: 125px; }
 
 /*==========  Desktop First  ==========*/
 /* Large Devices, Wide Screens */

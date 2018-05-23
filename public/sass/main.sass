@@ -154,7 +154,7 @@ footer
   justify-content: space-between
 
 .content
-  height: 100%
+  height: calc(100% - 84px)
   padding-top: 70px
   padding-bottom: 84px
   //margin-bottom: -84px
@@ -211,6 +211,8 @@ footer
   background-color: #ffffff
 
 .chat-users
+  position: relative
+  height: 100%
   padding: 15px
 
 .chat-users h6
@@ -1014,7 +1016,7 @@ footer
     //  align-self: flex-end
 
   .slider
-    //width: 80%
+    width: 100%
     margin: 35px auto 25px auto
 .noUi-handle
   position: relative
@@ -1070,12 +1072,68 @@ footer
     left: auto
     right: 0
     background-color: #fff
+  .navbar-right
+    float: right
+    margin: 0
   .navbar.navbar-fixed-top .container
-    display: flex
-    align-items: center
+    //display: flex
+    //align-items: center
+
+
+  .messages, .notification-page
+    margin: 0 0
+    //overflow: hidden
+    .footer
+      display: none
+    .content .container
+      padding: 0
+      height: 100%
+    .content
+      height: calc(100vh - 70px)
+      padding-bottom: 0
+      padding-top: 70px
+    .chat
+      height: calc(100vh - 70px)
+      margin: 0
+      border-radius: 0
+    .chat-users
+      padding: 0
+      .user
+        .avatar
+          left: 5px
+        //padding: 0 5px
+    .chat
+      .avatar
+        //left: 5px
+      .time
+        right: 5px
+    .chat-body
+      height: calc(100vh - 70px - 61px)
+      padding: 5px 5px 0 5px
+      .answer
+        .time
+          font-size: 11px
+          line-height: 20px
+        .name
+          font-size: 13px
+          line-height: 22px
 
 .signup-page .content
   margin-bottom: 0
 
+
+.notification-page .main-raised
+  margin-top: 30px
+.notification-page, .chat-users
+  .placeholder
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+.page-header
+  min-height: calc(100% - 70px - 70px)
+.landing-page
+  padding-bottom: 125px
 @import "media"
 // Всегда в конце
