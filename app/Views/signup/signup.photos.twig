@@ -2,6 +2,7 @@
 {% set body = 'signup-page' %}
 {% extends 'templates/core.twig' %}
 {% block content %}
+
 <div class="page-header header-filter"
      style="background-image: url('{{ base_url() }}/img/index.png'); background-size: cover; background-position: top center;">
     <div class="container">
@@ -37,6 +38,10 @@
     <script src="/libs/dropzone/dropzone.js"></script>
 
     <script>
+        function toggleLoader() {
+            let loader = '<div class="loader-fade"><div class="loader"><div class="circle"></div><div class="circle"></div><div class="circle"></div></div></div>'
+            $(document.body).append($(loader))
+        }
 //        window.onload = function () {
             Dropzone.options.uploadWidget = {
                 autoProcessQueue: false,
@@ -51,6 +56,8 @@
                     var myDropzone = this;
                     document.querySelector("button[type=submit]").addEventListener("click", function (e) {
                         if ($('#profile-photo').val() !== "") {
+                            e.target.setAttribute('disabled', 'true')
+                            toggleLoader()
                             e.preventDefault();
                             e.stopPropagation();
                             myDropzone.processQueue();

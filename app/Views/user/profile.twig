@@ -7,6 +7,19 @@
 
     <div class="main main-raised">
         <div class="profile-content">
+
+
+            <div class="dropdown">
+                <button class="dropdown-toggle btn btn-xs btn-simple btn-dots" data-toggle="dropdown"><i class="material-icons">more_vert</i></button>
+                {#<button href="#pablo" class="dropdown-toggle btn btn-primary btn-round btn-block" data-toggle="dropdown" aria-expanded="true">Dropdown <b class="caret"></b><div class="ripple-container"></div></button>#}
+                <ul class="dropdown-menu dropdown-menu-left">
+                    {#<li><a href="{{ path_for('user.block', {name: user.name}) }}">Block user</a></li>#}
+                    {#<li><a href="{{ path_for('user.report', {name: user.name}) }}">Report as fake</a></li>#}
+                </ul>
+            </div>
+
+
+
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
@@ -108,9 +121,22 @@
                 </div>
                 <div class="row profile-buttons">
                     {% if user.id != auth.user.id %}
-                        <button class="btn {{ isLiked ? '' : 'btn-rose' }}" data-user="{{ user.id }}">
+                        <button id="like" class="btn {{ isLiked ? '' : 'btn-rose' }}" data-user="{{ user.id }}">
                             <i class="material-icons">favorite</i>
                         </button>
+                        <script>
+                            $(function () {
+                                let btn = $('#like')
+                                btn.on('click', function () {
+                                    let url = '/like/toggle/' + $(this).data('user')
+                                    $.ajax({
+                                        method: 'post',
+                                        url: url
+                                    });
+                                    btn.toggleClass('btn-rose')
+                                })
+                            })
+                        </script>
                         {% if isMutually %}
                             <a href="{{ path_for('messages.chat', {name: user.username}) }}" class="btn btn-rose" rel="tooltip" title="" data-original-title="Send message">
                                 <i class="material-icons">email</i>

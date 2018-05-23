@@ -30,7 +30,7 @@ class UserController extends Controller
     {
         $user = User::where('username', $args['name'])->with('photos', 'tags')->first();
         if ($user === null) {
-            return $response->withStatus(404)->withHeader('Content-Type', 'text/html')->write('User not found');
+            return $this->view->render($response, 'templates/error.twig', []);
         }
 
         $data = [
